@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect project
+        id: project
+        run: |
+          if [ -f package.json ]; then echo "exists=true" >> "$GITHUB_OUTPUT"; else echo "exists=false" >> "$GITHUB_OUTPUT"; echo "No package.json yet (before task FE-01): skipping build steps."; fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.project.outputs.exists == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.project.outputs.exists == 'true'
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        if: steps.project.outputs.exists == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        if: steps.project.outputs.exists == 'true'
+        run: pnpm lint
+
+      - name: Typecheck
+        if: steps.project.outputs.exists == 'true'
+        run: pnpm typecheck
+
+      - name: Tests
+        if: steps.project.outputs.exists == 'true'
+        run: pnpm test
+
+      - name: Build
+        if: steps.project.outputs.exists == 'true'
+        run: pnpm build
+        env:
+          API_URL: http://localhost:4000
+
+  # Playwright (e2e) entra na tarefa FE-11, subindo API e Postgres no CI.
