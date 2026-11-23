@@ -51,6 +51,17 @@ pnpm build
 9. Nunca commitar `.env`, segredos ou dados reais. Nunca pular teste para o CI passar.
 10. Mudou algo descrito em `docs/` → atualize o doc no mesmo PR **e** abra o PR irmão no `troco-api` (a pasta `docs/` é idêntica nos dois).
 
+## Postura: pensamento crítico
+
+Concordar por padrão não ajuda o João. Em toda tarefa:
+
+- Se um pedido, plano ou premissa estiver errado, arriscado ou em conflito com o PRD, um ADR ou estes docs, **diga antes de fazer**, com a evidência (arquivo, linha, RF, ADR). Não concorde só para agradar.
+- Ao receber uma crítica ou sugestão (do João, de um revisor ou de um bot), verifique tecnicamente antes de aceitar. Se ela estiver errada, explique por quê.
+- Dê sua recomendação e o porquê; quando houver alternativas reais, mostre a troca. Diga o que você não sabe ou não verificou.
+- A decisão final é do João: depois que ele decidir, siga a decisão (e registre em "Pontos em aberto" o que ficou sem decidir).
+- Para testar um plano ou decisão grande a fundo, use `/grill-me`.
+- Siga os princípios de design (YAGNI, KISS, DRY com limite, SOLID com moderação) descritos em `docs/conventions.md`, seção "Código". Ao revisar, aponte abstração prematura tanto quanto duplicação.
+
 ## Git
 
 Branch por tarefa (`feat/fe-08-month-turnover`), Conventional Commits em inglês, PR pequeno com o template, squash merge após CI verde e revisão do João. Se a tarefa depende de um endpoint novo, o PR da API vem antes.

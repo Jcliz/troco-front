@@ -53,6 +53,16 @@ Use sempre estes nomes no código.
 - Nada de segredo no código. Variáveis novas vão no `.env.example` e na validação de configuração.
 - Dependência nova só com motivo escrito no PR.
 
+### Princípios de design
+
+Valem para quem escreve código aqui, pessoa ou agente. Na dúvida, o mais simples vence.
+
+- **YAGNI**: implemente só o que a tarefa do plano pede. Nada de interface, factory, parâmetro, flag ou configuração "para o futuro" sem um segundo uso real hoje.
+- **KISS**: prefira a solução direta e legível à engenhosa. Uma função clara com um `if` é melhor que um padrão de projeto para um caso só.
+- **DRY, com limite**: extraia na terceira repetição, não na segunda. Duplicação é melhor que a abstração errada: dois trechos parecidos que mudam por motivos diferentes ficam separados. A fonte única de verdade das regras de negócio é a API (e, no front, o `openapi.json`), nunca uma cópia da regra.
+- **SOLID, com moderação**: cada classe, função e componente com uma responsabilidade. Na API: controller recebe e valida, service decide, repository acessa o banco, o motor de cálculo só calcula. No front: a tela compõe, o hook de `features/` busca os dados, o componente de `components/` só exibe. Dependa de uma interface só onde já existe troca real (ex.: envio de e-mail, [ADR-0012](adr/0012-email-com-interface-unica.md)); não crie interface para toda classe.
+- Refatoração que esses princípios sugerirem fora do escopo da tarefa vira tarefa separada, anotada no PR.
+
 ## Git
 
 - `main` protegida: merge só por PR, com CI verde e revisão do João. **Squash merge.**
