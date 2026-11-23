@@ -48,7 +48,7 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 - **Emoji em títulos.** Nenhum emoji em título, botão, rótulo ou mensagem da interface.
 - **Título genérico de gráfico.** Nada de título de template, como "Vendas por mês", "Receita" ou "Visão geral". O título diz o que o gráfico mostra com os termos do troco (glossário em `docs/conventions.md`), por exemplo "Gastos por categoria em novembro".
 - **"Bem-vindo de volta, {usuário}".** Sem saudação no topo das telas. A tela abre com o título dela e com o dado principal. Saudação ou outro texto de abertura só quando o João pedir, do jeito que ele definir.
-- **Insight em texto decorativo.** Sem frases de comentário gerado sobre os dados ("Você está indo muito bem este mês!", "Seus gastos estão sob controle"). Os insights do PRD (7.9, RF-29b, RF-137) são permitidos porque vêm de regras da API, e são exibidos como aviso objetivo, com o número e a base de comparação.
+- **Bloco de "Insights" em texto.** Sem card ou seção chamada "Insights" (ou parecido) cheia de parágrafos que ninguém lê, nem frases de comentário sobre os dados ("Você está indo muito bem este mês!"). Os avisos do PRD (7.9, RF-29b, RF-137), como proximidade do limite e comparação entre meses, continuam valendo: aparecem curtos, junto do dado a que se referem, com o número e a base de comparação.
 
 ### Tags, chips e ícones
 
@@ -72,4 +72,3 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 
 - Paleta completa da interface para cada tema (botões, bordas, textos, estados e alertas), a partir das três cores do logo e com contraste WCAG AA. O comportamento da troca de tema está no PRD, 7.16 (Fase 1, tarefa FE-12).
 - Favicon: em 16 px os detalhes finos somem. Antes de publicar, vale conferir se precisa de uma versão simplificada.
-- Insights em texto: a regra de "Proibido" lê o pedido do João como frases decorativas e mantém os insights do PRD (7.9). Confirmar se é isso ou se os insights também devem virar outro formato.
