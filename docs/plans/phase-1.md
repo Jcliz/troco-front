@@ -36,7 +36,7 @@ Escopo: PRD, seção 5, "Fase 1". Cada tarefa vira **uma branch e um PR**, feita
 ## Tarefas
 
 ### API-01: Scaffolding da API
-Projeto NestJS com pnpm, Node 24, TypeScript strict, ESLint + Prettier, Vitest (com SWC), `docker-compose.yml` (Postgres 17 + Mailpit), `.env.example`, endpoint `GET /v1/health`, scripts `dev`, `build`, `lint`, `typecheck`, `test`, `test:integration`.
+Projeto NestJS com pnpm, Node 24, TypeScript strict, ESLint + Prettier, Vitest (com SWC), `docker-compose.yml` (Postgres 17 + Mailpit), `.env.example`, endpoint `GET /v1/health`, scripts `start:dev`, `build`, `lint`, `typecheck`, `test`, `test:integration`.
 **Aceite:**
 - `docker compose up -d && pnpm install && pnpm start:dev` sobe a API e `/v1/health` responde `200`.
 - `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` passam; o CI roda todos e fica verde.

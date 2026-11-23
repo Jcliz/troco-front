@@ -56,7 +56,7 @@ Use sempre estes nomes no código.
 ## Git
 
 - `main` protegida: merge só por PR, com CI verde e revisão do João. **Squash merge.**
-- Uma branch por tarefa, com **nome limpo e compreensível**: `feat/<id-da-tarefa>-<resumo>`, ex.: `feat/api-08-period-turnover`. Também `fix/`, `chore/`, `docs/`, `refactor/`, `test/`. Sem prefixo de ferramenta (`claude/`), hash ou sufixo aleatório. Regra completa em `.claude/rules/git.md` de cada repo.
+- Uma branch por tarefa, com **nome limpo e compreensível**: `feat/<id-da-tarefa>-<resumo>`, ex.: `feat/api-07-month-turnover`. Também `fix/`, `chore/`, `docs/`, `refactor/`, `test/`. Sem prefixo de ferramenta (`claude/`), hash ou sufixo aleatório. Regra completa em `.claude/rules/git.md` de cada repo.
 - **Autoria:** todo commit é do João (`Jcliz`). Agentes nunca aparecem como autor ou coautor (sem `Co-Authored-By` nem assinatura de agente em commits e PRs).
 - **Conventional Commits** em inglês: `feat(periods): add month turnover endpoint`. O título do PR segue o mesmo padrão (vira a mensagem do squash).
 - PR pequeno (idealmente até ~400 linhas de código, sem contar gerados). Corpo do PR com o template do repo: tarefa, o que mudou, como testar, checklist.
