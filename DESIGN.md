@@ -13,7 +13,7 @@ Os arquivos ficam em `public/brand/`, em PNG de 1024 × 1024. Cada tema da confi
 | Tema | Arquivo | Fundo | Corpo | Detalhes | Esquema |
 |---|---|---|---|---|---|
 | Escuro · Máximo | `logo-dark-max.png` | `#000000` | `#FFFFFF` | `#5C5C5C` | Neutros. O branco também é a cor das fontes. |
-| Escuro · Meia-noite | `logo-dark-midnight.png` | `#0F1429` | `#FFFFFF` | `#5C5C5C` | Igual ao Máximo, com azul meia-noite (228°) no lugar do preto |
+| Escuro · Meia-noite | `logo-dark-midnight.png` | `#070B1B` | `#FFFFFF` | `#1F2951` | Monocromática azul (228°): fundo meia-noite escuro, detalhes num azul mais claro que o fundo, corpo branco |
 | Claro · Máximo | `logo-light-max.png` | `#FFFFFF` | `#EDA96E` | `#1C254A` | Damasco (28°) × azul meia-noite (228°), complementar |
 | Claro · Fim de tarde | `logo-light-sunset.png` | `#F4E5C7` | `#EDA96E` | `#1C254A` | Fundo dourado (40°), vizinho do damasco; detalhes complementares |
 
