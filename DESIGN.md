@@ -14,8 +14,8 @@ Os arquivos ficam em `public/brand/`, em PNG de 1024 × 1024. Cada tema da confi
 |---|---|---|---|---|---|
 | Escuro | `logo-dark.png` | `#000000` | `#FFFFFF` | `#5C5C5C` | Neutros. O branco também é a cor das fontes. |
 | Meia-noite | `logo-dark-midnight.png` | `#070B1B` | `#FFFFFF` | `#1F2951` | Monocromática azul (228°): fundo meia-noite escuro, detalhes num azul mais claro que o fundo, corpo branco |
-| Claro | `logo-light.png` | `#FFFFFF` | `#EDA96E` | `#1C254A` | Damasco (28°) × azul meia-noite (228°), complementar |
-| Fim de tarde | `logo-light-sunset.png` | `#F4E5C7` | `#EDA96E` | `#1C254A` | Fundo dourado (40°), vizinho do damasco; detalhes complementares |
+| Claro | `logo-light.png` | `#FFFFFF` | `#EDA96E` | `#000000` | Damasco (28°) com preto puro nos detalhes; branco e preto são neutros |
+| Fim de tarde | `logo-light-sunset.png` | `#F4E5C7` | `#EDA96E` | `#161616` | Análoga quente: fundo dourado (40°) vizinho do damasco (28°); detalhes em preto carbono |
 
 O tema Escuro usa obrigatoriamente preto puro no fundo, e o tema Claro, branco puro. Meia-noite é a variação do Escuro, e Fim de tarde, a do Claro.
 
