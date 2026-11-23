@@ -5,7 +5,7 @@ Sistema web de finanças pessoais e controle de gastos
 | | |
 |---|---|
 | **Autor** | João |
-| **Status** | **Aprovado v1.2** |
+| **Status** | **Aprovado v1.3** |
 | **Última atualização** | 23/11/2026 |
 | **Repositórios** | `troco-front`, `troco-api` |
 
@@ -60,6 +60,7 @@ O troco **apenas registra e calcula**. Ele não movimenta dinheiro, não se cone
 - Gastos com moeda própria, convertidos para a moeda da conta.
 - Conta conjunta, além da conta individual.
 - Idiomas: português, inglês e espanhol.
+- Temas visuais escolhidos pelo usuário em Configurações, nas cores do logo (7.16).
 - Conformidade com a LGPD.
 - Dashboard de administrador com métricas de uso.
 
@@ -87,6 +88,7 @@ A v1 é entregue em três fases, para ter algo usável cedo. Cada fase vai para 
 - Margem de gastos e reserva (7.8, seção 8)
 - Dashboard, Lançamentos, Cadastro rápido do mês e Configurações
 - Idioma português, moeda BRL, layout responsivo
+- Temas visuais nas cores do logo, escolhidos em Configurações (7.16)
 - LGPD básica: termos, exportação e exclusão de dados (7.13)
 
 **Fase 2: cartões, parcelas e planejamento**
@@ -322,6 +324,20 @@ Seção própria para acompanhar serviços recorrentes como Netflix, Spotify, Di
 - **RF-145** Um membro pode sair da conta conjunta a qualquer momento. Seus lançamentos na conta conjunta continuam lá.
 - **RF-146** Pela LGPD, membros da conta conjunta não veem a conta individual um do outro.
 
+### 7.16 Aparência e temas
+
+- **RF-160** O usuário escolhe o **tema visual** da interface em **Configurações**, entre os temas do sistema. Não há tema personalizado na v1.
+- **RF-161** Os temas seguem as cores do logo. Cada tema muda a paleta da interface e o logo exibido dentro do app, que usa a mesma versão de cores (cores e arquivos em `troco-front/DESIGN.md`, "Marca: logo e temas"):
+  - **Escuro** (fundo preto puro) e **Meia-noite**;
+  - **Claro** (fundo branco puro) e **Fim de tarde**;
+  - **Azul**, **Verde-água**, **Outono**, **Abóbora**, **Oceano** e **Zumbi**.
+- **RF-162** O tema padrão é **Meia-noite**, para todo usuário novo. A interface não segue o tema do sistema operacional.
+- **RF-163** A troca vale na hora, sem recarregar a página, e mostra uma prévia de cada tema (logo e cores) na lista.
+- **RF-164** A escolha é salva **na conta do usuário** e vale em todos os dispositivos. O navegador guarda uma cópia para a tela já abrir no tema certo, sem piscar.
+- **RF-165** As telas de login, cadastro e recuperação de senha usam a cópia salva no navegador, se houver; senão, o tema Meia-noite.
+- **RF-166** Todo tema precisa atender ao contraste mínimo WCAG AA em textos e componentes. Se uma cor do logo não atender, o tom da interface é ajustado na fase de design, sem mudar o logo.
+- **RF-167** O ícone do app (favicon e ícone do PWA instalado) é **fixo**, no tema Meia-noite, porque o ícone instalado não muda por usuário.
+
 ## 8. Regras de cálculo
 
 Nesta seção, "mês" é sempre o mês financeiro (7.8.1): do dia da virada até a véspera da próxima. "Meses restantes" (8.3) conta viradas futuras, estimadas pelo calendário.
@@ -403,7 +419,7 @@ se o usuário estourou a margem (margem_disponivel < 0):
 9. **Assinaturas:** lista de assinaturas, status, custo mensal e anual e próximas renovações.
 10. **Sazonais:** cadastro e acompanhamento das provisões.
 11. **Orçamento por categoria**
-12. **Configurações:** recorrências, categorias, formas de pagamento, meta de reserva, moeda, idioma, notificações, exportar e excluir dados.
+12. **Configurações:** recorrências, categorias, formas de pagamento, meta de reserva, moeda, idioma, tema, notificações, exportar e excluir dados.
 13. **Conta conjunta:** membros e convites, lançamentos da conta conjunta, divisão de gastos, lista de gastos "a ver" e resumo de responsabilidade de cada membro.
 14. **Admin:** métricas de uso.
 
@@ -489,6 +505,7 @@ Sobre a hospedagem: a v1 é só para testes em produção, então a escolha é a
 - Exclusão de conta imediata e definitiva, confirmada com senha (RF-122).
 - Admin único na v1, definido direto no banco (RF-07).
 - E-mail sem domínio próprio: SMTP do Gmail, porque o Resend só envia para terceiros com domínio verificado (seção 11).
+- Temas: 10 temas nas cores do logo, escolhidos em Configurações já na Fase 1; padrão Meia-noite, sem seguir o sistema operacional; escolha salva na conta; ícone do app fixo em Meia-noite (7.16, v1.3).
 
 ## 14. Prazo
 

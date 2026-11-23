@@ -31,6 +31,7 @@ Use sempre estes nomes no código.
 | Provisão sazonal | `seasonalProvision` |
 | Categoria / subcategoria | `Category` (com `parentId`) |
 | Meta de reserva | `reserveGoal` |
+| Tema (Escuro, Meia-noite, Claro, Fim de tarde, Azul, Verde-água, Outono, Abóbora, Oceano, Zumbi) | `Theme` (`DARK`, `MIDNIGHT`, `LIGHT`, `SUNSET`, `BLUE`, `SEA_GREEN`, `AUTUMN`, `PUMPKIN`, `OCEAN`, `ZOMBIE`) |
 | Reserva do mês | `monthReserve` |
 | Margem do mês / margem disponível | `monthMargin` / `availableMargin` |
 | Saldo remanescente | `carryOver` |

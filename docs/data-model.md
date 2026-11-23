@@ -18,7 +18,7 @@ LoginAttempt (solta, para limite de tentativas)
 ## Tabelas da Fase 1
 
 ### `users`
-Pessoa cadastrada. `email` é salvo em minúsculas e único. `role` é `USER` ou `ADMIN` (admin definido direto no banco). `locale` (`pt-BR`), `timezone` (`America/Sao_Paulo`). `terms_version` e `terms_accepted_at` registram o aceite (RF-120). `last_seen_at` alimenta as métricas de admin (Fase 3) sem guardar histórico de navegação.
+Pessoa cadastrada. `email` é salvo em minúsculas e único. `role` é `USER` ou `ADMIN` (admin definido direto no banco). `locale` (`pt-BR`), `timezone` (`America/Sao_Paulo`), `theme` (tema da interface, padrão `MIDNIGHT`, PRD 7.16). `terms_version` e `terms_accepted_at` registram o aceite (RF-120). `last_seen_at` alimenta as métricas de admin (Fase 3) sem guardar histórico de navegação.
 
 ### `sessions`
 Uma linha por login ativo. Guarda só o hash do token (`token_hash`), validade e último uso. Apagada no logout, na troca de senha e na exclusão da conta.
@@ -90,6 +90,7 @@ enum IncomeType { FIXED VARIABLE }
 enum EntryStatus { CONFIRMED PENDING }
 enum CategorySystemKey { INVESTMENT EMERGENCY ONE_OFF OTHER }
 enum SeasonalStatus { PLANNED DONE CANCELED }
+enum Theme { DARK MIDNIGHT LIGHT SUNSET BLUE SEA_GREEN AUTUMN PUMPKIN OCEAN ZOMBIE }
 
 model User {
   id              String    @id @default(uuid(7)) @db.Uuid
@@ -99,6 +100,7 @@ model User {
   role            Role      @default(USER)
   locale          String    @default("pt-BR")
   timezone        String    @default("America/Sao_Paulo")
+  theme           Theme     @default(MIDNIGHT)
   termsVersion    String    @map("terms_version")
   termsAcceptedAt DateTime  @map("terms_accepted_at") @db.Timestamptz
   lastSeenAt      DateTime? @map("last_seen_at") @db.Timestamptz

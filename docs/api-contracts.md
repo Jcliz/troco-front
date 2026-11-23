@@ -46,8 +46,8 @@ Decisão de base: [ADR-0009](adr/0009-contrato-rest-openapi.md). A fonte da verd
 ### Usuário e LGPD (7.13)
 | Método | Rota | O que faz |
 |---|---|---|
-| GET | `/v1/me` | Perfil + lista de ledgers do usuário (`id`, `type`, `name`, `role`) |
-| PATCH | `/v1/me` | Nome, idioma, fuso |
+| GET | `/v1/me` | Perfil (inclui `theme`) + lista de ledgers do usuário (`id`, `type`, `name`, `role`) |
+| PATCH | `/v1/me` | `{ name?, locale?, timezone?, theme? }`; `theme` é um dos valores do enum `Theme` (PRD 7.16) |
 | GET | `/v1/me/export` | JSON com todos os dados do usuário e dos seus ledgers (RF-121) |
 | DELETE | `/v1/me` | `{ password }` → exclusão imediata e definitiva (RF-122) |
 
