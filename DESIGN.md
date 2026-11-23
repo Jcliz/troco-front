@@ -1,6 +1,6 @@
 # DESIGN.md: troco
 
-O restante do design system ainda vai ser feito na fase de design. Por enquanto, este arquivo registra a marca.
+O restante do design system ainda vai ser feito na fase de design. Por enquanto, este arquivo registra a marca e os padrões visuais proibidos.
 
 ## Marca: logo e temas
 
@@ -29,6 +29,44 @@ O tema Escuro usa obrigatoriamente preto puro no fundo, e o tema Claro, branco p
 | Verde-água | `logo-sea-green.png` | `#19342B` | `#A9D1C3` | `#29604E` | Monocromática (160°) |
 | Oceano | `logo-ocean.png` | `#231E3E` | `#A2CED7` | `#2A416F` | Análoga fria (190°, 220° e 250°) |
 | Zumbi | `logo-zombie.png` | `#3C2032` | `#9FC6AC` | `#325D40` | Complementar (140° × 320°) |
+
+## Proibido
+
+Padrões visuais que deixam a interface com cara de template ou de código gerado sem critério. Valem para toda tela, componente e gráfico, inclusive enquanto o resto do design system não existe, e têm prioridade sobre sugestões de skills de design (`frontend-design`, `impeccable` e outras). Exceção só com pedido explícito do João.
+
+### Superfícies e cards
+
+- **Gradiente desnecessário.** Fundos, cards, botões e textos usam cor sólida do tema. Gradiente só onde ele explica forma, como a sombra sutil das pernas do logo.
+- **Neon em cima de preto.** Nada de cores saturadas e brilhantes sobre fundo escuro, nem brilho (`glow`) em texto ou borda. Nos temas escuros, destaques vêm da paleta do tema, com contraste WCAG AA.
+- **Efeito de vidro em cards.** Sem `backdrop-blur` e sem fundo translúcido em cards. Card tem fundo sólido do tema e borda simples.
+- **Sombra desproporcional.** Sem sombras grandes, borradas ou coloridas. Use no máximo as sombras do tema do shadcn (`shadow-sm` em cards); elevação maior só em camadas que flutuam, como menu, popover e diálogo.
+- **Faixa colorida na borda de cards.** Sem barra de cor na lateral ou no topo do card. Se o card tem um estado (atrasado, estourado), diga em texto, com ícone se ajudar.
+
+### Títulos e textos
+
+- **Eyebrow em títulos.** Sem rótulo pequeno, em caixa alta e espaçado, acima do título. O título se basta; se precisar de contexto, use um subtítulo normal abaixo.
+- **Emoji em títulos.** Nenhum emoji em título, botão, rótulo ou mensagem da interface.
+- **Título genérico de gráfico.** Nada de título de template, como "Vendas por mês", "Receita" ou "Visão geral". O título diz o que o gráfico mostra com os termos do troco (glossário em `docs/conventions.md`), por exemplo "Gastos por categoria em novembro".
+- **"Bem-vindo de volta, {usuário}".** Sem saudação no topo das telas. A tela abre com o título dela e com o dado principal. Saudação ou outro texto de abertura só quando o João pedir, do jeito que ele definir.
+- **Bloco de "Insights" em texto.** Sem card ou seção chamada "Insights" (ou parecido) cheia de parágrafos que ninguém lê, nem frases de comentário sobre os dados ("Você está indo muito bem este mês!"). Os avisos do PRD (7.9, RF-29b, RF-137), como proximidade do limite e comparação entre meses, continuam valendo: aparecem curtos, junto do dado a que se referem, com o número e a base de comparação.
+
+### Tags, chips e ícones
+
+- **Tags desnecessárias.** Sem selos como "Ao vivo", "Tempo real", "Novo", "Beta" ou "IA", nem bolinha pulsando. Badge só quando mostra um estado real que o usuário precisa ver (ex.: fatura vencida).
+- **Chips coloridos.** Sem chips em que cada um tem uma cor diferente só para enfeitar. Chips usam o estilo neutro do tema; cor só quando ela significa um estado, e sempre junto com texto.
+- **Ícones coloridos nos KPIs.** Sem ícone dentro de quadrado ou círculo colorido em cada indicador. Indicador é rótulo e valor; ícone só se ajudar a reconhecer, na cor do texto.
+- **Pílula verde com setinha.** Sem selo do tipo "↑ 12%" em verde ou vermelho. Variação é escrita como texto, com sinal, valor e base de comparação (ex.: "+R$ 120,00 em relação a outubro"). Cor nunca é a única informação.
+- **Ícone de brilho.** Não use o ícone de brilho (`Sparkles` do lucide-react ou parecidos) para nada.
+
+### Gráficos
+
+- **Rosca com total no meio.** Sem gráfico de rosca ou pizza com o total no centro. Para dividir um total entre categorias, use barras horizontais ordenadas da maior para a menor, com o total escrito acima do gráfico.
+- **Arco-íris nos gráficos.** Sem uma cor diferente para cada categoria. Uma cor do tema para a série e, se precisar destacar, uma segunda cor só para o item em destaque.
+- **Sparkline pequena.** Sem minigráfico de tendência dentro de cards ou indicadores. O indicador mostra o número; se a tendência importa, ela vira um gráfico de verdade, com eixos e rótulos.
+
+### Interação
+
+- **Filtro que não filtra.** Todo filtro exibido muda os dados da tela. Não coloque filtro decorativo, de exemplo ou ainda sem efeito; se a API não suporta o filtro, ele não aparece.
 
 ## Pontos em aberto
 

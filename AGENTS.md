@@ -31,7 +31,7 @@ pnpm build
 - `docs/plans/phase-1.md`: tarefas com critérios de aceite. Toda tarefa começa aqui.
 - `docs/architecture.md` (estrutura do front), `docs/api-contracts.md`, `docs/adr/` (ADR-0010 é o do front).
 - `docs/conventions.md`: código, Git, testes e **glossário PT → EN**.
-- `DESIGN.md`: design system e telas (**a construir**; até lá, tema padrão do shadcn).
+- `DESIGN.md`: marca, temas e padrões visuais **proibidos**; o resto do design system está **a construir** (até lá, tema padrão do shadcn).
 - `src/app/[locale]/`: rotas. `(auth)` para login/cadastro, `(app)` para a área logada.
 - `src/components/ui/`: componentes do shadcn. `src/components/`: componentes do troco.
 - `src/features/<dominio>/`: hooks de dados, formulários e componentes de cada domínio.
@@ -49,7 +49,8 @@ pnpm build
 7. Toda tela funciona em 360 px de largura e no desktop, com teclado e leitor de tela (labels, foco visível, contraste).
 8. Erros da API são exibidos pelo `code` traduzido, nunca pelo `detail` em inglês.
 9. Nunca commitar `.env`, segredos ou dados reais. Nunca pular teste para o CI passar.
-10. Mudou algo descrito em `docs/` → atualize o doc no mesmo PR **e** abra o PR irmão no `troco-api` (a pasta `docs/` é idêntica nos dois).
+10. Nada da lista **"Proibido" do `DESIGN.md`** (gradiente desnecessário, vidro, eyebrow, emoji em título, rosca com total, sparkline, "bem-vindo de volta" e o resto). Ela vale antes de qualquer skill de design.
+11. Mudou algo descrito em `docs/` → atualize o doc no mesmo PR **e** abra o PR irmão no `troco-api` (a pasta `docs/` é idêntica nos dois).
 
 ## Postura: pensamento crítico
 
