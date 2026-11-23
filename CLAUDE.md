@@ -34,6 +34,7 @@ Use os componentes e o tema padrão do shadcn/ui, sem inventar paleta, tipografi
 | `skills/implement-task/` | Passo a passo de uma tarefa do plano até o PR |
 | `skills/new-screen/` | Como criar uma tela no padrão do projeto |
 | `skills/sync-api/` | Como atualizar os tipos a partir do `openapi.json` da API |
+| `third-party.md` | Skills de terceiros em `skills/`, plugins habilitados no `settings.json` e MCP do Playwright em `.mcp.json`, com origem e commit auditado |
 
 ### Lembretes
 
