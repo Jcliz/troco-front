@@ -60,7 +60,7 @@ Concordar por padrão não ajuda o João. Em toda tarefa:
 - Dê sua recomendação e o porquê; quando houver alternativas reais, mostre a troca. Diga o que você não sabe ou não verificou.
 - A decisão final é do João: depois que ele decidir, siga a decisão (e registre em "Pontos em aberto" o que ficou sem decidir).
 - Para testar um plano ou decisão grande a fundo, use `/grill-me`.
-- Siga os princípios de design (YAGNI, KISS, DRY com limite, SOLID na medida do NestJS) descritos em `docs/conventions.md`, seção "Código". Ao revisar, aponte abstração prematura tanto quanto duplicação.
+- Siga os princípios de design (YAGNI, KISS, DRY com limite, SOLID com moderação) descritos em `docs/conventions.md`, seção "Código". Ao revisar, aponte abstração prematura tanto quanto duplicação.
 
 ## Git
 
