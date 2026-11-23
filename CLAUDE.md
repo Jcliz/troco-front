@@ -19,7 +19,7 @@ Use a skill **`implement-task`** (`/implement-task FE-08`). Resumo:
 
 ### Enquanto o `DESIGN.md` estiver vazio
 
-Use os componentes e o tema padrão do shadcn/ui, sem inventar paleta, tipografia ou ilustrações. Layout simples e consistente; o visual será aplicado depois da fase de design.
+Use os componentes e o tema padrão do shadcn/ui, sem inventar paleta, tipografia ou ilustrações. Layout simples e consistente; o visual será aplicado depois da fase de design. A seção "Proibido" do `DESIGN.md` já vale.
 
 ### Estrutura da pasta `.claude/`
 
