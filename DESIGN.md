@@ -4,7 +4,9 @@ O restante do design system ainda vai ser feito na fase de design. Por enquanto,
 
 ## Marca: logo e temas
 
-O logo é um porquinho-cofre em desenho 2D plano, feito com a skill `ip-as-logo`. Ele tem olhos ovais verticais, uma sombra sutil em degradê nas pernas e uma luz leve vinda de cima à esquerda. O desenho é sempre o mesmo, e cada tema muda só as três cores: fundo, corpo e detalhes (focinho, orelhas internas e olhos).
+O logo é o porquinho "Curioso", em desenho 2D, feito com a skill `ip-as-logo` no nível de acabamento de um ícone de app: uma orelha caída e outra em pé, olhando para cima, com olhos ovais e brilho, textura leve de grão na pele, degradês suaves nas orelhas e luz vinda de cima à esquerda. Não tem boca nem cifrão.
+
+O desenho é sempre o mesmo, e cada tema muda só as três cores: fundo, corpo e detalhes (olhos e narinas). O focinho e o interior das orelhas são um tom derivado do corpo: 82% corpo e 18% detalhes quando o corpo é claro (Escuro, Meia-noite, Outono), ou 62% corpo e 38% branco nos outros temas. A textura e os degradês vêm do desenho original e são mantidos em todos os temas.
 
 Os arquivos ficam em `public/brand/`, em PNG de 1024 × 1024. Cada tema da configuração da aplicação usa o logo e a paleta correspondentes.
 
@@ -36,7 +38,7 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 
 ### Superfícies e cards
 
-- **Gradiente desnecessário.** Fundos, cards, botões e textos usam cor sólida do tema. Gradiente só onde ele explica forma, como a sombra sutil das pernas do logo.
+- **Gradiente desnecessário.** Fundos, cards, botões e textos usam cor sólida do tema. Gradiente só onde ele explica forma, como a luz e a sombra suaves do logo.
 - **Neon em cima de preto.** Nada de cores saturadas e brilhantes sobre fundo escuro, nem brilho (`glow`) em texto ou borda. Nos temas escuros, destaques vêm da paleta do tema, com contraste WCAG AA.
 - **Efeito de vidro em cards.** Sem `backdrop-blur` e sem fundo translúcido em cards. Card tem fundo sólido do tema e borda simples.
 - **Sombra desproporcional.** Sem sombras grandes, borradas ou coloridas. Use no máximo as sombras do tema do shadcn (`shadow-sm` em cards); elevação maior só em camadas que flutuam, como menu, popover e diálogo.
