@@ -32,5 +32,5 @@ O tema Escuro usa obrigatoriamente preto puro no fundo, e o tema Claro, branco p
 
 ## Pontos em aberto
 
-- Como os temas entram na configuração da aplicação (nomes, padrão, onde fica a escolha do usuário). Isso vira tarefa própria.
+- Paleta completa da interface para cada tema (botões, bordas, textos, estados e alertas), a partir das três cores do logo e com contraste WCAG AA. O comportamento da troca de tema está no PRD, 7.16 (Fase 1, tarefa FE-12).
 - Favicon: em 16 px os detalhes finos somem. Antes de publicar, vale conferir se precisa de uma versão simplificada.

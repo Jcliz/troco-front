@@ -4,7 +4,7 @@ Esta pasta `docs/` é idêntica nos dois repositórios (`troco-api` e `troco-fro
 
 | Documento | O que tem | Estado |
 |---|---|---|
-| [PRD.md](PRD.md) | Produto: o que o troco faz e por quê | Aprovado v1.2 |
+| [PRD.md](PRD.md) | Produto: o que o troco faz e por quê | Aprovado v1.3 |
 | [architecture.md](architecture.md) | Visão geral técnica: componentes, fluxo de uma requisição, módulos | v1 |
 | [adr/](adr/README.md) | Decisões de arquitetura, uma por arquivo | v1 |
 | [data-model.md](data-model.md) | Tabelas do Postgres e schema Prisma | Fase 1 completa; Fases 2 e 3 em esboço |
