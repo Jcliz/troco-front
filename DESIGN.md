@@ -32,6 +32,43 @@ O tema Escuro usa obrigatoriamente preto puro no fundo, e o tema Claro, branco p
 | Oceano | `logo-ocean.png` | `#231E3E` | `#A2CED7` | `#2A416F` | Análoga fria (190°, 220° e 250°) |
 | Zumbi | `logo-zombie.png` | `#3C2032` | `#9FC6AC` | `#325D40` | Complementar (140° × 320°) |
 
+## Ilustração das telas de entrada
+
+Login (e, depois, cadastro e recuperação de senha) tem à direita o porquinho jogando uma nota para cima, em traço de giz de cera solto. É um desenho, não uma animação, e é diferente do logo de propósito: o logo é um ícone polido, a ilustração é mais humana e imperfeita. A arte original foi gerada no Figma (arquivo "troco - logo").
+
+### Como a tela é montada
+
+São três camadas:
+
+1. **Arte:** imagem vertical 2:3 (840 × 1260, WebP) com fundo de uma cor única e chapada.
+2. **Painel:** a coluna da direita ocupa metade da tela e avança 25% por baixo da coluna do formulário. Ela é pintada com a **mesma cor do fundo da arte**, por isso a borda da imagem não aparece. A imagem fica dentro do painel, alinhada à direita, com `object-fit: cover` e o personagem sempre inteiro.
+3. **Recorte:** uma máscara CSS com `login-edge.svg` (esticado ao tamanho do painel) corta o painel com uma borda sinuosa, desenhada à mão: curvas suaves descendo na diagonal, sem dentes pontiagudos. A borda é a mesma em todos os temas.
+
+Abaixo de 960 px de largura o painel some e fica só o formulário.
+
+Para trocar a ilustração: gerar uma arte nova com fundo chapado, pintar o painel com a mesma cor e ajustar o `object-position` para o personagem não ser cortado pela borda. A borda só muda se o desenho dela mudar.
+
+### Temas
+
+Cada tema recolore o mesmo desenho com as três cores do logo: corpo, detalhes (olhos, narinas e cascos) e um fundo próprio do painel. A textura do giz é mantida. O focinho, as orelhas e as falhas do giz usam um tom derivado do corpo: 70% corpo e 30% detalhes quando o corpo é claro sobre painel escuro, ou 62% corpo e 38% branco nos outros. A nota fica verde em todos os temas, porque é ela que diz "dinheiro".
+
+O fundo do painel é o fundo do logo com a luminosidade ajustada (6 pontos mais escuro nos temas claros, 7 mais claro nos escuros), para o painel se separar da página. Fim de tarde usa a cor da arte original.
+
+| Tema | Arquivo | Fundo do painel |
+|---|---|---|
+| Escuro | `login-dark.webp` | `#121212` |
+| Meia-noite | `login-dark-midnight.webp` | `#0E1737` |
+| Claro | `login-light.webp` | `#F0F0F0` |
+| Fim de tarde | `login-light-sunset.webp` | `#EDDBB5` |
+| Azul | `login-blue.webp` | `#253A55` |
+| Outono | `login-autumn.webp` | `#B7544C` |
+| Abóbora | `login-pumpkin.webp` | `#EED3AF` |
+| Verde-água | `login-sea-green.webp` | `#254C3F` |
+| Oceano | `login-ocean.webp` | `#312A56` |
+| Zumbi | `login-zombie.webp` | `#532C45` |
+
+Os arquivos ficam em `public/brand/`, junto com `login-edge.svg`.
+
 ## Proibido
 
 Padrões visuais que deixam a interface com cara de template ou de código gerado sem critério. Valem para toda tela, componente e gráfico, inclusive enquanto o resto do design system não existe, e têm prioridade sobre sugestões de skills de design (`frontend-design`, `impeccable` e outras). Exceção só com pedido explícito do João.
