@@ -63,7 +63,7 @@ Decisão de base: [ADR-0009](adr/0009-contrato-rest-openapi.md). A fonte da verd
 | GET | `/v1/ledgers/{ledgerId}/periods` | Lista de meses (mais recente primeiro) |
 | POST | `/v1/ledgers/{ledgerId}/periods` | Primeiro mês: `{ startDate }` (RF-79b). `409` se já existir algum |
 | GET | `/v1/ledgers/{ledgerId}/periods/current` | Mês aberto. `404` com `code: NO_PERIOD` antes do primeiro acesso |
-| PATCH | `/v1/ledgers/{ledgerId}/periods/current` | `{ startDate }`: corrige a data de início (RF-79d) |
+| PATCH | `/v1/ledgers/{ledgerId}/periods/current` | `{ startDate }`: corrige a data de início (RF-79d) e move para a nova data os lançamentos criados na virada |
 | POST | `/v1/ledgers/{ledgerId}/periods/turnover` | Virada: `{ salaryDate, investedAmount }` → fecha o atual, abre o novo, gera as fixas "a confirmar". Responde o novo mês e o resumo do fechado |
 | POST | `/v1/ledgers/{ledgerId}/periods/turnover/undo` | Desfaz a última virada, se o mês novo só tiver lançamentos gerados e ainda pendentes |
 | PATCH | `/v1/ledgers/{ledgerId}/periods/{periodId}/closing` | `{ investedAmount }` em um mês já fechado |
@@ -73,6 +73,7 @@ Decisão de base: [ADR-0009](adr/0009-contrato-rest-openapi.md). A fonte da verd
 | Método | Rota | O que faz |
 |---|---|---|
 | GET | `/v1/ledgers/{ledgerId}/periods/{periodId}/review` | Fixas do mês com valor sugerido, valor do mês anterior, diferença e se passou da variação esperada |
+| POST | `/v1/ledgers/{ledgerId}/periods/{periodId}/review/preview` | `{ items: [{ entryId, amount }] }` → para cada item: `previousAmount`, `difference`, `differencePercent` e `outsideExpectedVariance`. Não salva nada; a tela chama quando o campo de valor perde o foco (RF-29a) |
 | POST | `/v1/ledgers/{ledgerId}/periods/{periodId}/review` | `{ items: [{ entryId, amount, applyToFuture }] }` → confirma. Lista vazia com `confirmAll: true` confirma tudo |
 
 ### Lançamentos (7.2, 7.3)

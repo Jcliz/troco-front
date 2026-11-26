@@ -5,8 +5,8 @@ Sistema web de finanças pessoais e controle de gastos
 | | |
 |---|---|
 | **Autor** | João |
-| **Status** | **Aprovado v1.3** |
-| **Última atualização** | 23/11/2026 |
+| **Status** | **Aprovado v1.4** |
+| **Última atualização** | 26/11/2026 |
 | **Repositórios** | `troco-front`, `troco-api` |
 
 ---
@@ -168,7 +168,7 @@ Os valores das despesas fixas quase nunca são exatamente iguais todo mês (ex.:
   - **Confirmar tudo** com um clique, se nada mudou;
   - **Alterar o valor** de uma ou mais fixas só para o mês atual;
   - Marcar **"usar este valor nos próximos meses"**, atualizando o valor de referência.
-- **RF-29a** Ao alterar um valor, o sistema mostra a diferença em relação ao mês anterior (ex.: "+R$ 4,30, +3,1%").
+- **RF-29a** Ao alterar um valor, o sistema mostra a diferença em relação ao mês anterior (ex.: "+R$ 4,30, +3,1%"). A diferença e o destaque de fora da variação esperada (RF-29b) vêm da API: quando o campo perde o foco, a tela pede uma prévia da revisão, que não salva nada.
 - **RF-29b** Cada despesa fixa pode ter uma **variação esperada** opcional, com padrão de **±5%** (editável por despesa). Mudanças dentro dessa faixa são aceitas sem destaque. Mudanças acima disso aparecem destacadas na revisão e geram um insight (ex.: "sua conta de luz subiu 18% em relação à média dos últimos 3 meses").
 - **RF-29c** Enquanto uma fixa estiver "a confirmar", a margem do mês usa o valor de referência. Depois da confirmação, usa o valor confirmado.
 - **RF-29d** Se o usuário não revisar as fixas em até **3 dias** após fazer a virada do mês, o sistema envia um lembrete pelos canais de alerta configurados. A revisão também pode ser feita em qualquer momento depois.
@@ -241,7 +241,7 @@ O salário não cai sempre no mesmo dia, então o mês financeiro não segue o c
 - **RF-79a** Cada lançamento pertence ao mês financeiro que contém a sua data. Compras no cartão contam no mês da **data da compra**, e não no mês do vencimento da fatura. Cada parcela de um parcelamento conta em um mês, a partir do mês da primeira parcela.
 - **RF-79b** No primeiro acesso, o usuário informa a data em que recebeu o último salário, que vira o início do seu primeiro mês.
 - **RF-79c** Se o mês atual estiver aberto há mais de **35 dias**, o sistema lembra o usuário pelos canais de alerta: "Já recebeu o salário? Vire o mês."
-- **RF-79d** O usuário pode corrigir a data de início do mês atual (se informou errado) e pode desfazer a última virada, enquanto o novo mês ainda não tiver lançamentos além dos criados automaticamente.
+- **RF-79d** O usuário pode corrigir a data de início do mês atual (se informou errado) e pode desfazer a última virada, enquanto o novo mês ainda não tiver lançamentos além dos criados automaticamente. Ao corrigir a data, os lançamentos criados automaticamente na virada (fixas e rendas fixas) passam para a nova data de início.
 - **RF-79e** Lançamentos editados ou incluídos em um mês já fechado recalculam a sobra, o saldo remanescente e a compensação de estouro dos meses seguintes.
 
 ### 7.9 Insights (v1: regras simples)
@@ -329,14 +329,14 @@ Seção própria para acompanhar serviços recorrentes como Netflix, Spotify, Di
 - **RF-160** O usuário escolhe o **tema visual** da interface em **Configurações**, entre os temas do sistema. Não há tema personalizado na v1.
 - **RF-161** Os temas seguem as cores do logo. Cada tema muda a paleta da interface e o logo exibido dentro do app, que usa a mesma versão de cores (cores e arquivos em `troco-front/DESIGN.md`, "Marca: logo e temas"):
   - **Escuro** (fundo preto puro) e **Meia-noite**;
-  - **Claro** (fundo branco puro) e **Fim de tarde**;
-  - **Azul**, **Verde-água**, **Outono**, **Abóbora**, **Oceano** e **Zumbi**.
-- **RF-162** O tema padrão é **Meia-noite**, para todo usuário novo. A interface não segue o tema do sistema operacional.
+  - **Claro** e **Fim de tarde**;
+  - **Azul**, **Verde-água**, **Outono**, **Oceano** e **Zumbi**.
+- **RF-162** O tema padrão é **Fim de tarde**, para todo usuário novo. A interface não segue o tema do sistema operacional.
 - **RF-163** A troca vale na hora, sem recarregar a página, e mostra uma prévia de cada tema (logo e cores) na lista.
 - **RF-164** A escolha é salva **na conta do usuário** e vale em todos os dispositivos. O navegador guarda uma cópia para a tela já abrir no tema certo, sem piscar.
-- **RF-165** As telas de login, cadastro e recuperação de senha usam a cópia salva no navegador, se houver; senão, o tema Meia-noite.
+- **RF-165** As telas de login, cadastro e recuperação de senha usam a cópia salva no navegador, se houver; senão, o tema Fim de tarde.
 - **RF-166** Todo tema precisa atender ao contraste mínimo WCAG AA em textos e componentes. Se uma cor do logo não atender, o tom da interface é ajustado na fase de design, sem mudar o logo.
-- **RF-167** O ícone do app (favicon e ícone do PWA instalado) é **fixo**, no tema Meia-noite, porque o ícone instalado não muda por usuário.
+- **RF-167** O ícone do app (favicon e ícone do PWA instalado) é **fixo**, no tema Fim de tarde, porque o ícone instalado não muda por usuário.
 
 ## 8. Regras de cálculo
 
@@ -505,7 +505,9 @@ Sobre a hospedagem: a v1 é só para testes em produção, então a escolha é a
 - Exclusão de conta imediata e definitiva, confirmada com senha (RF-122).
 - Admin único na v1, definido direto no banco (RF-07).
 - E-mail sem domínio próprio: SMTP do Gmail, porque o Resend só envia para terceiros com domínio verificado (seção 11).
-- Temas: 10 temas nas cores do logo, escolhidos em Configurações já na Fase 1; padrão Meia-noite, sem seguir o sistema operacional; escolha salva na conta; ícone do app fixo em Meia-noite (7.16, v1.3).
+- Temas: 9 temas nas cores do logo, escolhidos em Configurações já na Fase 1; padrão Fim de tarde, sem seguir o sistema operacional; escolha salva na conta; ícone do app fixo em Fim de tarde (7.16, v1.4). O Abóbora saiu e suas cores passaram a ser as do Fim de tarde (v1.4).
+- Revisão das fixas: a diferença e o destaque de variação vêm de uma prévia da API, pedida quando o campo perde o foco; o front não calcula (RF-29a, v1.4).
+- Corrigir a data de início do mês move para a nova data as fixas e rendas fixas criadas na virada (RF-79d, v1.4).
 
 ## 14. Prazo
 

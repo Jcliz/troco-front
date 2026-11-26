@@ -31,7 +31,7 @@ pnpm build
 - `docs/plans/phase-1.md`: tarefas com critérios de aceite. Toda tarefa começa aqui.
 - `docs/architecture.md` (estrutura do front), `docs/api-contracts.md`, `docs/adr/` (ADR-0010 é o do front).
 - `docs/conventions.md`: código, Git, testes e **glossário PT → EN**.
-- `DESIGN.md`: marca, temas e padrões visuais **proibidos**; o resto do design system está **a construir** (até lá, tema padrão do shadcn).
+- `DESIGN.md`: design system (marca, temas e paletas, tokens, componentes, movimento, telas da Fase 1) e padrões visuais **proibidos**.
 - `src/app/[locale]/`: rotas. `(auth)` para login/cadastro, `(app)` para a área logada.
 - `src/components/ui/`: componentes do shadcn. `src/components/`: componentes do troco.
 - `src/features/<dominio>/`: hooks de dados, formulários e componentes de cada domínio.

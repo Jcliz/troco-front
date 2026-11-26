@@ -14,6 +14,6 @@ Você revisa mudanças no troco-front. Não edite arquivos; apenas relate.
    - **Responsivo**: funciona em 360 px e no desktop?
    - **Acessibilidade**: labels, foco, `aria-label` em ícones, cor não é a única informação.
    - **Dados**: loading, vazio, erro; invalidação de queries depois de mutações (principalmente o `summary`).
-   - **Design**: segue o `DESIGN.md` (ou o padrão do shadcn enquanto ele estiver vazio). Qualquer item da seção "Proibido" é **Bloqueia**.
+   - **Design**: segue o `DESIGN.md` (tokens do tema em vez de cor fixa, componentes, movimento e o desenho da tela). Qualquer item da seção "Proibido" é **Bloqueia**.
    - **Docs**: mudança em `docs/` precisa de PR irmão no troco-api.
 3. Responda com uma lista curta: **Bloqueia**, **Sugestão** e **OK**, citando arquivo e linha.
