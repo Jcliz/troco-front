@@ -219,7 +219,7 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 
 ## Layout do app
 
-- **Marca:** logo de 52 px (raio 14 px) e o nome "Troco" em 32 px, peso 700, espaçamento −0,035em, 14 px à direita. O nome não fica centralizado na altura do logo: a linha de base das letras fica na borda de baixo do logo (`align-items: baseline`). Recolhido, o logo cai para 44 px. No celular, 40 px e 26 px. Nas telas de entrada, 48 px e 30 px (40 px e 26 px no celular). Em Termos e Privacidade, 44 px e 28 px.
+- **Marca:** logo de 52 px (raio 14 px) e o nome "Troco" em 32 px, peso 700, espaçamento −0,035em, 14 px à direita. O nome fica centralizado na altura do logo. Recolhido, o logo cai para 44 px. No celular, 40 px e 26 px. Nas telas de entrada, 48 px e 30 px (40 px e 26 px no celular). Em Termos e Privacidade, 44 px e 28 px.
 - **Menu lateral:** 256 px de largura, fixo, com logo, botão "Novo lançamento", Painel, Lançamentos, Mês e Configurações. No rodapé ficam "Recolher menu" e "Sair". Não tem bloco de conta (avatar, nome e setas); o perfil fica em Configurações.
 - **Item ativo:** fundo `apricot-soft`, texto `fg` em peso 500.
 - **Pendências no menu:** quando há fixas a confirmar, o item Mês mostra à direita uma pílula de notificação com o número: fundo `apricot-text`, número em `on-primary`, 22 px de altura, peso 600. O leitor de tela ouve "3 fixas a confirmar", que também aparece como dica ao passar o mouse.
