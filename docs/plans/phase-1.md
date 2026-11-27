@@ -2,7 +2,7 @@
 
 Escopo: PRD, seção 5, "Fase 1". Cada tarefa vira **uma branch e um PR**, feita pelo Claude Code e revisada pelo João. Ordem sugerida de cima para baixo; a coluna "Depende de" diz o que precisa estar no `main` antes.
 
-**Sobre o design:** as tarefas de tela (FE-04 em diante) usam o tema padrão do shadcn enquanto o `DESIGN.md` estiver vazio. Quando o design ficar pronto, entra uma tarefa de aplicar o visual. Os temas (FE-12) dependem da paleta completa de cada tema no `DESIGN.md`. API e scaffolding podem começar já.
+**Sobre o design:** o `DESIGN.md` do `troco-front` traz o design system consolidado a partir do protótipo aprovado da Fase 1: tokens, paletas dos temas, componentes, movimento e o desenho de cada tela. As tarefas de tela (FE-03 em diante) já seguem esse arquivo, sem tarefa separada de aplicar o visual. API e scaffolding podem começar já.
 
 ## Visão geral
 
@@ -30,7 +30,7 @@ Escopo: PRD, seção 5, "Fase 1". Cada tarefa vira **uma branch e um PR**, feita
 | FE-08 | Virar o mês | front | FE-07, API-09 |
 | FE-09 | Cadastro rápido do mês e revisão das fixas | front | FE-08 |
 | FE-10 | Configurações | front | FE-04, API-09, API-12 |
-| FE-12 | Temas | front | FE-10, paletas no `DESIGN.md` |
+| FE-12 | Temas | front | FE-10 |
 | FE-11 | Testes de ponta a ponta | front | FE-09, FE-10, FE-12 |
 | OPS-01 | Primeiro deploy em produção | ambos | FE-11 |
 
@@ -71,7 +71,7 @@ Endpoints de `auth` ([api-contracts.md](../api-contracts.md)). Cadastro cria usu
 - 6ª tentativa errada em 15 minutos → `429` `TOO_MANY_ATTEMPTS`.
 - Logout invalida a sessão no banco. Senha salva em argon2id.
 - Usuário A recebe `404` ao acessar ledger do usuário B (teste de integração).
-- Usuário novo tem `theme` `MIDNIGHT`; `PATCH /v1/me` com tema fora do enum → `422`.
+- Usuário novo tem `theme` `SUNSET`; `PATCH /v1/me` com tema fora do enum → `422`.
 
 ### API-05: Recuperação de senha e e-mail
 Módulo `mail` com `Mailer`, drivers `smtp` e `log`, template de recuperação em React Email. Endpoints `password/forgot` e `password/reset`.
@@ -119,12 +119,14 @@ CRUD de `entries` com filtros e paginação por cursor; regras de coerência (re
 - Moeda sempre a do ledger na Fase 1.
 
 ### API-09: Fixas e revisão
-CRUD de `recurring-items`; a virada passa a gerar instâncias `PENDING` com o valor de referência (despesas e rendas fixas, RF-27, RF-29f); endpoints de revisão com diferença em valor e percentual em relação ao mês anterior e marcação de "fora da variação esperada" (RF-29a, RF-29b); "usar nos próximos meses" atualiza o `referenceAmount`; histórico.
+CRUD de `recurring-items`; a virada passa a gerar instâncias `PENDING` com o valor de referência (despesas e rendas fixas, RF-27, RF-29f); endpoints de revisão com diferença em valor e percentual em relação ao mês anterior e marcação de "fora da variação esperada" (RF-29a, RF-29b), inclusive a prévia `review/preview`, que calcula sem salvar; "usar nos próximos meses" atualiza o `referenceAmount`; histórico.
 **Aceite:**
 - Virada gera uma instância por fixa ativa, sem duplicar se repetida.
 - Confirmar tudo muda todas para `CONFIRMED` sem mudar valores.
 - Alterar só para o mês não muda o valor de referência; com `applyToFuture` muda.
-- Variação de 6% com esperado de 5% aparece marcada.
+- Variação de 6% com esperado de 5% aparece marcada, tanto no `GET` da revisão quanto na prévia.
+- A prévia não grava nada: depois dela, o lançamento continua com o valor e o status de antes.
+- Corrigir a data de início do mês (`PATCH periods/current`) move para a nova data as instâncias geradas na virada (RF-79d).
 
 ### API-10: Sazonais planejados
 CRUD de `seasonal-plans` e `realize` (cria o gasto real `SEASONAL` e marca `DONE`).
@@ -166,7 +168,7 @@ Fluxo em etapas: data do salário (padrão hoje) → fechamento (sobra ou estour
 **Aceite:** fluxo completo funciona com teclado e no celular; erro de data mostra a mensagem certa.
 
 ### FE-09: Cadastro rápido do mês
-Começa pela revisão das fixas e rendas fixas ("Teve mudança em algum valor?"), com confirmar tudo, editar valor, "usar nos próximos meses" e diferença em relação ao mês anterior (destaque fora da variação). Depois: rendas variáveis, sazonais e meta de reserva.
+Começa pela revisão das fixas e rendas fixas ("Teve mudança em algum valor?"), com confirmar tudo, editar valor, "usar nos próximos meses" e diferença em relação ao mês anterior (destaque fora da variação), vinda da prévia da API quando o campo perde o foco; o front não calcula. Depois: rendas variáveis, sazonais e meta de reserva.
 **Aceite:** confirmar tudo em um clique; diferença exibida como "+R$ 4,30, +3,1%".
 
 ### FE-10: Configurações
@@ -178,11 +180,11 @@ Playwright contra API real (Docker) nos fluxos: cadastro → primeiro acesso →
 **Aceite:** suíte roda no CI em menos de 5 minutos.
 
 ### FE-12: Temas
-Os 10 temas do PRD 7.16 como variáveis de CSS do shadcn (uma classe ou `data-theme` por tema, com as cores do `DESIGN.md`), logo do cabeçalho trocando com o tema (`public/brand/`), escolha em Configurações com prévia de cada tema, salva via `PATCH /v1/me` e copiada num cookie para o servidor já renderizar no tema certo. Favicon e ícone fixos em Meia-noite.
+Os 9 temas do PRD 7.16 como variáveis de CSS do shadcn (uma classe ou `data-theme` por tema, com as cores do `DESIGN.md`), logo do cabeçalho trocando com o tema (`public/brand/`), escolha em Configurações com prévia de cada tema, salva via `PATCH /v1/me` e copiada num cookie para o servidor já renderizar no tema certo. Favicon e ícone fixos em Fim de tarde.
 **Aceite:**
 - Trocar o tema muda a interface na hora, sem recarregar, e vale em outro navegador depois do login.
-- Recarregar a página não pisca outro tema; sem cookie e sem sessão, abre em Meia-noite.
-- Os 10 temas passam no contraste WCAG AA (teste automatizado com axe nas telas principais).
+- Recarregar a página não pisca outro tema; sem cookie e sem sessão, abre em Fim de tarde.
+- Os 9 temas passam no contraste WCAG AA (teste automatizado com axe nas telas principais).
 - Nomes dos temas vêm de `messages/`.
 
 ### OPS-01: Primeiro deploy

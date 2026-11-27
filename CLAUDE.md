@@ -17,9 +17,9 @@ Use a skill **`implement-task`** (`/implement-task FE-08`). Resumo:
 5. Rode `pnpm lint && pnpm typecheck && pnpm test && pnpm build` (e `pnpm test:e2e` se mexeu em fluxo coberto).
 6. Rode o subagente **`reviewer`** e só então abra o PR, com prints da tela no celular e no desktop quando houver mudança visual.
 
-### Enquanto o `DESIGN.md` estiver vazio
+### Design
 
-Use os componentes e o tema padrão do shadcn/ui, sem inventar paleta, tipografia ou ilustrações. Layout simples e consistente; o visual será aplicado depois da fase de design. A seção "Proibido" do `DESIGN.md` já vale.
+Siga o `DESIGN.md`: tokens e paletas dos temas, componentes, movimento e o desenho de cada tela da Fase 1. Use os componentes do shadcn/ui ligados às variáveis de lá, e nunca cor fixa. A seção "Proibido" vem antes de qualquer skill de design. O protótipo navegável está no link do topo do `DESIGN.md`. Se a tela pedir algo que o arquivo não cobre, pergunte antes de inventar.
 
 ### Estrutura da pasta `.claude/`
 
