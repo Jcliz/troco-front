@@ -132,41 +132,41 @@ Cada token vira uma variável de CSS. A última coluna diz qual variável do sha
 
 Todos os temas saem das cores do logo por regras iguais para todos. Depois, cada cor de texto ou de borda é ajustada, clareando ou escurecendo, até passar no contraste:
 
-- **Temas escuros** (Escuro, Meia-noite, Azul, Verde-água, Outono, Oceano, Zumbi): o fundo é o fundo do logo. Outono escurece 45%, porque o vermelho do logo é claro demais para fundo de leitura. Cartão, menu, linhas e trilha são o fundo com um pouco do corpo do logo misturado (5,5%, 3,5%, 17% e 13%). O texto é o corpo clareado. O destaque é o corpo do logo; quando o corpo é branco, vale um azul tirado dos detalhes (Meia-noite) ou cinza (Escuro). Em Outono, o destaque é o laranja dos detalhes. O texto sobre verde e vermelho é a cor do fundo.
+- **Temas escuros** (Escuro, Meia-noite, Azul, Verde-água, Outono, Oceano, Zumbi): o fundo é o fundo do logo. Outono escurece 45%, porque o vermelho do logo é claro demais para fundo de leitura. Cartão, linhas e trilha são o fundo com o corpo do logo misturado (11%, 34% e 26%), para os cartões se destacarem bem do fundo. O menu leva a cor dos detalhes do logo (metade fundo, metade detalhe), para o tema ter duas cores e não ficar monocromático; em Outono, o menu é o vermelho do logo escurecido 30%, e em Escuro, um cinza 7% mais claro que o fundo. O texto é o corpo clareado. O destaque é o corpo do logo; quando o corpo é branco, vale um azul tirado dos detalhes (Meia-noite) ou cinza (Escuro). Em Outono, o destaque é o laranja dos detalhes. O texto sobre verde e vermelho é a cor do fundo.
 - **Claro:** neutros cinza, com o damasco do logo como destaque. O fundo da página é um cinza claro (`#F2F2F2`), e o menu e os cartões ficam em branco puro, para não ficar branco no branco.
 - **Fim de tarde:** usa as cores do antigo Abóbora (creme, laranja e marrom avermelhado). O fundo da página é o creme do logo quase sem clarear, o menu e os cartões são versões mais claras dele, e não branco puro, para o tema se distinguir do Claro. O texto é o marrom dos detalhes escurecido, e o destaque é o laranja do corpo, escurecido até 3:1.
 - **Verde e vermelho:** em todos os temas são o mesmo verde (150°) e o mesmo vermelho (6°), só com a luminosidade ajustada para o contraste.
 
-A geração e a conferência das paletas estão em `prototipo-fase1/v33/palettes.py`, na pasta do projeto. Mudou uma cor do logo, rode de novo e atualize a tabela.
+A geração e a conferência das paletas estão em `prototipo-fase1/v36/palettes.py`, na pasta do projeto. Mudou uma cor do logo, rode de novo e atualize a tabela.
 
 | Token | Escuro | Meia-noite | Claro | Fim de tarde | Azul | Verde-água | Outono | Oceano | Zumbi |
 |---|---|---|---|---|---|---|---|---|---|
 | `bg` | `#000000` | `#070B1B` | `#F2F2F2` | `#F5E6D0` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
-| `sidebar` | `#090909` | `#0B0F1F` | `#FFFFFF` | `#F9F0E3` | `#1F2E42` | `#1E3930` | `#5C2E29` | `#272443` | `#3F2636` |
-| `card` | `#0E0E0E` | `#0D1121` | `#FFFFFF` | `#FDF9F4` | `#223245` | `#213D33` | `#60312C` | `#2A2846` | `#412939` |
-| `line` | `#2B2B2B` | `#181D2F` | `#E2E2E2` | `#E9CFB8` | `#344457` | `#314F45` | `#72473F` | `#393C58` | `#4D3C47` |
+| `sidebar` | `#121212` | `#131A36` | `#FFFFFF` | `#F9F0E3` | `#243854` | `#214A3D` | `#6F322D` | `#273056` | `#373E39` |
+| `card` | `#1C1C1C` | `#121728` | `#FFFFFF` | `#FDF9F4` | `#2B3A4D` | `#29453C` | `#683B35` | `#31314F` | `#47323F` |
+| `line` | `#575757` | `#2A2F42` | `#E2E2E2` | `#E9CFB8` | `#4E5E72` | `#4A695F` | `#8C665B` | `#4E5A72` | `#5E585B` |
 | `line-strong` | `#474747` | `#494C59` | `#D4D4D4` | `#DACECA` | `#546070` | `#536962` | `#85615C` | `#595971` | `#6B5A65` |
-| `hover` | `#1A1A1A` | `#111627` | `#EBEBEB` | `#EED8C0` | `#29394C` | `#27443A` | `#673A34` | `#30304D` | `#46313E` |
-| `zebra` | `#131313` | `#0F1324` | `#F6F6F6` | `#FAF3E9` | `#253548` | `#244036` | `#63352F` | `#2D2B49` | `#432C3B` |
-| `track` | `#212121` | `#14192A` | `#E8E8E8` | `#ECD5BD` | `#2E3D51` | `#2C483F` | `#6B3F38` | `#343552` | `#493642` |
+| `hover` | `#333333` | `#1B2032` | `#EBEBEB` | `#EED8C0` | `#39485C` | `#365349` | `#764C44` | `#3C415D` | `#50414A` |
+| `zebra` | `#262626` | `#161B2C` | `#F6F6F6` | `#FAF3E9` | `#314154` | `#2F4C42` | `#6E433C` | `#363855` | `#4B3944` |
+| `track` | `#424242` | `#222639` | `#E8E8E8` | `#ECD5BD` | `#425265` | `#3E5D53` | `#80574E` | `#444C66` | `#564B52` |
 | `fg` | `#FFFFFF` | `#F2F4FA` | `#2A2A2A` | `#502420` | `#EAEFF5` | `#E7F2EE` | `#FCF7F0` | `#E5F1F4` | `#E4EFE8` |
-| `muted` | `#858585` | `#7E818C` | `#696969` | `#795754` | `#9AA3AE` | `#9EAFA9` | `#C6B2AC` | `#969CAA` | `#A5A1A4` |
+| `muted` | `#9C9C9C` | `#868993` | `#696969` | `#795754` | `#B0B8C1` | `#B5C3BE` | `#D9CBC5` | `#AAB1BC` | `#B4B4B4` |
 | `on-primary` | `#000000` | `#070B1B` | `#FFFFFF` | `#FFFFFF` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
 | `primary-hover` | `#FFFFFF` | `#D1D4DF` | `#191919` | `#301613` | `#DCE5EE` | `#D8EAE3` | `#FAF2E6` | `#D4E8ED` | `#D3E5D9` |
-| `apricot` | `#8C8C8C` | `#4B60B5` | `#AC7B50` | `#A86E30` | `#B3C6DB` | `#A9D1C3` | `#EF9C44` | `#A2CED7` | `#9FC6AC` |
-| `apricot-soft` | `#252525` | `#181F3C` | `#FBEEE2` | `#FCEBDA` | `#3C4D60` | `#39584D` | `#7A4430` | `#404660` | `#52454E` |
-| `apricot-text` | `#8D8D8D` | `#7686C7` | `#8B6441` | `#915F2A` | `#B3C6DB` | `#A9D1C3` | `#F4BD82` | `#A2CED7` | `#9FC6AC` |
-| `input-b` | `#636363` | `#5F636F` | `#8A8A8A` | `#987D78` | `#757F8D` | `#768A83` | `#A48882` | `#75778B` | `#857A81` |
-| `focus-b` | `#9A9A9A` | `#9296A0` | `#686868` | `#7F5E59` | `#9EA6B1` | `#9EAEA8` | `#C3AFA8` | `#9CA2B0` | `#A6A3A5` |
-| `focus-soft` | `#2A2A2A` | `#1B2242` | `#FCF0E5` | `#FCEDDD` | `#425366` | `#3F5E53` | `#7F4931` | `#444D66` | `#564C52` |
-| `ring` | `#8C8C8C` | `#4B60B5` | `#AC7B50` | `#A86E30` | `#B3C6DB` | `#A9D1C3` | `#EF9C44` | `#A2CED7` | `#9FC6AC` |
-| `positive` | `#3C9F6E` | `#3B9B6B` | `#1E764A` | `#1B6C44` | `#7ECEA6` | `#90D5B2` | `#92D6B4` | `#6FC89C` | `#74CA9F` |
-| `negative` | `#D86558` | `#D9695C` | `#BA3C2E` | `#A9372A` | `#E69C94` | `#E9AAA2` | `#EDBAB4` | `#E4948B` | `#E69F96` |
-| `negative-hover` | `#DD776C` | `#DE7B70` | `#9E3327` | `#902F24` | `#E9A8A1` | `#ECB4AD` | `#EFC2BD` | `#E7A199` | `#E9ABA3` |
-| `negative-soft` | `#2E1B19` | `#2D1D28` | `#F7E8E6` | `#F5E7E5` | `#41404F` | `#404C42` | `#76443E` | `#47374E` | `#5B3945` |
+| `apricot` | `#8D8D8D` | `#586BBB` | `#AC7B50` | `#A86E30` | `#B3C6DB` | `#A9D1C3` | `#F0A555` | `#A2CED7` | `#9FC6AC` |
+| `apricot-soft` | `#303030` | `#1F2642` | `#FBEEE2` | `#FCEBDA` | `#435367` | `#405E54` | `#804E3B` | `#454D67` | `#574D53` |
+| `apricot-text` | `#999999` | `#7E8DCB` | `#8B6441` | `#915F2A` | `#B6C9DD` | `#B5D8CC` | `#F7CDA0` | `#A2CED7` | `#A9CCB4` |
+| `input-b` | `#707070` | `#646873` | `#8A8A8A` | `#987D78` | `#828C99` | `#859791` | `#B19892` | `#818496` | `#90878D` |
+| `focus-b` | `#A2A2A2` | `#9699A2` | `#686868` | `#7F5E59` | `#A6AFB9` | `#A7B7B2` | `#CBB9B3` | `#A4AAB7` | `#ADABAD` |
+| `focus-soft` | `#353535` | `#212948` | `#FCF0E5` | `#FCEDDD` | `#49596C` | `#45645A` | `#86523C` | `#4A546D` | `#5A5357` |
+| `ring` | `#8D8D8D` | `#586BBB` | `#AC7B50` | `#A86E30` | `#B3C6DB` | `#A9D1C3` | `#F0A555` | `#A2CED7` | `#9FC6AC` |
+| `positive` | `#43B079` | `#3DA16F` | `#1E764A` | `#1B6C44` | `#90D5B2` | `#A4DDC1` | `#AEE0C7` | `#83D0AA` | `#8BD3AF` |
+| `negative` | `#E08379` | `#DB7267` | `#BA3C2E` | `#A9372A` | `#EBAFA9` | `#EFBEB8` | `#F3CFCB` | `#E8A69E` | `#EBB0AA` |
+| `negative-hover` | `#E49289` | `#DF8379` | `#9E3327` | `#902F24` | `#EDB9B3` | `#F1C6C1` | `#F4D5D1` | `#EBB1AA` | `#EDB9B4` |
+| `negative-soft` | `#3B2C2B` | `#322430` | `#F7E8E6` | `#F5E7E5` | `#494B5A` | `#48574E` | `#7E514B` | `#4E425A` | `#61444E` |
 | `on-status` | `#000000` | `#070B1B` | `#FFFFFF` | `#FFFFFF` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
-| `ghost` | `#515151` | `#4D515E` | `#CACACA` | `#D2C4BF` | `#5A6776` | `#587067` | `#8C6863` | `#5E6077` | `#6F606A` |
-| `disabled` | `#606060` | `#5B5E6B` | `#BBBBBB` | `#C6B5B0` | `#667281` | `#647B73` | `#95746F` | `#6A6C81` | `#786C75` |
+| `ghost` | `#5C5C5C` | `#515563` | `#CACACA` | `#D2C4BF` | `#606D7C` | `#5E756E` | `#917069` | `#63677D` | `#73676E` |
+| `disabled` | `#696969` | `#5E626F` | `#BBBBBB` | `#C6B5B0` | `#6C7886` | `#6A8079` | `#9A7B75` | `#6E7287` | `#7C7278` |
 | `scroll` | `#2E2E2E` | `#313543` | `#D4D4D4` | `#DCC9B6` | `#3F4D5D` | `#3E564E` | `#754C48` | `#46445F` | `#5A4553` |
 | `scroll-hover` | `#474747` | `#494C59` | `#C0C0C0` | `#CCB6A4` | `#546070` | `#536962` | `#85615C` | `#595971` | `#6B5A65` |
 | `art-bg` | `#121212` | `#0E1737` | `#F0F0F0` | `#EED3AF` | `#253A55` | `#254C3F` | `#B7544C` | `#312A56` | `#532C45` |
@@ -181,17 +181,17 @@ Todos os temas passam no WCAG AA. Texto pede 4,5:1. Gráfico, borda de campo e c
 
 | Par | Mínimo | Escuro | Meia-noite | Claro | Fim de tarde | Azul | Verde-água | Outono | Oceano | Zumbi |
 |---|---|---|---|---|---|---|---|---|---|---|
-| texto | 4,5 | 15,33 | 14,69 | 12,04 | 9,43 | 7,50 | 6,85 | 7,30 | 8,05 | 7,68 |
-| texto secundário | 4,5 | 4,72 | 4,63 | 4,61 | 4,61 | 4,61 | 4,64 | 4,64 | 4,61 | 4,65 |
+| texto | 4,5 | 12,63 | 13,50 | 12,04 | 9,43 | 6,80 | 6,22 | 6,42 | 7,26 | 6,87 |
+| texto secundário | 4,5 | 4,60 | 4,63 | 4,61 | 4,61 | 4,64 | 4,62 | 4,61 | 4,62 | 4,61 |
 | botão principal | 4,5 | 21,00 | 13,23 | 14,35 | 13,01 | 11,56 | 10,72 | 10,99 | 12,49 | 11,06 |
-| destaque (gráfico) | 3 | 4,79 | 3,03 | 3,01 | 3,00 | 6,32 | 5,98 | 3,97 | 6,95 | 5,90 |
-| texto no destaque claro | 4,5 | 4,62 | 4,62 | 4,61 | 4,66 | 4,96 | 4,70 | 4,62 | 5,46 | 4,80 |
-| borda de campo | 3 | 3,21 | 3,13 | 3,08 | 3,09 | 3,21 | 3,22 | 3,26 | 3,20 | 3,18 |
-| contorno de foco | 3 | 5,74 | 3,25 | 3,29 | 3,47 | 7,46 | 7,08 | 4,82 | 8,28 | 6,96 |
-| positivo | 4,5 | 5,28 | 5,21 | 4,70 | 4,65 | 6,32 | 6,25 | 5,60 | 6,29 | 6,04 |
-| negativo | 4,5 | 4,60 | 4,65 | 4,67 | 4,66 | 4,61 | 4,61 | 4,61 | 4,63 | 4,61 |
-| número na pílula de pendências | 4,5 | 6,33 | 5,60 | 5,25 | 5,42 | 8,43 | 8,04 | 7,24 | 9,31 | 7,72 |
-| texto em verde/vermelho | 4,5 | 5,92 | 5,67 | 5,56 | 6,41 | 6,69 | 6,85 | 7,14 | 6,71 | 6,76 |
+| destaque (gráfico) | 3 | 3,03 | 3,02 | 3,01 | 3,00 | 4,58 | 4,35 | 3,01 | 5,00 | 4,42 |
+| texto no destaque claro | 4,5 | 4,63 | 4,64 | 4,61 | 4,66 | 4,64 | 4,63 | 4,62 | 4,92 | 4,62 |
+| borda de campo | 3 | 3,44 | 3,20 | 3,08 | 3,09 | 3,39 | 3,40 | 3,43 | 3,37 | 3,36 |
+| contorno de foco | 3 | 5,13 | 3,59 | 3,29 | 3,47 | 6,62 | 6,26 | 4,51 | 7,34 | 6,21 |
+| positivo | 4,5 | 4,65 | 5,02 | 4,70 | 4,65 | 5,47 | 5,50 | 4,95 | 5,49 | 5,48 |
+| negativo | 4,5 | 4,63 | 4,62 | 4,67 | 4,66 | 4,61 | 4,63 | 4,61 | 4,61 | 4,63 |
+| número na pílula de pendências | 4,5 | 7,37 | 6,11 | 5,25 | 5,42 | 8,68 | 8,71 | 8,25 | 9,31 | 8,29 |
+| texto em verde/vermelho | 4,5 | 7,69 | 6,08 | 5,56 | 6,41 | 7,88 | 8,12 | 8,31 | 7,82 | 7,84 |
 
 Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 
