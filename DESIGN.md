@@ -197,11 +197,16 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 
 ## Tipografia
 
-- **Fonte:** Geist (Google Fonts, pesos 400, 500 e 600), com `ui-sans-serif, system-ui` de reserva. Números sempre com `font-variant-numeric: tabular-nums`, para valores alinharem em coluna.
+- **Fonte:** Geist (Google Fonts, pesos 400, 500, 600 e 700), com `ui-sans-serif, system-ui` de reserva. Números sempre com `font-variant-numeric: tabular-nums`, para valores alinharem em coluna.
 - **Corpo:** 16 px, altura de linha 1,5. Texto secundário em 14 px na cor `muted`. Nada abaixo de 12 px.
-- **Títulos:** título da tela 32 px (28 px no celular), peso 600, espaçamento −0,025em. Título de cartão 19 px, peso 600. Título de modal 20 px. Coluna de detalhes 17 px.
+- **Títulos:** a hierarquia tem que ser evidente, com degraus bem marcados: tela 44 › cartão 22 › coluna 18 › corpo 16 › apoio 14.
+  - Título da tela: 44 px (34 px no celular), peso 700, espaçamento −0,04em, altura de linha 1,05, com o subtítulo 10 px abaixo.
+  - Título de cartão: 22 px (20 px no celular), peso 600, espaçamento −0,02em.
+  - Coluna de detalhes: 18 px, peso 600.
+  - Modal: 24 px. Painel lateral: 20 px. Formulário de lançamento: 22 px. Estado vazio: 20 px. Formulário em linha: 17 px.
+  - Termos e Privacidade: título de 34 a 48 px, peso 700; seções em 22 px.
 - **Número principal** (margem disponível): 56 px (44 px no celular), peso 600, espaçamento −0,035em, com o "R$" em 26 px na cor `muted`.
-- **Telas de entrada:** frase "Seu mês, com calma." de 38 a 56 px, que vira uma linha só em tela baixa. Título do cartão 20 px.
+- **Telas de entrada:** frase "Seu mês, com calma." de 38 a 56 px, peso 700, que vira uma linha só em tela baixa. Título do cartão 20 px.
 - **Dinheiro:** sempre formatado com `Intl.NumberFormat` na moeda do ledger ("R$ 1.933,27"). Sinal de menos é o "−" tipográfico.
 
 ## Forma e espaço
@@ -214,6 +219,7 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 
 ## Layout do app
 
+- **Marca:** logo de 52 px (raio 14 px) e o nome "Troco" em 32 px, peso 700, espaçamento −0,035em, 14 px à direita. O nome não fica centralizado na altura do logo: a linha de base das letras fica na borda de baixo do logo (`align-items: baseline`). Recolhido, o logo cai para 44 px. No celular, 40 px e 26 px. Nas telas de entrada, 48 px e 30 px (40 px e 26 px no celular). Em Termos e Privacidade, 44 px e 28 px.
 - **Menu lateral:** 256 px de largura, fixo, com logo, botão "Novo lançamento", Painel, Lançamentos, Mês e Configurações. No rodapé ficam "Recolher menu" e "Sair". Não tem bloco de conta (avatar, nome e setas); o perfil fica em Configurações.
 - **Item ativo:** fundo `apricot-soft`, texto `fg` em peso 500.
 - **Pendências no menu:** quando há fixas a confirmar, o item Mês mostra à direita uma pílula de notificação com o número: fundo `apricot-text`, número em `on-primary`, 22 px de altura, peso 600. O leitor de tela ouve "3 fixas a confirmar", que também aparece como dica ao passar o mouse.
