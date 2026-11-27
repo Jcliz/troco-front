@@ -111,7 +111,7 @@ Cada token vira uma variável de CSS. A última coluna diz qual variável do sha
 | `primary-hover` | Botão principal ao passar o mouse | – |
 | `apricot` | Cor de destaque: barras e medidores, marcador da aba ou seção ativa | `--chart-1` |
 | `apricot-soft` | Item ativo do menu, avisos, contagem em aba e selo de estado | – |
-| `apricot-text` | Texto e ícone sobre `apricot-soft` | `--accent-foreground` |
+| `apricot-text` | Texto e ícone sobre `apricot-soft`. Também é a cor de notificação: fundo da pílula e do ponto de pendências, com o número em `on-primary` | `--accent-foreground` |
 | `input-b` | Borda de campo | `--input` |
 | `focus-b` | Borda do campo em foco | – |
 | `focus-soft` | Halo do campo em foco | – |
@@ -190,6 +190,7 @@ Todos os temas passam no WCAG AA. Texto pede 4,5:1. Gráfico, borda de campo e c
 | contorno de foco | 3 | 5,74 | 3,25 | 3,29 | 3,47 | 7,46 | 7,08 | 4,82 | 8,28 | 6,96 |
 | positivo | 4,5 | 5,28 | 5,21 | 4,70 | 4,65 | 6,32 | 6,25 | 5,60 | 6,29 | 6,04 |
 | negativo | 4,5 | 4,60 | 4,65 | 4,67 | 4,66 | 4,61 | 4,61 | 4,61 | 4,63 | 4,61 |
+| número na pílula de pendências | 4,5 | 6,33 | 5,60 | 5,25 | 5,42 | 8,43 | 8,04 | 7,24 | 9,31 | 7,72 |
 | texto em verde/vermelho | 4,5 | 5,92 | 5,67 | 5,56 | 6,41 | 6,69 | 6,85 | 7,14 | 6,71 | 6,76 |
 
 Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
@@ -214,9 +215,10 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 ## Layout do app
 
 - **Menu lateral:** 256 px de largura, fixo, com logo, botão "Novo lançamento", Painel, Lançamentos, Mês e Configurações. No rodapé ficam "Recolher menu" e "Sair". Não tem bloco de conta (avatar, nome e setas); o perfil fica em Configurações.
-- **Item ativo:** fundo `apricot-soft`, texto `fg` em peso 500. A contagem ("3 a confirmar") fica à direita do item.
-- **Menu recolhido:** 76 px, só com os ícones, e o nome aparece numa dica ao passar o mouse. A contagem vira um ponto no ícone, e o estado fica lembrado no navegador. Fechar tem um efeito de estilingue de 0,5 s, e abrir é uma transição simples de 0,3 s.
-- **Celular (abaixo de 960 px):** o menu some. Em cima fica uma barra com o logo; embaixo, uma barra com os quatro destinos (o ativo tem o ícone sobre `apricot-soft`), respeitando a área segura.
+- **Item ativo:** fundo `apricot-soft`, texto `fg` em peso 500.
+- **Pendências no menu:** quando há fixas a confirmar, o item Mês mostra à direita uma pílula de notificação com o número: fundo `apricot-text`, número em `on-primary`, 22 px de altura, peso 600. O leitor de tela ouve "3 fixas a confirmar", que também aparece como dica ao passar o mouse.
+- **Menu recolhido:** 76 px, só com os ícones, e o nome aparece numa dica ao passar o mouse. A pílula de pendências vira um ponto de 8 px na mesma cor, no canto do ícone, e o estado fica lembrado no navegador. Fechar tem um efeito de estilingue de 0,5 s, e abrir é uma transição simples de 0,3 s.
+- **Celular (abaixo de 960 px):** o menu some. Em cima fica uma barra com o logo; embaixo, uma barra com os quatro destinos (o ativo tem o ícone sobre `apricot-soft`), respeitando a área segura. As pendências aparecem como o mesmo ponto no ícone de Mês.
 - **Conteúdo:** até 1160 px, com 40 px de margem em cima e 48 px dos lados (16 px no celular). Lançamentos usa 860 px.
 - **Cabeçalho da tela:** título, uma linha de subtítulo em `muted` e as ações à direita. No celular, as ações ocupam a largura toda.
 - **Coluna de detalhes:** Painel e Mês têm uma coluna de 300 px à direita, a partir de 1240 px. Abaixo disso, ela desce para depois do conteúdo, separada por uma linha.
