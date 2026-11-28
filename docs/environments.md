@@ -22,6 +22,15 @@ Uma vez por computador, antes da primeira tarefa:
 
 Para conferir: `node -v` mostra `v24`, `docker compose version` responde e `pnpm -v` responde.
 
+### No Windows (a máquina de desenvolvimento do João)
+
+- **Git for Windows** é obrigatório: o Claude Code usa o Git Bash dele para rodar comandos e os hooks (`.sh`) de `.claude/hooks/`. Se o Claude Code não achar o Git Bash, aponte `CLAUDE_CODE_GIT_BASH_PATH` para o `bash.exe` (ex.: `C:\Program Files\Git\bin\bash.exe`).
+- **Node** precisa estar no `PATH` do Git Bash: os hooks usam `node` para ler a entrada do Claude Code.
+- **Docker Desktop** com o WSL 2 ligado.
+- Fim de linha: o `.gitattributes` já força `LF`; não mude o `core.autocrlf` por repositório.
+- **Assinatura do Claude:** o `settings.json` de cada repo já desliga o `Co-Authored-By`. Para valer em qualquer pasta, ponha o mesmo em `%USERPROFILE%\.claude\settings.json`: `{ "attribution": { "commit": "", "pr": "" }, "includeCoAuthoredBy": false }`.
+- **Conferir os hooks uma vez:** peça ao Claude Code, na pasta do repo, para rodar `echo '{"tool_input":{"command":"git switch -c claude/teste"}}' | .claude/hooks/guard-git.sh; echo $?`. Tem que aparecer a mensagem de bloqueio e `2`. Se der erro de caminho, avise antes de começar as tarefas.
+
 ## Rodar o sistema inteiro
 
 ```bash
