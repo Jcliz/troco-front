@@ -2,7 +2,9 @@
 
 Escopo: PRD, seção 5, "Fase 1". Cada tarefa vira **uma branch e um PR**, feita pelo Claude Code e revisada pelo João. Ordem sugerida de cima para baixo; a coluna "Depende de" diz o que precisa estar no `main` antes.
 
-**Sobre o design:** o `DESIGN.md` do `troco-front` traz o design system consolidado a partir do protótipo aprovado da Fase 1: tokens, paletas dos temas, componentes, movimento e o desenho de cada tela. As tarefas de tela (FE-03 em diante) já seguem esse arquivo, sem tarefa separada de aplicar o visual. API e scaffolding podem começar já.
+**Sobre o design:** o `DESIGN.md` do `troco-front` traz o design system consolidado a partir do protótipo aprovado da Fase 1: tokens, paletas dos temas, componentes, movimento e o desenho de cada tela. As tarefas de tela (FE-03 em diante) já seguem esse arquivo, sem tarefa separada de aplicar o visual. A seção "Proibido" do `DESIGN.md` vale para toda tarefa de tela e vem antes de qualquer skill de design. API e scaffolding podem começar já.
+
+**Nomes das telas:** o que o PRD chama de Dashboard aparece na interface como **Painel** (a rota continua `dashboard`, como em [architecture.md](../architecture.md)), e o Cadastro rápido do mês é a tela **Mês**.
 
 ## Visão geral
 
@@ -26,9 +28,9 @@ Escopo: PRD, seção 5, "Fase 1". Cada tarefa vira **uma branch e um PR**, feita
 | FE-04 | Layout do app e navegação | front | FE-03 |
 | FE-05 | Primeiro acesso (data do último salário) | front | FE-04, API-07 |
 | FE-06 | Lançamentos | front | FE-04, API-08 |
-| FE-07 | Dashboard | front | FE-04, API-11 |
+| FE-07 | Painel (dashboard) | front | FE-04, API-11 |
 | FE-08 | Virar o mês | front | FE-07, API-09 |
-| FE-09 | Cadastro rápido do mês e revisão das fixas | front | FE-08 |
+| FE-09 | Mês: cadastro rápido e revisão das fixas | front | FE-08 |
 | FE-10 | Configurações | front | FE-04, API-09, API-12 |
 | FE-12 | Temas | front | FE-10 |
 | FE-11 | Testes de ponta a ponta | front | FE-09, FE-10, FE-12 |
@@ -88,11 +90,12 @@ Rewrite `/api/:path*` → `API_URL`; script `api:sync` que copia o `openapi.json
 - Tipos gerados não são editados à mão; CI falha se estiverem diferentes do `openapi.json`.
 
 ### FE-03: Telas de autenticação
-Login, cadastro (com as regras de senha aparecendo em tempo real, RF-02, e aceite de termos com link para páginas de termos e privacidade com texto provisório), esqueci a senha, redefinir senha, logout.
+Login, cadastro (com as regras de senha aparecendo em tempo real, RF-02, e aceite de termos com link para páginas de termos e privacidade com texto provisório), esqueci a senha, redefinir senha (com tela própria para link vencido ou já usado), logout. Desenho em `DESIGN.md`, "Telas da Fase 1" e "Ilustração das telas de entrada": formulário à esquerda e arte do porquinho à direita, com a borda sinuosa (`public/brand/login-edge.svg`) e a arte do tema (`public/brand/login-*.webp`); sem sessão, usa o tema do cookie ou Fim de tarde (RF-165).
 **Aceite:**
-- Cadastro leva direto ao app (RF-05).
+- Cadastro leva direto ao primeiro acesso (RF-05, FE-05).
 - Cada regra da senha fica marcada conforme o usuário digita.
-- Erros da API aparecem traduzidos.
+- Erros da API aparecem traduzidos, na linha do campo, que já tem o espaço reservado: o cartão não muda de altura.
+- Nenhuma tela de entrada rola no computador a partir de 768 px de altura; abaixo de 960 px de largura a arte some.
 - Funciona bem em 360 px de largura e em desktop.
 
 ### API-06: Conta e categorias
@@ -148,44 +151,44 @@ Módulo `calculation` puro e `GET .../periods/{id}/summary` conforme [calculatio
 - Depois da exclusão, nenhuma linha ligada ao usuário sobra no banco (teste de integração) e a sessão deixa de valer.
 
 ### FE-04: Layout do app
-Casca autenticada: navegação lateral no desktop e inferior no celular, cabeçalho com o mês atual, menu do usuário com sair, provedor do ledger atual.
-**Aceite:** navegação para Dashboard, Lançamentos, Mês e Configurações em 360 px e em desktop; sem texto fixo fora de `messages/`.
+Casca autenticada conforme `DESIGN.md`, "Layout do app": menu lateral de 256 px no desktop com logo do tema, botão "Novo lançamento", Painel, Lançamentos, Mês e Configurações, e no rodapé "Recolher menu" e "Sair" (sem bloco de conta; o perfil fica em Configurações). Menu recolhido de 76 px, lembrado no navegador. Abaixo de 960 px, barra do logo em cima e barra com os quatro destinos embaixo. Pílula com o número de fixas a confirmar no item Mês (contagem da lista de revisão da API). Provedor do ledger atual.
+**Aceite:** navegação para Painel, Lançamentos, Mês e Configurações em 360 px e em desktop; o leitor de tela ouve a pílula como "3 fixas a confirmar"; sem texto fixo fora de `messages/`.
 
 ### FE-05: Primeiro acesso
-Se `periods/current` responde `NO_PERIOD`, mostra a tela "Quando você recebeu o último salário?" e cria o primeiro mês. Oferece configurar a meta de reserva.
-**Aceite:** usuário novo não chega ao dashboard sem ter um mês aberto.
+Se `periods/current` responde `NO_PERIOD`, mostra a tela "Quando você recebeu o último salário?" (calendário com limite em hoje) e cria o primeiro mês. Depois, "Quanto você quer guardar por mês?", com meta em percentual ou valor fixo e a opção "Definir depois" (meta fica em 0%). Usa a mesma moldura das telas de entrada.
+**Aceite:** usuário novo não chega ao Painel sem ter um mês aberto.
 
 ### FE-06: Lançamentos
-Lista com filtros (mês, tipo, categoria, status), criação e edição em formulário (sheet no celular), exclusão com confirmação, campo de valor com máscara de moeda.
-**Aceite:** criar, editar e excluir renda e gasto refletem na lista sem recarregar; filtros ficam na URL.
+Abas Todos, Gastos e Rendas (com contagem), busca por descrição ou categoria (`q`), filtros num popover (categoria, status) e o mês financeiro numa lista suspensa; filtros escolhidos viram pílulas removíveis. Lista com um cartão por dia; clicar num lançamento abre o painel lateral com detalhes, editar e excluir (com confirmação). Novo lançamento em formulário de tela cheia com prévia, começando pelo seletor Gasto/Renda e pelo valor em destaque (máscara de moeda), dizendo em qual mês o lançamento entra e avisando que a sobra é recalculada se o mês estiver fechado.
+**Aceite:** criar, editar e excluir renda e gasto refletem na lista sem recarregar; filtros e busca ficam na URL; todo filtro exibido muda a lista (nada de filtro sem efeito).
 
-### FE-07: Dashboard
-Margem disponível em destaque, reserva do mês (meta, aportado, pendente), gastos por categoria, próximos sazonais, lembretes (revisão pendente, mês aberto há mais de 35 dias) e botão "Virar o mês".
-**Aceite:** números batem com o `summary` da API; estados vazios tratados.
+### FE-07: Painel (dashboard)
+Margem disponível em destaque, com o medidor do quanto já foi gasto e a conta completa recolhida ("Como a margem é calculada"); abaixo, o aviso de fixas a confirmar e os gastos por categoria (barras horizontais da maior para a menor, numa cor só). Coluna de detalhes com a reserva do mês (meta, já guardado, falta guardar) e os próximos sazonais. Lembretes (revisão pendente, mês aberto há mais de 35 dias) curtos, junto do dado. "Virar o mês" no cabeçalho.
+**Aceite:** números batem com o `summary` da API; estados vazios tratados, cada um com a ação que tira a tela do vazio; sem saudação no topo.
 
 ### FE-08: Virar o mês
-Fluxo em etapas: data do salário (padrão hoje) → fechamento (sobra ou estouro, quanto foi investido) → confirmação → leva à revisão das fixas. Opção de desfazer a última virada.
+Modal em 3 etapas: data do salário (padrão hoje, calendário entre o início do mês atual e hoje) → fechamento (sobra ou estouro, quanto foi investido) → confirmação → leva à revisão das fixas. "Desfazer a virada" na coluna "Este mês" da tela Mês, só enquanto a API permitir.
 **Aceite:** fluxo completo funciona com teclado e no celular; erro de data mostra a mensagem certa.
 
-### FE-09: Cadastro rápido do mês
-Começa pela revisão das fixas e rendas fixas ("Teve mudança em algum valor?"), com confirmar tudo, editar valor, "usar nos próximos meses" e diferença em relação ao mês anterior (destaque fora da variação), vinda da prévia da API quando o campo perde o foco; o front não calcula. Depois: rendas variáveis, sazonais e meta de reserva.
-**Aceite:** confirmar tudo em um clique; diferença exibida como "+R$ 4,30, +3,1%".
+### FE-09: Mês: cadastro rápido e revisão das fixas
+Abas em sequência Fixas › Rendas variáveis › Sazonais › Meta de reserva, cada uma com "Próxima etapa". Começa pela revisão das fixas e rendas fixas ("Teve mudança em algum valor?"): cada uma com o valor sugerido num campo, o valor do mês anterior, "Confirmar valor", "Confirmar tudo", "usar nos próximos meses" quando o valor muda, e a diferença em relação ao mês anterior (aviso com ícone quando passa da variação esperada), vinda da prévia da API quando o campo perde o foco; o front não calcula. Coluna "Este mês" com a data de início e "Corrigir data", a sobra do mês anterior e "Desfazer a virada".
+**Aceite:** confirmar tudo em um clique; diferença exibida como "+R$ 4,30, +3,1% em relação ao mês anterior"; corrigir a data mostra as fixas geradas na virada no novo dia.
 
 ### FE-10: Configurações
-Fixas (criar, editar, ativar/desativar, variação esperada), categorias e subcategorias, meta de reserva, perfil, exportar dados e excluir conta (com senha).
-**Aceite:** excluir categoria com lançamentos pergunta para onde mover; exportação baixa um `.json`.
+Subnavegação Fixas › Categorias › Meta de reserva › Tema › Perfil › Seus dados. Fixas (criar, editar, pausar, variação esperada, "lançar também neste mês" via `addToCurrentPeriod`) e categorias e subcategorias no painel lateral; meta de reserva; perfil; em Seus dados, exportar dados e excluir conta (com senha, em modal de confirmação). A seção Tema é da FE-12.
+**Aceite:** excluir categoria com lançamentos pergunta para onde mover; categoria de sistema não mostra excluir; exportação baixa um `.json`.
 
 ### FE-11: Testes de ponta a ponta
 Playwright contra API real (Docker) nos fluxos: cadastro → primeiro acesso → lançamento → virada → revisão das fixas; recuperação de senha via Mailpit. Entram no CI do front.
 **Aceite:** suíte roda no CI em menos de 5 minutos.
 
 ### FE-12: Temas
-Os 9 temas do PRD 7.16 como variáveis de CSS do shadcn (uma classe ou `data-theme` por tema, com as cores do `DESIGN.md`), logo do cabeçalho trocando com o tema (`public/brand/`), escolha em Configurações com prévia de cada tema, salva via `PATCH /v1/me` e copiada num cookie para o servidor já renderizar no tema certo. Favicon e ícone fixos em Fim de tarde.
+Os 9 temas do PRD 7.16 como variáveis de CSS do shadcn (uma classe ou `data-theme` por tema, com as cores do `DESIGN.md`), logo do menu e arte das telas de entrada trocando com o tema (`public/brand/logo-*.png` e `login-*.webp`), escolha em Configurações com prévia de cada tema, salva via `PATCH /v1/me` e copiada num cookie para o servidor já renderizar no tema certo. Favicon e ícone fixos em Fim de tarde. O Escuro usa as cores do Fim de tarde com o tom abaixado, e nenhum tema escuro fica só em preto e branco (`DESIGN.md`, "Paletas" e "Proibido").
 **Aceite:**
 - Trocar o tema muda a interface na hora, sem recarregar, e vale em outro navegador depois do login.
 - Recarregar a página não pisca outro tema; sem cookie e sem sessão, abre em Fim de tarde.
 - Os 9 temas passam no contraste WCAG AA (teste automatizado com axe nas telas principais).
-- Nomes dos temas vêm de `messages/`.
+- Nomes dos temas vêm de `messages/`; o leitor de tela anuncia "Tema aplicado e salvo".
 
 ### OPS-01: Primeiro deploy
 Siga [environments.md](../environments.md#primeiro-deploy-passo-a-passo-para-o-joão). Claude: `vercel.json`/configuração necessária, Sentry nos dois repos, `migrate deploy` no build da API. João: contas e variáveis.
