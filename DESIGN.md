@@ -1,6 +1,6 @@
 # DESIGN.md: troco
 
-Design system do Troco, consolidado a partir do protótipo da Fase 1 que o João aprovou em 26/11/2026 (<https://claude.ai/artifact/PT1eCFzPZqfnQpFX3QewKy>, versão 35). Vale para toda tela e componente do `troco-front`.
+Design system do Troco, consolidado a partir do protótipo da Fase 1 que o João aprovou em 26/11/2026 (<https://claude.ai/artifact/PT1eCFzPZqfnQpFX3QewKy>, versão 35) e ajustado às regras de 28/11/2026 da seção "Proibido" (versão 40). Vale para toda tela e componente do `troco-front`.
 
 Ordem de prioridade: a seção "Proibido" vem antes de tudo, inclusive das skills de design. Depois vem o resto deste arquivo, e por último o padrão do shadcn/ui, para o que este arquivo não cobre. O que ainda não foi decidido fica em "Pontos em aberto".
 
@@ -19,7 +19,7 @@ O Troco é um lugar seguro para pensar e registrar o dinheiro do mês. Todo o re
 
 O logo é o porquinho "Curioso", em desenho 2D, feito com a skill `ip-as-logo` no nível de acabamento de um ícone de app: uma orelha caída e outra em pé, olhando para cima, com olhos ovais e brilho, textura leve de grão na pele, degradês suaves nas orelhas e luz vinda de cima à esquerda. Não tem boca nem cifrão.
 
-O desenho é sempre o mesmo, e cada tema muda só as três cores: fundo, corpo e detalhes (olhos e narinas). O focinho e o interior das orelhas são um tom derivado do corpo: 82% corpo e 18% detalhes quando o corpo é claro (Escuro, Meia-noite, Outono), ou 62% corpo e 38% branco nos outros temas. A textura e os degradês vêm do desenho original e são mantidos em todos os temas.
+O desenho é sempre o mesmo, e cada tema muda só as três cores: fundo, corpo e detalhes (olhos e narinas). O focinho e o interior das orelhas são um tom derivado do corpo: 82% corpo e 18% detalhes quando o corpo é claro (Meia-noite, Outono), 62% corpo e 38% creme `#E9D3BA` no Escuro, ou 62% corpo e 38% branco nos outros temas. A textura e os degradês vêm do desenho original e são mantidos em todos os temas.
 
 Os arquivos ficam em `public/brand/`, em PNG de 1024 × 1024. Cada tema da configuração da aplicação usa o logo e a paleta correspondentes.
 
@@ -27,12 +27,12 @@ Os arquivos ficam em `public/brand/`, em PNG de 1024 × 1024. Cada tema da confi
 
 | Tema | Arquivo | Fundo | Corpo | Detalhes | Esquema |
 |---|---|---|---|---|---|
-| Escuro | `logo-dark.png` | `#000000` | `#FFFFFF` | `#5C5C5C` | Neutros. O branco também é a cor das fontes. |
+| Escuro | `logo-dark.png` | `#190E0D` | `#C79157` | `#723F3B` | As cores do Fim de tarde com o tom abaixado: fundo quase preto puxado para o vinho, corpo caramelo e detalhes vinho |
 | Meia-noite | `logo-dark-midnight.png` | `#070B1B` | `#FFFFFF` | `#1F2951` | Monocromática azul (228°): fundo meia-noite escuro, detalhes num azul mais claro que o fundo, corpo branco |
 | Claro | `logo-light.png` | `#FFFFFF` | `#EDA96E` | `#2A2A2A` | Damasco (28°) com preto suave nos detalhes; neutros não mudam o esquema |
 | Fim de tarde | `logo-light-sunset.png` | `#F3E1C8` | `#EF9C44` | `#9F4740` | Análoga quente (4° a 35°): fundo creme, corpo laranja e detalhes em marrom avermelhado. São as cores do Outono invertidas |
 
-No logo, o tema Escuro usa obrigatoriamente preto puro no fundo, e o tema Claro, branco puro. Meia-noite é a variação do Escuro, e Fim de tarde, a do Claro. Até 26/11/2026 havia um décimo tema, Abóbora. As cores dele passaram para o Fim de tarde, e o Fim de tarde antigo (fundo `#F4E5C7`, corpo `#EDA96E`) saiu.
+No logo, o tema Claro usa branco puro no fundo. O Escuro não é mais preto e branco (regra "Tema escuro só em preto e branco", em "Proibido"): desde 28/11/2026 ele usa as cores da marca em tom abaixado, e o logo saiu do logo do Fim de tarde, recolorido (`prototipo-fase1/v40/recolor-logo.py`). Meia-noite é a variação do Escuro, e Fim de tarde, a do Claro. Até 26/11/2026 havia um décimo tema, Abóbora. As cores dele passaram para o Fim de tarde, e o Fim de tarde antigo (fundo `#F4E5C7`, corpo `#EDA96E`) saiu.
 
 ### Outros temas
 
@@ -68,7 +68,7 @@ O fundo do painel é o fundo do logo com a luminosidade ajustada (6 pontos mais 
 
 | Tema | Arquivo | Fundo do painel |
 |---|---|---|
-| Escuro | `login-dark.webp` | `#121212` |
+| Escuro | `login-dark.webp` | `#301B19` |
 | Meia-noite | `login-dark-midnight.webp` | `#0E1737` |
 | Claro | `login-light.webp` | `#F0F0F0` |
 | Fim de tarde | `login-light-sunset.webp` | `#EED3AF` |
@@ -132,44 +132,47 @@ Cada token vira uma variável de CSS. A última coluna diz qual variável do sha
 
 Todos os temas saem das cores do logo por regras iguais para todos. Depois, cada cor de texto ou de borda é ajustada, clareando ou escurecendo, até passar no contraste:
 
-- **Temas escuros** (Escuro, Meia-noite, Azul, Verde-água, Outono, Oceano, Zumbi): o fundo é o fundo do logo. Outono escurece 45%, porque o vermelho do logo é claro demais para fundo de leitura. Cartão, linhas e trilha são o fundo com o corpo do logo misturado (11%, 34% e 26%), para os cartões se destacarem bem do fundo. O menu leva a cor dos detalhes do logo (metade fundo, metade detalhe), para o tema ter duas cores e não ficar monocromático; em Outono, o menu é o vermelho do logo escurecido 30%, e em Escuro, um cinza 7% mais claro que o fundo. O texto é o corpo clareado. O destaque é o corpo do logo; quando o corpo é branco, vale um azul tirado dos detalhes (Meia-noite) ou cinza (Escuro). Em Outono, o destaque é o laranja dos detalhes. O texto sobre verde e vermelho é a cor do fundo.
-- **Claro:** neutros cinza, com o damasco do logo como destaque. O fundo da página é um cinza claro (`#F2F2F2`), e o menu e os cartões ficam em branco puro, para não ficar branco no branco.
+- **Temas escuros** (Escuro, Meia-noite, Azul, Verde-água, Outono, Oceano, Zumbi): o fundo é o fundo do logo. Outono escurece 45%, porque o vermelho do logo é claro demais para fundo de leitura. Cartão, linhas e trilha são o fundo com o corpo do logo misturado (11%, 34% e 26%), para os cartões se destacarem bem do fundo. O menu leva a cor dos detalhes do logo (metade fundo, metade detalhe), para o tema ter duas cores e não ficar monocromático; em Outono, o menu é o vermelho do logo escurecido 30%. O texto é o corpo clareado. O destaque é o corpo do logo; quando o corpo é branco, vale um azul tirado dos detalhes (Meia-noite). Em Outono, o destaque é o laranja dos detalhes. O texto sobre verde e vermelho é a cor do fundo.
+- **Claro:** neutros quase cinza, com um toque do damasco do logo, que também é o destaque. O fundo da página é um cinza claro quente (`#F3F2F1`), e o menu e os cartões ficam em branco puro, para não ficar branco no branco.
 - **Fim de tarde:** usa as cores do antigo Abóbora (creme, laranja e marrom avermelhado). O fundo da página é o creme do logo quase sem clarear, o menu e os cartões são versões mais claras dele, e não branco puro, para o tema se distinguir do Claro. O texto é o marrom dos detalhes escurecido, e o destaque é o laranja do corpo, escurecido até 3:1.
 - **Verde e vermelho:** em todos os temas são o mesmo verde (150°) e o mesmo vermelho (6°), só com a luminosidade ajustada para o contraste.
 
-A geração e a conferência das paletas estão em `prototipo-fase1/v36/palettes.py`, na pasta do projeto. Mudou uma cor do logo, rode de novo e atualize a tabela.
+- **Cinza com a cor do tema:** nenhum token de texto secundário, borda ou fundo é cinza neutro. Todo cinza leva a matiz da cor principal do tema (saturação mínima de 8% nos claros e 10% nos escuros), e o contraste é conferido de novo depois.
+- **Mesma matiz dentro de uma cor:** os tons de fundo de uma cor (`apricot-soft`, `focus-soft`, `negative-soft`) têm a matiz da própria cor, só com luminosidade e saturação perto do cartão. Não saem da mistura com o cartão quando ela puxa para outra cor.
+
+A geração e a conferência das paletas estão em `prototipo-fase1/v40/palettes.py`, na pasta do projeto. Mudou uma cor do logo, rode de novo e atualize a tabela.
 
 | Token | Escuro | Meia-noite | Claro | Fim de tarde | Azul | Verde-água | Outono | Oceano | Zumbi |
 |---|---|---|---|---|---|---|---|---|---|
-| `bg` | `#000000` | `#070B1B` | `#F2F2F2` | `#F5E6D0` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
-| `sidebar` | `#121212` | `#131A36` | `#FFFFFF` | `#F9F0E3` | `#243854` | `#214A3D` | `#6F322D` | `#273056` | `#373E39` |
-| `card` | `#1C1C1C` | `#121728` | `#FFFFFF` | `#FDF9F4` | `#2B3A4D` | `#29453C` | `#683B35` | `#31314F` | `#47323F` |
-| `line` | `#575757` | `#2A2F42` | `#E2E2E2` | `#E9CFB8` | `#4E5E72` | `#4A695F` | `#8C665B` | `#4E5A72` | `#5E585B` |
-| `line-strong` | `#474747` | `#494C59` | `#D4D4D4` | `#DACECA` | `#546070` | `#536962` | `#85615C` | `#595971` | `#6B5A65` |
-| `hover` | `#333333` | `#1B2032` | `#EBEBEB` | `#EED8C0` | `#39485C` | `#365349` | `#764C44` | `#3C415D` | `#50414A` |
-| `zebra` | `#262626` | `#161B2C` | `#F6F6F6` | `#FAF3E9` | `#314154` | `#2F4C42` | `#6E433C` | `#363855` | `#4B3944` |
-| `track` | `#424242` | `#222639` | `#E8E8E8` | `#ECD5BD` | `#425265` | `#3E5D53` | `#80574E` | `#444C66` | `#564B52` |
-| `fg` | `#FFFFFF` | `#F2F4FA` | `#2A2A2A` | `#502420` | `#EAEFF5` | `#E7F2EE` | `#FCF7F0` | `#E5F1F4` | `#E4EFE8` |
-| `muted` | `#9C9C9C` | `#868993` | `#696969` | `#795754` | `#B0B8C1` | `#B5C3BE` | `#D9CBC5` | `#AAB1BC` | `#B4B4B4` |
-| `on-primary` | `#000000` | `#070B1B` | `#FFFFFF` | `#FFFFFF` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
-| `primary-hover` | `#FFFFFF` | `#D1D4DF` | `#191919` | `#301613` | `#DCE5EE` | `#D8EAE3` | `#FAF2E6` | `#D4E8ED` | `#D3E5D9` |
-| `apricot` | `#8D8D8D` | `#586BBB` | `#AC7B50` | `#A86E30` | `#B3C6DB` | `#A9D1C3` | `#F0A555` | `#A2CED7` | `#9FC6AC` |
-| `apricot-soft` | `#303030` | `#1F2642` | `#FBEEE2` | `#FCEBDA` | `#435367` | `#405E54` | `#804E3B` | `#454D67` | `#574D53` |
-| `apricot-text` | `#999999` | `#7E8DCB` | `#8B6441` | `#915F2A` | `#B6C9DD` | `#B5D8CC` | `#F7CDA0` | `#A2CED7` | `#A9CCB4` |
-| `input-b` | `#707070` | `#646873` | `#8A8A8A` | `#987D78` | `#828C99` | `#859791` | `#B19892` | `#818496` | `#90878D` |
-| `focus-b` | `#A2A2A2` | `#9699A2` | `#686868` | `#7F5E59` | `#A6AFB9` | `#A7B7B2` | `#CBB9B3` | `#A4AAB7` | `#ADABAD` |
-| `focus-soft` | `#353535` | `#212948` | `#FCF0E5` | `#FCEDDD` | `#49596C` | `#45645A` | `#86523C` | `#4A546D` | `#5A5357` |
-| `ring` | `#8D8D8D` | `#586BBB` | `#AC7B50` | `#A86E30` | `#B3C6DB` | `#A9D1C3` | `#F0A555` | `#A2CED7` | `#9FC6AC` |
-| `positive` | `#43B079` | `#3DA16F` | `#1E764A` | `#1B6C44` | `#90D5B2` | `#A4DDC1` | `#AEE0C7` | `#83D0AA` | `#8BD3AF` |
-| `negative` | `#E08379` | `#DB7267` | `#BA3C2E` | `#A9372A` | `#EBAFA9` | `#EFBEB8` | `#F3CFCB` | `#E8A69E` | `#EBB0AA` |
-| `negative-hover` | `#E49289` | `#DF8379` | `#9E3327` | `#902F24` | `#EDB9B3` | `#F1C6C1` | `#F4D5D1` | `#EBB1AA` | `#EDB9B4` |
-| `negative-soft` | `#3B2C2B` | `#322430` | `#F7E8E6` | `#F5E7E5` | `#494B5A` | `#48574E` | `#7E514B` | `#4E425A` | `#61444E` |
-| `on-status` | `#000000` | `#070B1B` | `#FFFFFF` | `#FFFFFF` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
-| `ghost` | `#5C5C5C` | `#515563` | `#CACACA` | `#D2C4BF` | `#606D7C` | `#5E756E` | `#917069` | `#63677D` | `#73676E` |
-| `disabled` | `#696969` | `#5E626F` | `#BBBBBB` | `#C6B5B0` | `#6C7886` | `#6A8079` | `#9A7B75` | `#6E7287` | `#7C7278` |
-| `scroll` | `#2E2E2E` | `#313543` | `#D4D4D4` | `#DCC9B6` | `#3F4D5D` | `#3E564E` | `#754C48` | `#46445F` | `#5A4553` |
-| `scroll-hover` | `#474747` | `#494C59` | `#C0C0C0` | `#CCB6A4` | `#546070` | `#536962` | `#85615C` | `#595971` | `#6B5A65` |
-| `art-bg` | `#121212` | `#0E1737` | `#F0F0F0` | `#EED3AF` | `#253A55` | `#254C3F` | `#B7544C` | `#312A56` | `#532C45` |
+| `bg` | `#190E0D` | `#070B1B` | `#F3F2F1` | `#F5E6D0` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
+| `sidebar` | `#462724` | `#131A36` | `#FFFFFF` | `#F9F0E3` | `#243854` | `#214A3D` | `#6F322D` | `#273056` | `#354039` |
+| `card` | `#2C1C15` | `#121728` | `#FFFFFF` | `#FDF9F4` | `#2B3A4D` | `#29453C` | `#683B35` | `#31314F` | `#47323F` |
+| `line` | `#543B26` | `#2A2F42` | `#E4E2E0` | `#E9CFB8` | `#4E5E72` | `#4A695F` | `#8C665B` | `#4E5A72` | `#526458` |
+| `line-strong` | `#554944` | `#494C59` | `#D7D4D1` | `#DACECA` | `#546070` | `#536962` | `#85615C` | `#595971` | `#596C5F` |
+| `hover` | `#3C281C` | `#1B2032` | `#EDEBE9` | `#EED8C0` | `#39485C` | `#365349` | `#764C44` | `#3C415D` | `#50414A` |
+| `zebra` | `#332218` | `#161B2C` | `#F7F6F5` | `#FAF3E9` | `#314154` | `#2F4C42` | `#6E433C` | `#363855` | `#4B3944` |
+| `track` | `#463020` | `#222639` | `#EAE8E6` | `#ECD5BD` | `#425265` | `#3E5D53` | `#80574E` | `#444C66` | `#48594E` |
+| `fg` | `#EFE0D0` | `#F2F4FA` | `#2D2A27` | `#502420` | `#EAEFF5` | `#E7F2EE` | `#FCF7F0` | `#E5F1F4` | `#E4EFE8` |
+| `muted` | `#A4968C` | `#84899A` | `#706760` | `#795754` | `#B0B8C1` | `#B5C3BE` | `#D9CBC5` | `#AAB1BC` | `#ACBCB2` |
+| `on-primary` | `#190E0D` | `#070B1B` | `#FFFFFF` | `#FFFFFF` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
+| `primary-hover` | `#E5CCB2` | `#D1D4DF` | `#1B1917` | `#301613` | `#DCE5EE` | `#D8EAE3` | `#FAF2E6` | `#D4E8ED` | `#D3E5D9` |
+| `apricot` | `#C79157` | `#586BBB` | `#AC7B50` | `#A86E30` | `#B3C6DB` | `#A9D1C3` | `#F0A555` | `#A2CED7` | `#9FC6AC` |
+| `apricot-soft` | `#483121` | `#1F2642` | `#FBEEE2` | `#FCEBDA` | `#435367` | `#405E54` | `#855F37` | `#40656D` | `#42614D` |
+| `apricot-text` | `#CA965F` | `#7E8DCB` | `#8B6441` | `#915F2A` | `#B6C9DD` | `#B5D8CC` | `#FBE4CB` | `#C5E1E6` | `#C0DAC8` |
+| `input-b` | `#7B7064` | `#646879` | `#938981` | `#987D78` | `#828C99` | `#839991` | `#B19892` | `#809397` | `#809788` |
+| `focus-b` | `#A3968A` | `#9296A6` | `#706760` | `#7F5E59` | `#A6AFB9` | `#A7B7B2` | `#CBB9B3` | `#A4AAB7` | `#A4B4A9` |
+| `focus-soft` | `#4E3624` | `#212948` | `#FCF0E5` | `#FCEDDD` | `#49596C` | `#45645A` | `#8B6237` | `#436C74` | `#466751` |
+| `ring` | `#C79157` | `#586BBB` | `#AC7B50` | `#A86E30` | `#B3C6DB` | `#A9D1C3` | `#F0A555` | `#A2CED7` | `#9FC6AC` |
+| `positive` | `#45B57D` | `#3DA16F` | `#1E764A` | `#1B6C44` | `#90D5B2` | `#A4DDC1` | `#AEE0C7` | `#83D0AA` | `#8BD3AF` |
+| `negative` | `#DF8379` | `#DC786D` | `#BA3C2E` | `#A9372A` | `#EBAFA9` | `#EFBEB8` | `#F3CFCB` | `#EBB2AB` | `#EBB1AB` |
+| `negative-hover` | `#E39289` | `#DF8379` | `#9E3327` | `#902F24` | `#EDB9B3` | `#F1C6C1` | `#F4D5D1` | `#EBB1AA` | `#EDB9B4` |
+| `negative-soft` | `#482C24` | `#47211D` | `#F7E8E6` | `#F5E7E5` | `#6F3C37` | `#693C37` | `#7E514B` | `#6E413C` | `#68433F` |
+| `on-status` | `#190E0D` | `#070B1B` | `#FFFFFF` | `#FFFFFF` | `#1A293C` | `#19342B` | `#572723` | `#231E3E` | `#3C2032` |
+| `ghost` | `#635349` | `#515563` | `#CECAC6` | `#D2C4BF` | `#606D7C` | `#5E756E` | `#917069` | `#63677D` | `#627869` |
+| `disabled` | `#6E5F55` | `#5C6071` | `#C0BBB6` | `#C6B5B0` | `#6C7886` | `#698179` | `#9A7B75` | `#6E7287` | `#6B8373` |
+| `scroll` | `#403430` | `#313543` | `#D7D4D1` | `#DCC9B6` | `#3F4D5D` | `#3E564E` | `#754C48` | `#46445F` | `#5A4553` |
+| `scroll-hover` | `#554944` | `#494C59` | `#C5C0BB` | `#CCB6A4` | `#546070` | `#536962` | `#85615C` | `#595971` | `#596C5F` |
+| `art-bg` | `#301B19` | `#0E1737` | `#F1F0EF` | `#EED3AF` | `#253A55` | `#254C3F` | `#B7544C` | `#312A56` | `#532C45` |
 | `shadow` | `0 0 0` | `0 0 0` | `0 0 0` | `60 30 10` | `0 0 0` | `0 0 0` | `0 0 0` | `0 0 0` | `0 0 0` |
 | `scrim` | `0 0 0 / .5` | `0 0 0 / .5` | `43 43 43 / .24` | `43 43 43 / .24` | `0 0 0 / .5` | `0 0 0 / .5` | `0 0 0 / .5` | `0 0 0 / .5` | `0 0 0 / .5` |
 
@@ -181,17 +184,17 @@ Todos os temas passam no WCAG AA. Texto pede 4,5:1. Gráfico, borda de campo e c
 
 | Par | Mínimo | Escuro | Meia-noite | Claro | Fim de tarde | Azul | Verde-água | Outono | Oceano | Zumbi |
 |---|---|---|---|---|---|---|---|---|---|---|
-| texto | 4,5 | 12,63 | 13,50 | 12,04 | 9,43 | 6,80 | 6,22 | 6,42 | 7,26 | 6,87 |
-| texto secundário | 4,5 | 4,60 | 4,63 | 4,61 | 4,61 | 4,64 | 4,62 | 4,61 | 4,62 | 4,61 |
-| botão principal | 4,5 | 21,00 | 13,23 | 14,35 | 13,01 | 11,56 | 10,72 | 10,99 | 12,49 | 11,06 |
-| destaque (gráfico) | 3 | 3,03 | 3,02 | 3,01 | 3,00 | 4,58 | 4,35 | 3,01 | 5,00 | 4,42 |
-| texto no destaque claro | 4,5 | 4,63 | 4,64 | 4,61 | 4,66 | 4,64 | 4,63 | 4,62 | 4,92 | 4,62 |
-| borda de campo | 3 | 3,44 | 3,20 | 3,08 | 3,09 | 3,39 | 3,40 | 3,43 | 3,37 | 3,36 |
-| contorno de foco | 3 | 5,13 | 3,59 | 3,29 | 3,47 | 6,62 | 6,26 | 4,51 | 7,34 | 6,21 |
-| positivo | 4,5 | 4,65 | 5,02 | 4,70 | 4,65 | 5,47 | 5,50 | 4,95 | 5,49 | 5,48 |
-| negativo | 4,5 | 4,63 | 4,62 | 4,67 | 4,66 | 4,61 | 4,63 | 4,61 | 4,61 | 4,63 |
-| número na pílula de pendências | 4,5 | 7,37 | 6,11 | 5,25 | 5,42 | 8,68 | 8,71 | 8,25 | 9,31 | 8,29 |
-| texto em verde/vermelho | 4,5 | 7,69 | 6,08 | 5,56 | 6,41 | 7,88 | 8,12 | 8,31 | 7,82 | 7,84 |
+| texto | 4,5 | 9,35 | 13,50 | 12,00 | 9,43 | 6,80 | 6,22 | 5,34 | 5,52 | 5,84 |
+| texto secundário | 4,5 | 4,64 | 4,64 | 4,65 | 4,61 | 4,64 | 4,62 | 4,61 | 4,62 | 4,82 |
+| botão principal | 4,5 | 12,26 | 13,23 | 14,27 | 13,01 | 11,56 | 10,72 | 10,99 | 12,49 | 11,06 |
+| destaque (gráfico) | 3 | 4,47 | 3,02 | 3,01 | 3,00 | 4,58 | 4,35 | 3,01 | 5,00 | 3,96 |
+| texto no destaque claro | 4,5 | 4,63 | 4,64 | 4,61 | 4,66 | 4,64 | 4,63 | 4,62 | 4,63 | 4,63 |
+| borda de campo | 3 | 3,38 | 3,22 | 3,06 | 3,09 | 3,39 | 3,45 | 3,43 | 3,89 | 3,73 |
+| contorno de foco | 3 | 5,93 | 3,59 | 3,29 | 3,47 | 6,62 | 6,26 | 4,51 | 7,34 | 6,21 |
+| positivo | 4,5 | 5,18 | 5,02 | 4,72 | 4,65 | 5,47 | 5,50 | 4,95 | 5,49 | 5,48 |
+| negativo | 4,5 | 4,61 | 4,62 | 4,67 | 4,66 | 4,73 | 5,11 | 4,61 | 4,62 | 4,63 |
+| número na pílula de pendências | 4,5 | 7,24 | 6,11 | 5,25 | 5,42 | 8,68 | 8,71 | 9,92 | 11,52 | 9,76 |
+| texto em verde/vermelho | 4,5 | 6,90 | 6,08 | 5,56 | 6,41 | 7,88 | 8,12 | 8,31 | 8,59 | 7,90 |
 
 Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 
@@ -199,7 +202,7 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 
 - **Fonte:** Geist (Google Fonts, pesos 400, 500, 600 e 700), com `ui-sans-serif, system-ui` de reserva. Números sempre com `font-variant-numeric: tabular-nums`, para valores alinharem em coluna.
 - **Corpo:** 16 px, altura de linha 1,5. Texto secundário em 14 px na cor `muted`. Nada abaixo de 12 px.
-- **Títulos:** a hierarquia tem que ser evidente, com degraus bem marcados: tela 44 › cartão 22 › coluna 18 › corpo 16 › apoio 14.
+- **Títulos:** a hierarquia tem que ser evidente, com degraus bem marcados: tela 44 › cartão 22 › coluna 18 › corpo 16 › apoio 14. A altura de linha dos títulos é 1,2 (1,05 a 1,1 nos títulos de tela), sempre menor que a do corpo.
   - Título da tela: 44 px (34 px no celular), peso 700, espaçamento −0,04em, altura de linha 1,05, com o subtítulo 10 px abaixo.
   - Título de cartão: 22 px (20 px no celular), peso 600, espaçamento −0,02em.
   - Coluna de detalhes: 18 px, peso 600.
@@ -207,14 +210,16 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
   - Termos e Privacidade: título de 34 a 48 px, peso 700; seções em 22 px.
 - **Número principal** (margem disponível): 56 px (44 px no celular), peso 600, espaçamento −0,035em, com o "R$" em 26 px na cor `muted`.
 - **Telas de entrada:** frase "Seu mês, com calma." de 38 a 56 px, peso 700, que vira uma linha só em tela baixa. Título do cartão 20 px.
+- **Peso:** negrito (600 e 700) só em títulos e no número principal de uma tela ou camada (margem, valor do lançamento, sobra na virada), que funciona como título. Peso 500 fica para rótulos de campo, botões, item ativo e linha de total. Números e destaques dentro de uma frase ficam regulares.
 - **Dinheiro:** sempre formatado com `Intl.NumberFormat` na moeda do ledger ("R$ 1.933,27"). Sinal de menos é o "−" tipográfico.
 
 ## Forma e espaço
 
 - **Raios:** 10 px (itens de menu, alertas), 12 px (campos), 14 px (listas suspensas, opções, avisos), 20 px (cartões, modais, calendário) e pílula (botões, busca, abas em pílula, aviso flutuante).
 - **Alturas:** botão 42 px (36 px pequeno, 46 a 48 px no envio de formulário); campo 48 px (44 px nas telas de entrada e 40 px em tela baixa); campo de valor principal 64 px; item de menu 44 px. Alvo de toque nunca menor que 36 px.
-- **Cartão:** fundo `card`, borda de 1 px em `line`, raio de 20 px, espaço interno de 28 × 32 px (22 × 20 px no celular). Sem sombra.
-- **Sombra:** só em camadas que flutuam (lista suspensa, calendário, popover, modal, painel lateral, aviso flutuante): `0 12px 32px -12px rgb(shadow / .22), 0 2px 6px rgb(shadow / .06)`.
+- **Cartão:** fundo `card`, borda de 1 px em `line`, raio de 20 px, espaço interno de 28 × 32 px (20 × 24 px no celular). Sem sombra.
+- **Espaço interno:** sempre maior nos lados do que em cima e embaixo. Modal 28 × 32 px (20 × 24 px no celular), painel lateral 24 × 28 px, popover 18 × 22 px, formulário em linha 18 × 22 px, lista vazia 40 × 48 px (28 × 32 px no celular), cartão das telas de entrada 24 × 28 px.
+- **Sombra:** só em camadas que flutuam (lista suspensa, calendário, popover, modal, painel lateral, aviso flutuante): `0 12px 32px -12px rgb(shadow / .22), 0 2px 6px rgb(shadow / .06)`. As sombras pequenas (bolinha do interruptor, escolhido do seletor segmentado) também têm duas camadas, uma curta e uma suave.
 - **Espaço entre blocos:** 32 px entre cartões no computador e 24 px no celular. 36 px entre o título da tela e o conteúdo.
 
 ## Layout do app
@@ -244,7 +249,7 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 
 ### Campos
 
-- **Campo:** borda `input-b` e raio de 12 px. Rótulo em cima, peso 500.
+- **Campo:** borda `input-b` e raio de 12 px. Rótulo visível em cima, peso 500. Placeholder só como exemplo ("Ex.: Feira"), nunca no lugar do rótulo.
 - **Foco:** a borda escurece (`focus-b`) e aparece um halo de 3 px em `focus-soft`. Nunca um contorno grosso e escuro. O contorno `ring` de 2 px fica para o foco por teclado nos outros controles.
 - **Valor em dinheiro:** "R$" dentro do campo, à esquerda e em `muted`. Máscara de centavos enquanto digita ("0,00"), teclado numérico no celular.
 - **Percentual:** "%" dentro do campo, à direita.
@@ -271,13 +276,14 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 - **Abas:** texto com um traço de 2 px embaixo da aba ativa e a contagem ao lado. Com as setas do teclado, a aba troca sem animação.
 - **Subnavegação** (Configurações): lista vertical com um traço na cor de destaque à esquerda do item ativo. Abaixo de 1100 px, vira pílulas no topo.
 - **Barras por categoria:** nome, valor e percentual em cima e a barra embaixo, em `apricot` sobre `track`. Ordem da maior para a menor, as 5 maiores aparecem e o resto fica atrás de "Mostrar as 9 categorias".
-- **Aviso no fluxo:** faixa em `apricot-soft` com ícone, uma frase curta com o número em negrito e uma ação à direita ("3 fixas a confirmar desde a virada. Até você revisar, a margem usa o valor do mês anterior." + "Revisar fixas").
-- **Lista vazia:** cartão centralizado com título, uma frase do que fazer e o botão da ação.
+- **Aviso no fluxo:** faixa em `apricot-soft` com ícone, uma frase curta e uma ação à direita (embaixo da frase no celular). Texto e ícone em `apricot-text`, nunca `fg`, e o número sem negrito ("3 fixas a confirmar desde a virada. Até você revisar, a margem usa o valor do mês anterior." + "Revisar fixas").
+- **Lista vazia:** cartão centralizado com título, uma frase do que fazer e o botão da ação. Todo estado vazio tem a ação, inclusive dentro de cartões ("Nenhum gasto neste mês ainda" + "Registrar gasto").
+- **Linha de base:** linhas de lista, cabeçalho de dia, cabeçalho da tela, cabeçalho de cartão, rodapés e avisos alinham os textos pela linha de base. Ícones sem texto ficam centralizados.
 - **Esqueleto de carregamento:** só quando a espera pela API é real. Nunca para enfeitar.
 
 ### Camadas
 
-- **Painel lateral:** 440 px, entra pela direita. No celular, sobe de baixo como folha, com cantos arredondados. Tem cabeçalho com título e fechar, corpo que rola e rodapé com as ações. Usado para ver um lançamento e editar fixas e categorias.
+- **Painel lateral:** 440 px, entra pela direita. No celular, sobe de baixo como folha, com cantos arredondados. Tem cabeçalho com título e fechar, corpo que rola e rodapé com as ações: Excluir (ou Cancelar) à esquerda e a ação principal à direita, nas pontas opostas. Usado para ver um lançamento e editar fixas e categorias.
 - **Modal:** 440 px para confirmações e até 640 px para formulários. Formulário em modal tem 2 colunas no computador e 1 no celular. Confirmação de exclusão diz o que acontece e tem o botão vermelho à direita.
 - **Modal em etapas** (virar o mês): "1 de 3" à esquerda do rodapé. Avançar desliza o conteúdo para a esquerda, e voltar, para a direita.
 - **Formulário em tela cheia** (novo lançamento): barra no topo com fechar, o título e "Salvar lançamento". O formulário fica à esquerda e a prévia do lançamento à direita (a prévia some abaixo de 960 px).
@@ -311,7 +317,7 @@ Fina (12 px com 4 px de folga, polegar de 4 px), sem setas, com polegar arredond
 
 ## Telas da Fase 1
 
-O protótipo navegável está em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3QewKy> (versão 35). As telas seguem o PRD (seção 9) e o plano (`docs/plans/phase-1.md`).
+O protótipo navegável está em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3QewKy> (versão 40). As telas seguem o PRD (seção 9) e o plano (`docs/plans/phase-1.md`).
 
 ### Entrada: login, cadastro, recuperar e redefinir senha (FE-03)
 
@@ -326,7 +332,7 @@ O protótipo navegável está em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3Qe
 ### Primeiro acesso (FE-05)
 
 - **Quando aparece:** depois do cadastro, ou sempre que `periods/current` responde `NO_PERIOD`. Usa a mesma moldura das telas de entrada.
-- **Passo 1, "Quando você recebeu o último salário?":** calendário com limite em hoje e uma linha explicando que o mês vai até a véspera do próximo salário e que dá para corrigir depois. "Continuar" abre o primeiro mês.
+- **Passo 1, "Quando você recebeu o último salário?":** calendário com limite em hoje e uma linha explicando que o mês vai até a véspera do próximo salário e que dá para corrigir depois. "Abrir o primeiro mês" abre o primeiro mês.
 - **Passo 2, "Quanto você quer guardar por mês?":** meta de reserva em Percentual ou Valor fixo, com "Salvar e começar" e "Definir depois". Definir depois deixa a meta em 0%.
 
 ### Termos de uso e Política de privacidade (FE-03)
@@ -351,7 +357,7 @@ O protótipo navegável está em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3Qe
 
 - **Abas em sequência:** Fixas › Rendas variáveis › Sazonais › Meta de reserva, cada uma com "Próxima etapa" no fim.
 - **Revisão das fixas ("Teve mudança em algum valor?"):**
-  - Cada fixa a confirmar tem o valor sugerido num campo, o valor do mês anterior embaixo do nome e um botão "Confirmar". Embaixo da lista ficam "Confirmar tudo" e as já confirmadas, recolhidas.
+  - Cada fixa a confirmar tem o valor sugerido num campo, o valor do mês anterior embaixo do nome e um botão "Confirmar valor". Embaixo da lista ficam "Confirmar tudo" e as já confirmadas, recolhidas.
   - Quando o valor muda e o campo perde o foco, a tela pede à API a prévia da revisão e mostra a diferença ("+R$ 4,30, +3,1% em relação ao mês anterior"). Se passar da variação esperada, aparece o aviso "Fora da variação esperada de ±5%", com ícone.
   - Se o valor muda, aparece "Usar este valor nos próximos meses".
   - O front não calcula diferença nem variação.
@@ -397,7 +403,7 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 
 - **Cinza sem graça.** Sem cinza neutro puro em texto secundário, borda ou fundo. O "cinza" é um tom acinzentado tirado da paleta do tema (a cor principal com pouca saturação), para combinar com o resto da tela.
 - **Matizes misturadas dentro de uma cor.** Variações de uma mesma cor (mais clara, mais escura, de fundo, de texto) mantêm a mesma matiz e mudam só luminosidade e saturação. Vale principalmente para gráficos: os tons de uma série não puxam para outra cor.
-- **Tema escuro só em preto e branco.** No tema escuro, as cores principais da marca aparecem com o tom abaixado (menos luminosidade e saturação), em vez de tudo virar branco e preto. A marca continua reconhecível pela paleta principal. Isso pede mudar o tema Escuro e o logo escuro (veja "Pontos em aberto").
+- **Tema escuro só em preto e branco.** No tema escuro, as cores principais da marca aparecem com o tom abaixado (menos luminosidade e saturação), em vez de tudo virar branco e preto. A marca continua reconhecível pela paleta principal. Aplicado em 28/11/2026: o Escuro usa as cores do Fim de tarde com o tom abaixado (tabelas em "Marca" e "Paletas").
 
 ### Títulos e textos
 
@@ -454,10 +460,4 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 - **Favicon:** em 16 px os detalhes finos do logo somem. Antes de publicar, vale conferir se ele precisa de uma versão simplificada.
 - **Termos de uso e Política de privacidade:** o texto final, antes do primeiro deploy de produção (`docs/security-lgpd.md`).
 - **Landing page:** não está no plano da Fase 1. Quando entrar, estende este design system.
-- **Tema escuro e logo escuro:** pela regra "Tema escuro só em preto e branco" (seção "Proibido"), o tema Escuro precisa trazer as cores principais da marca com o tom abaixado, e o logo escuro precisa acompanhar. Hoje o Escuro é preto, branco e cinza (destaque `#8D8D8D`). Fica para uma tarefa futura, com nova paleta e conferência de contraste.
-- **Pontos de atenção de 28/nov ainda não aplicados:** as regras novas da seção "Proibido" foram só registradas. Antes de ajustar, conferir no próprio DESIGN.md e no protótipo:
-  - Cartão no celular com 22 × 20 px de espaço interno ("Forma e espaço"): fica com mais espaço em cima que nos lados.
-  - `muted` em cinza neutro nos temas Escuro (`#9C9C9C`), Claro (`#696969`) e Zumbi (`#B4B4B4`), e os "neutros cinza" do Claro.
-  - "Aviso no fluxo" com o número em negrito, e a cor do texto da faixa (tem que ser `apricot-text`, não `fg`).
-  - Rodapé do painel lateral e dos formulários: conferir se "Excluir" fica longe de "Salvar".
-  - Botões de envio que ainda digam só "Salvar".
+- **Campo de busca em Lançamentos:** tem lupa e o placeholder "Buscar por descrição ou categoria", mas não tem rótulo visível, o que contraria "Campo só com placeholder". Falta o João decidir entre abrir uma exceção para a busca (a lupa faz o papel do rótulo) ou pôr o rótulo "Buscar" em cima do campo.
