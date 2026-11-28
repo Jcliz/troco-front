@@ -266,6 +266,7 @@ Na FE-12, o teste com axe nas telas principais confere os 9 temas de novo.
 - **Opções com explicação** (tipo de meta, tipo de fixa): cartões lado a lado (um embaixo do outro no celular), com bolinha, título e uma linha de explicação. O escolhido tem borda `focus-b`.
 - **Escolha rápida** (filtros): pílulas com contorno. A escolhida fica com fundo `fg`.
 - **Caixa de marcar:** quadrado de 20 px com raio de 6 px. Marcada, fica com fundo `fg` e check. Usada no aceite dos termos.
+- **Caixa de marcar com explicação:** título em peso 500 e uma linha em `muted` embaixo, alinhada ao texto. Usada em "Paguei com resgate do investimento". Marcada, abre um bloco de campos em `zebra`.
 - **Interruptor:** 36 × 22 px. Ligado, fica com fundo `fg`. Usado em "Usar este valor nos próximos meses" e em pausar fixa.
 - **Seletor segmentado** (Gasto/Renda): trilho em `hover` e o escolhido num cartão que desliza em 0,4 s com ease-in-out.
 
@@ -317,7 +318,7 @@ Fina (12 px com 4 px de folga, polegar de 4 px), sem setas, com polegar arredond
 
 ## Telas da Fase 1
 
-O protótipo navegável está em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3QewKy> (versão 40). As telas seguem o PRD (seção 9) e o plano (`docs/plans/phase-1.md`).
+O protótipo navegável está em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3QewKy> (versão 41; a 41 só acrescenta a compra à vista com resgate, da Fase 2). As telas seguem o PRD (seção 9) e o plano (`docs/plans/phase-1.md`).
 
 ### Entrada: login, cadastro, recuperar e redefinir senha (FE-03)
 
@@ -368,6 +369,21 @@ O protótipo navegável está em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3Qe
   3. Confirmação.
   
   Depois leva à revisão das fixas.
+
+### Compra à vista com resgate (Fase 2, PRD 7.17)
+
+Desenhada no protótipo, versão 41 (`prototipo-fase1/v41/`). Tudo o que é número aqui (parcela, meses, término, quanto voltou, economia do desconto, recálculo) vem da API. O front só mostra, e pede a prévia ao sair do campo, como na revisão das fixas.
+
+- **No novo lançamento (RF-170):** gasto Avulso ou Sazonal, fora da categoria Investimento, tem a caixa de marcar "Paguei com resgate do investimento", com uma linha de explicação embaixo. Marcada, abre (altura animada) um bloco em `zebra` com quatro campos em 2 colunas: Valor resgatado (vem com o valor da compra e acompanha o valor até a pessoa mexer nele), Repor em (com "meses" dentro do campo), Parcela na loja (opcional; a dica diz qual parcela fica sem ela) e Primeira reposição (lista suspensa com o nome do mês: o seguinte, o da compra e os dois depois).
+- **Prévia do lançamento:** ganha as linhas "Pago com resgate", "Reposição" (10 × R$ 110,00) e "Economia do desconto" (só quando a parcela da loja dá economia), e uma frase com o efeito no mês: "R$ 1.000,00 não saem da margem deste mês. De dezembro a setembro de 2027, a reserva do mês sobe R$ 110,00." Se só parte veio do resgate, a frase diz quanto conta como gasto. No celular, onde a prévia some, a mesma frase aparece no fim do bloco.
+- **Erros:** "Use no máximo o valor da compra", "Escolha de 1 a 60 meses" e "Com essa parcela, a reposição fica menor que o resgate. Aumente a parcela ou os meses." Depois que a reposição começou, a caixa fica travada no formulário, com a explicação "Para mudar, edite em Parcelamentos".
+- **Lista e detalhe do lançamento:** a linha de baixo ganha ", pago com resgate". No painel lateral, as linhas "Pago com resgate" e "Reposição" (3 de 10 meses), esta com link para a compra.
+- **Repor mais (RF-175):** no aporte em Investimento, quando há compra em reposição, aparece a caixa "Parte deste aporte repõe uma compra com resgate". Marcada, pede a compra (lista suspensa, com "Faltam R$ X de R$ Y" embaixo) e "Quanto repõe", que conta a parcela do mês. Se passar da parcela, aparecem duas opções com explicação: "Encurtar o prazo (padrão)", que mantém a parcela e mostra o novo término, e "Diminuir a parcela", que mantém o fim e mostra a nova parcela. Se cobrir tudo o que falta, troca as opções pela frase "Repõe tudo o que falta e encerra a reposição", com check em `positive`. A prévia diz quanto falta depois e lembra que o que passar da reserva sai da margem. "Repor mais neste mês", no painel lateral da compra, abre este formulário já preenchido, e o valor do aporte acompanha o da reposição.
+- **Parcelamentos (tela 7 do PRD, RF-176):** item novo do menu, entre Mês e Configurações (ícone de camadas). Abas "Parcelamentos" e "Compras com resgate", com contagem, para as duas coisas ficarem separadas. A aba de resgates tem o cartão "Em reposição", com a frase "R$ 515,00 entram na reserva deste mês como reposição." e uma linha por compra: nome, "1 de 12 meses repostos, até setembro de 2027", quanto voltou à direita ("R$ 215,00 / de R$ 2.580,00") e um medidor fino (`apricot` sobre `track`). As encerradas e canceladas ficam num cartão recolhido, "Encerradas". Vazio: "Nenhuma compra com resgate" com "Registrar compra com resgate", que abre o novo lançamento com a caixa já marcada.
+- **Painel lateral da compra (RF-173, RF-174):** o número principal é "Já voltou para o investimento", com "de R$ 2.580,00, faltam R$ 2.365,00" e o medidor. Embaixo: Compra (data e valor à vista, com link para o lançamento), Valor resgatado, Parcela, Meses repostos, Termina em e Economia do desconto (ou "Sem a parcela da loja, não dá para calcular"). "Mês a mês" fica recolhido, com cada mês como Reposta, Neste mês ou Prevista. Depois, "Repor mais neste mês" e a frase de quanto encerra de uma vez. Rodapé: "Cancelar reposição" à esquerda e "Editar reposição" à direita.
+- **Editar reposição (RF-175a):** modal de formulário com Parcela por mês e Meses que faltam. Mudar um recalcula o outro, mantendo o que falta repor, e a frase embaixo mostra o plano ("7 × R$ 300,00 e a última de R$ 265,00, até junho de 2027."). O texto do topo avisa que meses fechados não mudam. Botão "Salvar reposição".
+- **Cancelar reposição:** confirmação que diz quanto falta, que a reserva deixa de somar a parcela a partir deste mês e que o gasto continua na categoria. Botões "Manter reposição" e "Cancelar reposição" (vermelho, à direita). Excluir o lançamento da compra avisa que a reposição sai junto.
+- **Painel e Meta de reserva (RF-176):** na coluna da reserva, a linha "Reposição de resgate", com o nome das compras e o valor, fica entre Meta e Já guardado, seguida de "Ver reposições". Na conta da margem, a reserva diz "10% da renda e R$ 515,00 de reposição de resgate", e os gastos avulsos dizem quanto ficou de fora por ter sido pago com resgate. A Meta de reserva do Mês repete a reposição na frase "Reserva deste mês".
 
 ### Configurações (FE-10, FE-12)
 
@@ -460,3 +476,7 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 - **Favicon:** em 16 px os detalhes finos do logo somem. Antes de publicar, vale conferir se ele precisa de uma versão simplificada.
 - **Termos de uso e Política de privacidade:** o texto final, antes do primeiro deploy de produção (`docs/security-lgpd.md`).
 - **Landing page:** não está no plano da Fase 1. Quando entrar, estende este design system.
+- **Parcelamentos no celular:** a barra de baixo tem 4 destinos e não cabe um quinto em 360 px. Por enquanto, no celular, Parcelamentos se abre pelo "Ver reposições" do Painel e pelos links do lançamento. Com as outras telas da Fase 2 (cartões, assinaturas, orçamento), a barra vai precisar de um destino "Mais".
+- **Aba Parcelamentos:** só tem o estado vazio. A lista, o cadastro, a antecipação e a quitação (RF-30 a RF-35) ficam para o desenho dos parcelamentos.
+- **Editar reposição:** o protótipo mantém o que falta repor e recalcula meses ou parcela. Se a pessoa quiser corrigir a parcela da loja (e com isso o valor a repor e a economia), falta decidir onde.
+- **Quando a reposição conta como feita** (PRD, ponto 11): no protótipo, o mês fechado conta como reposto. A tela muda se a regra for "só quando os aportes cobrem a reserva".
