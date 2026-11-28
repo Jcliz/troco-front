@@ -19,7 +19,27 @@ Use a skill **`implement-task`** (`/implement-task FE-08`). Resumo:
 
 ### Design
 
-Siga o `DESIGN.md`: tokens e paletas dos temas, componentes, movimento e o desenho de cada tela da Fase 1. Use os componentes do shadcn/ui ligados às variáveis de lá, e nunca cor fixa. A seção "Proibido" vem antes de qualquer skill de design. O protótipo navegável está no link do topo do `DESIGN.md`. Se a tela pedir algo que o arquivo não cobre, pergunte antes de inventar.
+Siga o `DESIGN.md`: tokens e paletas dos temas, componentes, movimento e o desenho de cada tela da Fase 1. Use os componentes do shadcn/ui ligados às variáveis de lá, e nunca cor fixa. A seção "Proibido" vem antes de qualquer skill de design. Se a tela pedir algo que o arquivo não cobre, pergunte antes de inventar.
+
+O protótipo aprovado está versionado em `docs/design/prototype/` (veja o `LEIA-ME.md` de lá): o HTML navegável, com as animações, e os prints de cada tela em 1440 e 360 px. Antes de codar uma tela, abra os prints dela; para ver um movimento, abra o HTML com o MCP do Playwright e interaja. Em conflito, o `DESIGN.md` vence o protótipo.
+
+Em toda tarefa de tela, antes do `reviewer`, faça a crítica com as skills **`apple-design`** e **`emil-design-eng`** e corrija o que elas apontarem, sempre dentro do `DESIGN.md`. Em tela com lista ou valores, rode também **`break-ui`** (nomes longos, valores enormes, lista vazia).
+
+### Qual fluxo usar
+
+Vários fluxos instalados se sobrepõem. Use este:
+
+| Situação | Use | Não use |
+|---|---|---|
+| Tarefa do plano (`FE-xx`) | `implement-task`: o plano e o `DESIGN.md` já são a especificação | `brainstorming`, `writing-plans`, `executing-plans` e `subagent-driven-development` do superpowers; nada de `docs/superpowers/` nem `.specs/` |
+| Funcionalidade fora do plano (ex.: Fase 2), só quando o João pedir | `tlc-spec-driven`; o resultado vira tarefa em `docs/plans/` | |
+| Decisão ou plano grande para testar | `/grill-me` | |
+| Teste antes do código, bug, conferir antes de dizer que terminou, responder a revisão | `test-driven-development`, `systematic-debugging`, `verification-before-completion`, `receiving-code-review` (superpowers) | `using-git-worktrees` e `finishing-a-development-branch`: a branch e o PR seguem `rules/git.md` |
+| Movimento | `animate` e `choreograph` para implementar, `review-animations` para revisar, `animation-performance` se travar | |
+| Aviso flutuante (toast) | `ask-sonner` | |
+| O João corrigiu algo de design | `/learn-taste`, para virar regra no `DESIGN.md` | |
+| Crítica, auditoria e acabamento de uma tela já desenhada | `impeccable` nos modos `critique`, `audit`, `polish`, `harden`, `adapt`, `typeset`, `layout`, `clarify` e `quieter`, junto da `apple-design` | Modos que mudam a direção (`bolder`, `colorize`, `delight`, `overdrive`, `shape`, `new-work`, `init`) e os que escrevem o `DESIGN.md` (`document`, `extract`, subagente `impeccable-documenter`) sem o João pedir |
+| Algo que o `DESIGN.md` ainda não desenha (landing page, tela da Fase 2 sem desenho) | `frontend-design` e o `impeccable` para propor a direção, que vira proposta para o João antes de virar código | Em tela da Fase 1: lá a direção já está decidida |
 
 ### Estrutura da pasta `.claude/`
 
@@ -27,6 +47,8 @@ Siga o `DESIGN.md`: tokens e paletas dos temas, componentes, movimento e o desen
 |---|---|
 | `settings.json` | Permissões (comandos liberados, arquivos bloqueados) e hooks |
 | `hooks/format.sh` | Formata com Prettier cada arquivo editado |
+| `hooks/guard-git.sh` | Barra commit com assinatura de agente e branch com prefixo de ferramenta |
+| `hooks/check-before-stop.sh` | Roda lint e typecheck antes do Claude encerrar, se ele mudou código |
 | `rules/git.md` | Nome de branch limpo, autoria só do João (sem coautoria de agente), commits e PRs (vale sempre) |
 | `rules/*.md` | Regras carregadas conforme o caminho (componentes, i18n, dados, testes) |
 | `agents/reviewer.md` | Revisa o diff contra ADRs, PRD, convenções e acessibilidade |
@@ -35,6 +57,12 @@ Siga o `DESIGN.md`: tokens e paletas dos temas, componentes, movimento e o desen
 | `skills/new-screen/` | Como criar uma tela no padrão do projeto |
 | `skills/sync-api/` | Como atualizar os tipos a partir do `openapi.json` da API |
 | `third-party.md` | Skills de terceiros em `skills/`, plugins habilitados no `settings.json` e MCP do Playwright em `.mcp.json`, com origem e commit auditado |
+
+### Aprendizados da revisão
+
+Regras que saíram das revisões do João. Quando ele corrigir algo que pode se repetir, acrescente aqui uma linha no mesmo PR da correção: a regra, o porquê e o número do PR. Se for de design, leve para o `DESIGN.md` com `/learn-taste`. Se a lista crescer, mova para `.claude/rules/`.
+
+_Nenhuma ainda._
 
 ### Lembretes
 

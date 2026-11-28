@@ -15,16 +15,18 @@ Escopo: PRD, seção 5, "Fase 1". Cada tarefa vira **uma branch e um PR**, feita
 | API-02 | Prisma e schema da Fase 1 | api | API-01 |
 | API-03 | Base transversal: erros, config, logs, OpenAPI | api | API-01 |
 | API-04 | Cadastro, login, logout e sessões | api | API-02, API-03 |
+| API-13 | Perfil e acesso à conta | api | API-04 |
 | API-05 | Recuperação de senha e e-mail | api | API-04 |
-| FE-02 | Cliente da API, proxy e proteção de rotas | front | FE-01, API-04 |
+| FE-02 | Cliente da API, proxy e proteção de rotas | front | FE-01, API-13 |
 | FE-03 | Telas de login, cadastro e recuperação de senha | front | FE-02, API-05 |
-| API-06 | Conta (ledger) e categorias | api | API-04 |
+| API-06 | Conta (ledger) e categorias | api | API-13 |
 | API-07 | Mês financeiro: primeiro mês, virada, desfazer, corrigir data | api | API-06 |
 | API-08 | Lançamentos | api | API-07 |
 | API-09 | Fixas, geração "a confirmar" e revisão | api | API-08 |
 | API-10 | Sazonais planejados | api | API-08 |
 | API-11 | Motor de cálculo e resumo do mês | api | API-08 |
 | API-12 | LGPD: exportar e excluir conta | api | API-09, API-10 |
+| API-14 | Dados de demonstração (seed) | api | API-09, API-10 |
 | FE-04 | Layout do app e navegação | front | FE-03 |
 | FE-05 | Primeiro acesso (data do último salário) | front | FE-04, API-07 |
 | FE-06 | Lançamentos | front | FE-04, API-08 |
@@ -66,14 +68,21 @@ Validação de variáveis com zod; filtro global de erros em problem+json com `c
 - Testes dos utilitários de dinheiro (soma, arredondamento, parse de string) e de datas (hoje no fuso do usuário).
 
 ### API-04: Cadastro, login, logout e sessões
-Endpoints de `auth` ([api-contracts.md](../api-contracts.md)). Cadastro cria usuário, ledger pessoal, membro `OWNER` e as categorias padrão, e já abre sessão. `SessionGuard` global (rotas públicas marcadas com `@Public()`), `LedgerAccessGuard`, `GET /v1/me` e `PATCH /v1/me` (nome, idioma, fuso e tema). Limite de tentativas ([ADR-0005](../adr/0005-autenticacao-sessao-em-cookie.md)). Checagem de `Origin` em métodos de escrita.
+Endpoints de `auth` ([api-contracts.md](../api-contracts.md)), menos a recuperação de senha. Cadastro cria usuário, ledger pessoal, membro `OWNER` e as categorias padrão, e já abre sessão. `SessionGuard` global (rotas públicas marcadas com `@Public()`). Limite de tentativas ([ADR-0005](../adr/0005-autenticacao-sessao-em-cookie.md)). Checagem de `Origin` em métodos de escrita.
 **Aceite:**
 - Senha fora do RF-02 → `422` `WEAK_PASSWORD`; sem aceite dos termos → `TERMS_NOT_ACCEPTED`; e-mail repetido → `409` `EMAIL_TAKEN`.
+- Cadastro cria o ledger pessoal com as categorias padrão de [data-model.md](../data-model.md) e responde com o cookie de sessão.
 - Login certo devolve cookie com os atributos do ADR; senha errada → `401` `INVALID_CREDENTIALS` (mesma mensagem para e-mail inexistente).
 - 6ª tentativa errada em 15 minutos → `429` `TOO_MANY_ATTEMPTS`.
 - Logout invalida a sessão no banco. Senha salva em argon2id.
-- Usuário A recebe `404` ao acessar ledger do usuário B (teste de integração).
+- Rota sem `@Public()` e sem cookie → `401`; `POST` com `Origin` diferente de `APP_URL` é recusado (o código de erro novo vai em `api-contracts.md`).
+
+### API-13: Perfil e acesso à conta
+`GET /v1/me` e `PATCH /v1/me` (nome, idioma, fuso e tema) e o `LedgerAccessGuard` ([ADR-0011](../adr/0011-ledger-como-dono-dos-dados.md)) que toda rota `/v1/ledgers/{ledgerId}/...` usa. Saiu da API-04 para cada PR ficar perto das ~400 linhas de [conventions.md](../conventions.md).
+**Aceite:**
+- `GET /v1/me` traz o perfil, o `theme` e a lista de ledgers com `id`, `type`, `name` e `role`.
 - Usuário novo tem `theme` `SUNSET`; `PATCH /v1/me` com tema fora do enum → `422`.
+- Usuário A recebe `404` ao acessar ledger do usuário B (teste de integração com uma rota de exemplo protegida pelo guard).
 
 ### API-05: Recuperação de senha e e-mail
 Módulo `mail` com `Mailer`, drivers `smtp` e `log`, template de recuperação em React Email. Endpoints `password/forgot` e `password/reset`.
@@ -100,19 +109,24 @@ Login, cadastro (com as regras de senha aparecendo em tempo real, RF-02, e aceit
 
 ### API-06: Conta e categorias
 `GET/PATCH /ledgers/{id}` (meta de reserva fixa ou percentual), CRUD de categorias com árvore de um nível, regras de exclusão (`moveTo`, arquivamento, categorias de sistema protegidas).
+`GET categories` traz `isSystem` e `entryCount` em cada categoria e subcategoria.
 **Aceite:**
+- `entryCount` conta os lançamentos da categoria e das suas subcategorias.
 - Subcategoria de subcategoria → `422` `SUBCATEGORY_DEPTH`.
 - Excluir "Investimento" → `409` `SYSTEM_CATEGORY`.
 - Excluir categoria com lançamentos sem `moveTo` → arquiva; com `moveTo` → move e apaga.
 - Meta percentual aceita só entre 0 e 1.
 
 ### API-07: Mês financeiro
-Endpoints de `periods` ([ADR-0007](../adr/0007-mes-financeiro-por-periodos.md)): primeiro mês, mês atual, corrigir data, virada (transação idempotente), desfazer, fechamento (`investedAmount`). Nesta tarefa a virada ainda não gera fixas (entra na API-09).
+Endpoints de `periods` ([ADR-0007](../adr/0007-mes-financeiro-por-periodos.md)): primeiro mês, mês atual, corrigir data, virada (transação idempotente), desfazer, fechamento (`investedAmount`). Também `canUndoTurnover` no `periods/current`, `periods/resolve?date=` (em qual mês uma data cai) e `turnover/preview` (como o mês fecharia com a data escolhida, sem salvar). Nesta tarefa a virada ainda não gera fixas (entra na API-09).
 **Aceite:**
 - Virada com data futura → `DATE_IN_FUTURE`; anterior ao início do mês atual → `DATE_BEFORE_PERIOD_START`.
 - Duas viradas com a mesma data (clique duplo) resultam em um só mês novo.
 - Desfazer só funciona se o mês novo não tiver lançamentos além dos gerados e ainda pendentes; senão `UNDO_NOT_ALLOWED`.
 - Corrigir a data do mês atual também ajusta o `end_date` do mês anterior.
+- `canUndoTurnover` é `true` logo depois da virada e vira `false` quando o mês novo ganha um lançamento manual; é `false` no primeiro mês.
+- `periods/resolve` devolve o mês aberto para hoje, um mês fechado para uma data dentro dele e `DATE_BEFORE_FIRST_PERIOD` antes do primeiro mês.
+- `turnover/preview` devolve a mesma `surplus` que a virada com a mesma data produz, e não grava nada.
 
 ### API-08: Lançamentos
 CRUD de `entries` com filtros e paginação por cursor; regras de coerência (renda sem categoria, despesa com categoria; subcategoria tem que ser filha da categoria); data antes do primeiro mês → `DATE_BEFORE_FIRST_PERIOD`; `createdById`.
@@ -120,6 +134,7 @@ CRUD de `entries` com filtros e paginação por cursor; regras de coerência (re
 - Filtros por mês (`periodId`), tipo, categoria e status funcionam juntos (RF-26).
 - Lançamento pertence ao mês pela data (teste com mês corrigido).
 - Moeda sempre a do ledger na Fase 1.
+- A lista devolve `counts` (`all`, `expense`, `income`) com os outros filtros aplicados, menos `kind`: filtrar por `kind=EXPENSE` não muda as três contagens.
 
 ### API-09: Fixas e revisão
 CRUD de `recurring-items`; a virada passa a gerar instâncias `PENDING` com o valor de referência (despesas e rendas fixas, RF-27, RF-29f); endpoints de revisão com diferença em valor e percentual em relação ao mês anterior e marcação de "fora da variação esperada" (RF-29a, RF-29b), inclusive a prévia `review/preview`, que calcula sem salvar; "usar nos próximos meses" atualiza o `referenceAmount`; histórico.
@@ -128,18 +143,20 @@ CRUD de `recurring-items`; a virada passa a gerar instâncias `PENDING` com o va
 - Confirmar tudo muda todas para `CONFIRMED` sem mudar valores.
 - Alterar só para o mês não muda o valor de referência; com `applyToFuture` muda.
 - Variação de 6% com esperado de 5% aparece marcada, tanto no `GET` da revisão quanto na prévia.
+- `pendingCount` da revisão cai em 1 a cada fixa confirmada e chega a 0 com "Confirmar tudo".
 - A prévia não grava nada: depois dela, o lançamento continua com o valor e o status de antes.
 - Corrigir a data de início do mês (`PATCH periods/current`) move para a nova data as instâncias geradas na virada (RF-79d).
 
 ### API-10: Sazonais planejados
-CRUD de `seasonal-plans` e `realize` (cria o gasto real `SEASONAL` e marca `DONE`).
+CRUD de `seasonal-plans` (lista com filtros `status` e `from`, em ordem de `expectedDate`) e `realize` (cria o gasto real `SEASONAL` e marca `DONE`).
 **Aceite:**
 - Realizar duas vezes → `409`.
 - Excluir o gasto real volta o plano para `PLANNED`.
 
 ### API-11: Motor de cálculo e resumo
-Módulo `calculation` puro e `GET .../periods/{id}/summary` conforme [calculation.md](../calculation.md), incluindo gastos por categoria e os lembretes calculados na leitura.
+Módulo `calculation` puro e `GET .../periods/{id}/summary` conforme [calculation.md](../calculation.md), com os campos de "Resumo do mês" em [api-contracts.md](../api-contracts.md), incluindo gastos por categoria e os lembretes calculados na leitura.
 **Aceite:**
+- O `summary` traz todos os campos da tabela "Resumo do mês"; `marginSpent` + `availableMargin` = `monthMargin`.
 - Todos os casos de teste obrigatórios de `calculation.md` passam, incluindo o exemplo do PRD (R$ 1.900,00).
 - `investedAmount` maior que a sobra → `INVESTED_EXCEEDS_SURPLUS`.
 - Resumo de 24 meses responde em menos de 300 ms no local.
@@ -150,13 +167,30 @@ Módulo `calculation` puro e `GET .../periods/{id}/summary` conforme [calculatio
 - Exportação contém perfil, ledgers, meses, categorias, fixas, lançamentos e sazonais, sem hashes de senha ou tokens.
 - Depois da exclusão, nenhuma linha ligada ao usuário sobra no banco (teste de integração) e a sessão deixa de valer.
 
+### API-14: Dados de demonstração (seed)
+Script `pnpm db:seed` que cria um usuário de demonstração com três meses (dois fechados e o aberto), fixas com uma revisão pendente, rendas fixas e variáveis, gastos em várias categorias, um estouro num dos meses fechados, sazonais planejados e um realizado. Usa os services da API (não insere direto no banco), para os dados obedecerem às mesmas regras do resto. Serve para os prints dos PRs de tela, para revisar no preview e para conferir o Painel com números conhecidos.
+**Aceite:**
+- Rodar duas vezes não duplica nada (apaga e recria só o usuário de demonstração).
+- Recusa rodar com `NODE_ENV=production`.
+- E-mail `demo@troco.local`; a senha vem de `DEMO_USER_PASSWORD` (no `.env.example`), nunca fixa no código.
+- Os números do `summary` de cada mês do seed ficam escritos num teste de integração, para o seed não mudar sem ninguém perceber.
+
 ### FE-04: Layout do app
 Casca autenticada conforme `DESIGN.md`, "Layout do app": menu lateral de 256 px no desktop com logo do tema, botão "Novo lançamento", Painel, Lançamentos, Mês e Configurações, e no rodapé "Recolher menu" e "Sair" (sem bloco de conta; o perfil fica em Configurações). Menu recolhido de 76 px, lembrado no navegador. Abaixo de 960 px, barra do logo em cima e barra com os quatro destinos embaixo. Pílula com o número de fixas a confirmar no item Mês (contagem da lista de revisão da API). Provedor do ledger atual.
-**Aceite:** navegação para Painel, Lançamentos, Mês e Configurações em 360 px e em desktop; o leitor de tela ouve a pílula como "3 fixas a confirmar"; sem texto fixo fora de `messages/`.
+**Aceite:**
+- Em 1280 px: menu de 256 px com o logo do tema, "Novo lançamento" e os destinos; recolher deixa 76 px só com ícones, e a escolha continua depois de recarregar.
+- Abaixo de 960 px: barra do logo em cima e barra de baixo com Painel, Lançamentos, Mês e Ajustes (que abre Configurações); em 360 px não há rolagem lateral.
+- O destino da tela aberta tem `aria-current="page"`.
+- Com `pendingCount` 3, a pílula mostra 3 e o leitor de tela ouve "3 fixas a confirmar"; com 0, a pílula não aparece. No menu recolhido e no celular, vira o ponto de 8 px.
+- `Tab` percorre o menu na ordem visual com foco visível; nenhum texto fora de `messages/`.
 
 ### FE-05: Primeiro acesso
 Se `periods/current` responde `NO_PERIOD`, mostra a tela "Quando você recebeu o último salário?" (calendário com limite em hoje) e cria o primeiro mês. Depois, "Quanto você quer guardar por mês?", com meta em percentual ou valor fixo e a opção "Definir depois" (meta fica em 0%). Usa a mesma moldura das telas de entrada.
-**Aceite:** usuário novo não chega ao Painel sem ter um mês aberto.
+**Aceite:**
+- Usuário com `NO_PERIOD` que abre qualquer rota do app vai para o primeiro acesso; com mês aberto, a rota do primeiro acesso leva ao Painel.
+- O calendário não deixa escolher data depois de hoje; erro da API aparece traduzido na linha do campo.
+- "Definir depois" deixa a meta em 0% e leva ao Painel; percentual fora de 0 a 100 mostra o erro na linha do campo.
+- Recarregar no passo 2 continua no passo 2 (o mês já existe).
 
 ### FE-06: Lançamentos
 Abas Todos, Gastos e Rendas (com contagem), busca por descrição ou categoria (`q`), filtros num popover (categoria, status) e o mês financeiro numa lista suspensa; filtros escolhidos viram pílulas removíveis. Lista com um cartão por dia; clicar num lançamento abre o painel lateral com detalhes, editar e excluir (com confirmação). Novo lançamento em formulário de tela cheia com prévia, começando pelo seletor Gasto/Renda e pelo valor em destaque (máscara de moeda), dizendo em qual mês o lançamento entra e avisando que a sobra é recalculada se o mês estiver fechado.
@@ -164,7 +198,13 @@ Abas Todos, Gastos e Rendas (com contagem), busca por descrição ou categoria (
 
 ### FE-07: Painel (dashboard)
 Margem disponível em destaque, com o medidor do quanto já foi gasto e a conta completa recolhida ("Como a margem é calculada"); abaixo, o aviso de fixas a confirmar e os gastos por categoria (barras horizontais da maior para a menor, numa cor só). Coluna de detalhes com a reserva do mês (meta, já guardado, falta guardar) e os próximos sazonais. Lembretes (revisão pendente, mês aberto há mais de 35 dias) curtos, junto do dado. "Virar o mês" no cabeçalho.
-**Aceite:** números batem com o `summary` da API; estados vazios tratados, cada um com a ação que tira a tela do vazio; sem saudação no topo.
+**Aceite:**
+- Cada número do Painel é o campo correspondente do `summary` formatado (teste com resposta fixa do MSW); o front não soma nem subtrai.
+- Margem disponível negativa aparece como estouro com sinal e texto, não só com cor.
+- Estados, cada um testado: carregando (esqueleto do mesmo tamanho, sem pular), erro (mensagem pelo `code` e "Tentar de novo"), mês sem lançamentos ("Novo lançamento"), sem gastos por categoria, sem sazonais (chamada para cadastrar) e sem fixas a confirmar (o aviso não aparece).
+- Lembretes só aparecem quando o `summary` os traz.
+- Depois de criar um lançamento, o Painel se atualiza sem recarregar (invalidação do `summary`).
+- Sem saudação no topo.
 
 ### FE-08: Virar o mês
 Modal em 3 etapas: data do salário (padrão hoje, calendário entre o início do mês atual e hoje) → fechamento (sobra ou estouro, quanto foi investido) → confirmação → leva à revisão das fixas. "Desfazer a virada" na coluna "Este mês" da tela Mês, só enquanto a API permitir.

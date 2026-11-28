@@ -9,7 +9,8 @@ Argumento: o ID da tarefa (ex.: `FE-08`).
 
 1. **Entender**
    - Ache a tarefa em `docs/plans/phase-*.md` e confira as dependências ("Depende de"). Endpoint necessário ainda não está no `openapi.json` do troco-api? Pare e avise.
-   - Leia a tela no PRD (seção 9), os RFs citados, o ADR-0010 e o `DESIGN.md`.
+   - Leia a tela no PRD (seção 9), os RFs citados, o ADR-0010 e o `DESIGN.md`, e abra os prints da tela em `docs/design/prototype/screens/`.
+   - Confira na tabela "Dados de cada tela" de `docs/api-contracts.md` se todo dado da tela tem fonte na API. Falta campo? Pare e avise: a mudança é na API antes.
    - Ambiguidade → pergunte ao João antes de codar.
 2. **Preparar**
    - `git switch main && git pull && git switch -c feat/<id-minúsculo>-<resumo-em-inglês>`.
@@ -20,7 +21,8 @@ Argumento: o ID da tarefa (ex.: `FE-08`).
    - Commits pequenos em Conventional Commits.
 4. **Verificar**
    - `pnpm lint && pnpm typecheck && pnpm test && pnpm build`; `pnpm test:e2e` se mexeu em fluxo coberto.
-   - Confira a tela em 360 px e em desktop.
+   - Confira a tela em 360 px e em desktop, comparando com os prints do protótipo.
+   - Crítica de design com as skills `apple-design` e `emil-design-eng` (e `break-ui` em tela com lista ou valores); corrija dentro do `DESIGN.md`.
    - Rode o subagente `reviewer` e corrija o que for "Bloqueia".
 5. **Documentar**
    - Atualize `docs/` se algo mudou e marque a tarefa como feita no plano (`✅` no título). Mudou `docs/`? Anote no PR que precisa do PR irmão no troco-api.
