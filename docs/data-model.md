@@ -338,7 +338,7 @@ Só para garantir que a Fase 1 não fecha portas. Cada tabela será detalhada no
 | `payment_methods` | 2 | Tipo (`CREDIT_CARD`, `BANK_ACCOUNT`, `CASH`, `PIX`), nome; cartão com `closing_day` e `due_day`. `entries.payment_method_id` entra aqui |
 | `invoices`, `invoice_payments` | 2 | Fatura por cartão e mês de referência; pagamentos antecipados totais ou parciais (não são gastos, RF-48) |
 | `installment_plans` | 2 | Compra parcelada: total, nº de parcelas, juros. Cada parcela é um `entry` ligado ao plano |
-| `withdrawal_repayments` | 2 | Compra à vista com resgate (PRD 7.17): `entry_id` da compra, valor resgatado, parcela, nº de meses, mês da primeira reposição, status (`ACTIVE`, `DONE`, `CANCELED`). A reposição de cada mês é só cálculo (ADR-0007) |
+| `withdrawal_repayments` | 2 | Compra à vista com resgate (PRD 7.17): `entry_id` da compra, valor resgatado, parcela, nº de meses, mês da primeira reposição, status (`ACTIVE`, `DONE`, `CANCELED`). O aporte que repõe mais que a parcela liga o `entry` em Investimento à reposição, com o valor indicado (RF-175). A parcela de cada mês e o que falta são só cálculo (ADR-0007) |
 | `subscriptions`, `subscription_usages` | 2 | Assinatura com ciclo, status e renovação; uso mensal com texto |
 | `budgets` | 2 | Limite por categoria (e subcategoria) por ledger |
 | `alerts`, `notification_preferences` | 2/3 | Alertas gerados e preferências por tipo e canal |

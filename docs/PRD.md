@@ -355,7 +355,12 @@ Seção própria para acompanhar serviços recorrentes como Netflix, Spotify, Di
 - **RF-172** Em cada mês da reposição, o valor da parcela entra como **reposição do resgate** e soma na reserva do mês (8.2). Os aportes na categoria Investimento abatem essa reserva como qualquer outra (RF-76).
 - **RF-173** O usuário acompanha cada compra com resgate: valor resgatado, parcela, meses repostos e restantes, quanto já voltou para o investimento e a data de término.
 - **RF-174** Se o usuário informou a parcela da loja, o sistema mostra **quanto o desconto economizou**: total que pagaria parcelado (parcela × meses) menos o valor pago à vista. Quando a reposição termina, essa diferença fica investida a mais.
-- **RF-175** O usuário pode **antecipar** a reposição (repor o restante de uma vez, encerrando as reposições futuras), **editar** os meses ou a parcela, e **cancelar** a reposição. Mudanças valem para o mês aberto e os seguintes; meses fechados só mudam pelo recálculo de RF-79e.
+- **RF-175** O usuário pode **repor mais que a parcela** em qualquer mês: ao lançar o aporte na categoria Investimento, indica quanto dele é reposição de qual compra com resgate. O sistema recalcula a reposição a partir do que falta (`valor a repor − já reposto`, em que o valor a repor é parcela × meses):
+  - **Padrão: mantém a parcela e encurta o prazo.** A última reposição é só o que faltar (ex.: faltam R$ 330 com parcela de R$ 110 e o usuário repõe R$ 200; restam R$ 130, que viram uma parcela de R$ 110 e uma última de R$ 20).
+  - **Opção: mantém o prazo e diminui a parcela**, dividindo o que falta pelos meses restantes.
+  - O valor a mais é um aporte acima da reserva do mês, então sai da margem desse mês como qualquer excedente de aporte (RF-76). A reserva dos meses seguintes já usa a parcela recalculada.
+  - Repor tudo o que falta de uma vez **antecipa** e encerra a reposição.
+- **RF-175a** O usuário também pode **editar** os meses ou a parcela, e **cancelar** a reposição. Mudanças valem para o mês aberto e os seguintes; meses fechados só mudam pelo recálculo de RF-79e.
 - **RF-176** O Dashboard mostra, na reserva do mês, quanto dela é reposição de resgate. A tela de Parcelamentos lista as compras com resgate junto dos parcelamentos, separadas deles.
 
 ## 8. Regras de cálculo
@@ -434,6 +439,7 @@ se o usuário estourou a margem (margem_disponivel < 0):
 > Margem = 5.200 − 2.000 − 600 − 200 − 500 = **R$ 1.900** para gastos avulsos e variáveis.
 
 > Exemplo com resgate: uma TV custa 10 × R$ 110 (R$ 1.100) parcelada ou R$ 1.000 à vista no Pix. O usuário resgata R$ 1.000 do investimento, paga à vista e escolhe repor em 10 meses com a parcela de R$ 110. No mês da compra, os R$ 1.000 não saem da margem. Nos 10 meses seguintes, a reserva do mês sobe R$ 110 (no exemplo acima, de R$ 500 para R$ 610, e a margem cai para R$ 1.790). Ao fim, voltaram R$ 1.100 para o investimento: os R$ 1.000 resgatados e R$ 100 de economia do desconto (RF-174).
+> Se, no 3º mês, o usuário repõe R$ 300 em vez de R$ 110, já voltaram R$ 520 e faltam R$ 580. Mantendo a parcela, restam 5 reposições de R$ 110 e uma de R$ 30, e o prazo termina 1 mês antes; o excedente de R$ 190 sai da margem daquele mês (RF-175).
 
 ## 9. Telas da v1
 
@@ -541,7 +547,7 @@ Sobre a hospedagem: a v1 é só para testes em produção, então a escolha é a
 - Temas: 9 temas nas cores do logo, escolhidos em Configurações já na Fase 1; padrão Fim de tarde, sem seguir o sistema operacional; escolha salva na conta; ícone do app fixo em Fim de tarde (7.16, v1.4). O Abóbora saiu e suas cores passaram a ser as do Fim de tarde (v1.4).
 - Revisão das fixas: a diferença e o destaque de variação vêm de uma prévia da API, pedida quando o campo perde o foco; o front não calcula (RF-29a, v1.4).
 - Corrigir a data de início do mês move para a nova data as fixas e rendas fixas criadas na virada (RF-79d, v1.4).
-- Compra à vista com resgate do investimento: o resgate não sai da margem do mês e é reposto com um aporte mensal extra na reserva, no valor da parcela, pelo número de meses escolhido; o sistema mostra quanto já voltou e quanto o desconto economizou (7.17, Fase 2, v1.6). Escolhida entre três ideias: parcela virtual na reserva (esta), empréstimo da reserva descontado da margem e só um marcador na compra.
+- Compra à vista com resgate do investimento: o resgate não sai da margem do mês e é reposto com um aporte mensal extra na reserva, no valor da parcela, pelo número de meses escolhido; o sistema mostra quanto já voltou e quanto o desconto economizou (7.17, Fase 2, v1.6). Repor mais que a parcela recalcula o que falta: por padrão mantém a parcela e encurta o prazo, com opção de manter o prazo e diminuir a parcela (RF-175). Escolhida entre três ideias: parcela virtual na reserva (esta), empréstimo da reserva descontado da margem e só um marcador na compra.
 - Tema Escuro: deixa de ser preto puro e passa a usar as cores do Fim de tarde com o tom abaixado, como os outros temas escuros, que também levam a cor da marca (RF-161, v1.5).
 
 ## 14. Prazo

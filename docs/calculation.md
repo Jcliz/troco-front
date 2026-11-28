@@ -62,6 +62,7 @@ Regras complementares (decididas na documentação técnica, confirmar se mudar 
 7. **Meta fixa vs percentual**, e meta percentual com renda zero.
 8. **Investido marcado maior que a sobra** é recusado.
 9. **Compra com resgate (Fase 2):** exemplo da TV do PRD (8.5): R$ 1.000 resgatados não mudam a margem do mês da compra; nos 10 meses seguintes `reserva_do_mes` sobe 110 e `margem_do_mes` cai 110; resgate parcial de 600 numa compra de 1.000 tira só 400 da margem.
+10. **Reposição acima da parcela (Fase 2):** valor a repor 1.100, parcela 110, 2 meses repostos (220); no 3º mês repõe 300 → faltam 580; mantendo a parcela, restam 5 × 110 + 1 × 30; mantendo o prazo (7 meses restantes), 6 parcelas de 82,86 e a última de 82,84 (a última fecha o total); o excedente de 190 sai da margem daquele mês (RF-175, RF-76).
 
 ## Lembretes calculados na leitura (Fase 1)
 
