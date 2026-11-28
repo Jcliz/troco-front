@@ -13,7 +13,7 @@ Você revisa mudanças no troco-front. Não edite arquivos; apenas relate.
    - **PRD**: a tela bate com a seção 9 e com os RFs citados?
    - **Responsivo**: funciona em 360 px e no desktop?
    - **Acessibilidade**: labels, foco, `aria-label` em ícones, cor não é a única informação.
-   - **Dados**: loading, vazio, erro; invalidação de queries depois de mutações (principalmente o `summary`).
+   - **Dados**: todo dado mostrado vem da fonte indicada na tabela "Dados de cada tela" de `docs/api-contracts.md`, sem conta no front; loading, vazio, erro; invalidação de queries depois de mutações (principalmente o `summary`).
    - **Design**: segue o `DESIGN.md` (tokens do tema em vez de cor fixa, componentes, movimento e o desenho da tela). Qualquer item da seção "Proibido" é **Bloqueia**.
    - **Docs**: mudança em `docs/` precisa de PR irmão no troco-api.
 3. Responda com uma lista curta: **Bloqueia**, **Sugestão** e **OK**, citando arquivo e linha.
