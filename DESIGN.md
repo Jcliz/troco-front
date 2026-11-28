@@ -390,14 +390,40 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 - **Efeito de vidro em cards.** Sem `backdrop-blur` e sem fundo translúcido em cards. Card tem fundo sólido do tema e borda simples.
 - **Sombra desproporcional.** Sem sombras grandes, borradas ou coloridas. Use no máximo as sombras do tema do shadcn (`shadow-sm` em cards); elevação maior só em camadas que flutuam, como menu, popover e diálogo.
 - **Faixa colorida na borda de cards.** Sem barra de cor na lateral ou no topo do card. Se o card tem um estado (atrasado, estourado), diga em texto, com ícone se ajudar.
+- **Sombra de uma camada só.** Nada de uma sombra grande e borrada sozinha. Quando há sombra, ela é feita de camadas: uma curta e mais marcada, perto do elemento, e uma longa e bem suave, como a sombra das camadas que flutuam em "Forma e espaço".
+- **Texto preto em card de aviso.** Em card ou faixa de aviso, o texto e o ícone levam um tom mais escuro (ou mais claro, nos temas escuros) da própria cor do fundo do card, como `apricot-text` sobre `apricot-soft`, e não preto nem `fg`.
+
+### Cor
+
+- **Cinza sem graça.** Sem cinza neutro puro em texto secundário, borda ou fundo. O "cinza" é um tom acinzentado tirado da paleta do tema (a cor principal com pouca saturação), para combinar com o resto da tela.
+- **Matizes misturadas dentro de uma cor.** Variações de uma mesma cor (mais clara, mais escura, de fundo, de texto) mantêm a mesma matiz e mudam só luminosidade e saturação. Vale principalmente para gráficos: os tons de uma série não puxam para outra cor.
+- **Tema escuro só em preto e branco.** No tema escuro, as cores principais da marca aparecem com o tom abaixado (menos luminosidade e saturação), em vez de tudo virar branco e preto. A marca continua reconhecível pela paleta principal. Isso pede mudar o tema Escuro e o logo escuro (veja "Pontos em aberto").
 
 ### Títulos e textos
 
 - **Eyebrow em títulos.** Sem rótulo pequeno, em caixa alta e espaçado, acima do título. O título se basta; se precisar de contexto, use um subtítulo normal abaixo.
+- **Title Case em rótulos.** Rótulos, botões, títulos e itens de menu são escritos em sentence case: só a primeira letra maiúscula, além dos nomes próprios ("Novo lançamento", e não "Novo Lançamento").
+- **Negrito fora dos títulos.** O corpo do texto é regular. Negrito só nos títulos, para a hierarquia ficar clara.
+- **Título com a mesma altura de linha do corpo.** Títulos têm altura de linha menor que a do texto de corpo (o corpo usa 1,5; títulos grandes ficam perto de 1,05 a 1,2).
+- **Parágrafo longo centralizado.** Texto com mais de uma ou duas linhas fica alinhado à esquerda (ou à direita, quando o layout pede). Centralizado só em frases curtas, como o título e a frase de um estado vazio.
+- **Textos lado a lado fora da linha de base.** Quando textos de tamanhos diferentes ficam na mesma linha (valor e "R$", título e ação, rótulo e número), eles se alinham pela linha de base, não pelo topo nem pelo centro.
 - **Emoji em títulos.** Nenhum emoji em título, botão, rótulo ou mensagem da interface.
 - **Título genérico de gráfico.** Nada de título de template, como "Vendas por mês", "Receita" ou "Visão geral". O título diz o que o gráfico mostra com os termos do troco (glossário em `docs/conventions.md`), por exemplo "Gastos por categoria em novembro".
 - **"Bem-vindo de volta, {usuário}".** Sem saudação no topo das telas. A tela abre com o título dela e com o dado principal. Saudação ou outro texto de abertura só quando o João pedir, do jeito que ele definir.
 - **Bloco de "Insights" em texto.** Sem card ou seção chamada "Insights" (ou parecido) cheia de parágrafos que ninguém lê, nem frases de comentário sobre os dados ("Você está indo muito bem este mês!"). Os avisos do PRD (7.9, RF-29b, RF-137), como proximidade do limite e comparação entre meses, continuam valendo: aparecem curtos, junto do dado a que se referem, com o número e a base de comparação.
+
+### Espaçamento
+
+- **Mais espaço em cima do que nos lados.** O espaço interno de cards, botões, avisos e campos é maior nos lados do que em cima e embaixo.
+- **Título solto entre dois blocos.** Um título ou texto que abre um bloco tem mais espaço acima do que abaixo, para ficar colado ao conteúdo que apresenta e separado do bloco anterior.
+- **Textos empilhados muito afastados.** Quando dois textos ficam um embaixo do outro (título e subtítulo, descrição e categoria), o espaço entre eles é menor que a altura do texto, para lerem como um grupo só.
+
+### Botões e campos
+
+- **Texto pequeno ou grande demais no botão.** A linha do texto ocupa cerca de metade da altura do botão.
+- **Botão de enviar que só diz "Salvar".** O botão diz o que acontece: "Salvar lançamento", "Criar conta", "Virar o mês", e não só "Salvar", "Enviar", "OK" ou "Confirmar".
+- **Excluir perto de salvar.** O botão de excluir fica longe do botão de salvar (lados opostos do rodapé ou outra área da tela), para ninguém excluir sem querer.
+- **Campo só com placeholder.** Campo que tem placeholder também tem rótulo visível. O placeholder é só exemplo, nunca o nome do campo.
 
 ### Tags, chips e ícones
 
@@ -416,9 +442,22 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 ### Interação
 
 - **Filtro que não filtra.** Todo filtro exibido muda os dados da tela. Não coloque filtro decorativo, de exemplo ou ainda sem efeito; se a API não suporta o filtro, ele não aparece.
+- **Estado vazio sem ação.** Todo estado vazio tem um CTA, o botão da ação que tira a tela do vazio ("Adicionar lançamento", "Criar categoria").
+- **CTA tímido na landing page.** O CTA principal da landing page é grande, maior que o botão padrão do app.
+
+### Tabelas
+
+- **Número alinhado à esquerda.** Em tabelas e listas com colunas, números e valores em dinheiro ficam alinhados à direita (com `tabular-nums`), para as casas baterem.
 
 ## Pontos em aberto
 
 - **Favicon:** em 16 px os detalhes finos do logo somem. Antes de publicar, vale conferir se ele precisa de uma versão simplificada.
 - **Termos de uso e Política de privacidade:** o texto final, antes do primeiro deploy de produção (`docs/security-lgpd.md`).
 - **Landing page:** não está no plano da Fase 1. Quando entrar, estende este design system.
+- **Tema escuro e logo escuro:** pela regra "Tema escuro só em preto e branco" (seção "Proibido"), o tema Escuro precisa trazer as cores principais da marca com o tom abaixado, e o logo escuro precisa acompanhar. Hoje o Escuro é preto, branco e cinza (destaque `#8D8D8D`). Fica para uma tarefa futura, com nova paleta e conferência de contraste.
+- **Pontos de atenção de 28/nov ainda não aplicados:** as regras novas da seção "Proibido" foram só registradas. Antes de ajustar, conferir no próprio DESIGN.md e no protótipo:
+  - Cartão no celular com 22 × 20 px de espaço interno ("Forma e espaço"): fica com mais espaço em cima que nos lados.
+  - `muted` em cinza neutro nos temas Escuro (`#9C9C9C`), Claro (`#696969`) e Zumbi (`#B4B4B4`), e os "neutros cinza" do Claro.
+  - "Aviso no fluxo" com o número em negrito, e a cor do texto da faixa (tem que ser `apricot-text`, não `fg`).
+  - Rodapé do painel lateral e dos formulários: conferir se "Excluir" fica longe de "Salvar".
+  - Botões de envio que ainda digam só "Salvar".
