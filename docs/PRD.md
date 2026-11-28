@@ -5,8 +5,8 @@ Sistema web de finanças pessoais e controle de gastos
 | | |
 |---|---|
 | **Autor** | João |
-| **Status** | **Aprovado v1.4** |
-| **Última atualização** | 26/11/2026 |
+| **Status** | **Aprovado v1.5** |
+| **Última atualização** | 28/11/2026 |
 | **Repositórios** | `troco-front`, `troco-api` |
 
 ---
@@ -328,7 +328,7 @@ Seção própria para acompanhar serviços recorrentes como Netflix, Spotify, Di
 
 - **RF-160** O usuário escolhe o **tema visual** da interface em **Configurações**, entre os temas do sistema. Não há tema personalizado na v1.
 - **RF-161** Os temas seguem as cores do logo. Cada tema muda a paleta da interface e o logo exibido dentro do app, que usa a mesma versão de cores (cores e arquivos em `troco-front/DESIGN.md`, "Marca: logo e temas"):
-  - **Escuro** (fundo preto puro) e **Meia-noite**;
+  - **Escuro** (cores do Fim de tarde com o tom abaixado, não preto e branco) e **Meia-noite**;
   - **Claro** e **Fim de tarde**;
   - **Azul**, **Verde-água**, **Outono**, **Oceano** e **Zumbi**.
 - **RF-162** O tema padrão é **Fim de tarde**, para todo usuário novo. A interface não segue o tema do sistema operacional.
@@ -508,6 +508,7 @@ Sobre a hospedagem: a v1 é só para testes em produção, então a escolha é a
 - Temas: 9 temas nas cores do logo, escolhidos em Configurações já na Fase 1; padrão Fim de tarde, sem seguir o sistema operacional; escolha salva na conta; ícone do app fixo em Fim de tarde (7.16, v1.4). O Abóbora saiu e suas cores passaram a ser as do Fim de tarde (v1.4).
 - Revisão das fixas: a diferença e o destaque de variação vêm de uma prévia da API, pedida quando o campo perde o foco; o front não calcula (RF-29a, v1.4).
 - Corrigir a data de início do mês move para a nova data as fixas e rendas fixas criadas na virada (RF-79d, v1.4).
+- Tema Escuro: deixa de ser preto puro e passa a usar as cores do Fim de tarde com o tom abaixado, como os outros temas escuros, que também levam a cor da marca (RF-161, v1.5).
 
 ## 14. Prazo
 
