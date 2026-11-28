@@ -319,7 +319,7 @@ Fina (12 px com 4 px de folga, polegar de 4 px), sem setas, com polegar arredond
 
 ## Telas da Fase 1
 
-O protótipo navegável está em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3QewKy> (versão 41; a 41 só acrescenta a compra à vista com resgate, da Fase 2). As telas seguem o PRD (seção 9) e o plano (`docs/plans/phase-1.md`).
+O protótipo navegável está versionado em [`docs/design/prototype/`](docs/design/prototype/LEIA-ME.md), na versão 42 (a 41 acrescenta a compra à vista com resgate e a 42 os parcelamentos, os dois da Fase 2), com prints de cada tela em 1440 e 360 px. A cópia publicada fica em <https://claude.ai/artifact/PT1eCFzPZqfnQpFX3QewKy>. As telas seguem o PRD (seção 9) e o plano (`docs/plans/phase-1.md`).
 
 ### Entrada: login, cadastro, recuperar e redefinir senha (FE-03)
 
