@@ -38,6 +38,8 @@ Vários fluxos instalados se sobrepõem. Use este:
 | Movimento | `animate` e `choreograph` para implementar, `review-animations` para revisar, `animation-performance` se travar | |
 | Aviso flutuante (toast) | `ask-sonner` | |
 | O João corrigiu algo de design | `/learn-taste`, para virar regra no `DESIGN.md` | |
+| Crítica, auditoria e acabamento de uma tela já desenhada | `impeccable` nos modos `critique`, `audit`, `polish`, `harden`, `adapt`, `typeset`, `layout`, `clarify` e `quieter`, junto da `apple-design` | Modos que mudam a direção (`bolder`, `colorize`, `delight`, `overdrive`, `shape`, `new-work`, `init`) e os que escrevem o `DESIGN.md` (`document`, `extract`, subagente `impeccable-documenter`) sem o João pedir |
+| Algo que o `DESIGN.md` ainda não desenha (landing page, tela da Fase 2 sem desenho) | `frontend-design` e o `impeccable` para propor a direção, que vira proposta para o João antes de virar código | Em tela da Fase 1: lá a direção já está decidida |
 
 ### Estrutura da pasta `.claude/`
 
