@@ -5,7 +5,7 @@ Sistema web de finanças pessoais e controle de gastos
 | | |
 |---|---|
 | **Autor** | João |
-| **Status** | **Aprovado v1.5** |
+| **Status** | **Aprovado v1.6** |
 | **Última atualização** | 28/11/2026 |
 | **Repositórios** | `troco-front`, `troco-api` |
 
@@ -47,6 +47,7 @@ O troco **apenas registra e calcula**. Ele não movimenta dinheiro, não se cone
 - Gastos recorrentes lançados automaticamente todo mês, com revisão dos valores na virada do mês.
 - Mês financeiro que começa no dia em que o salário cai, com virada do mês feita pelo usuário (7.8.1).
 - Parcelamentos com juros, antecipação e quitação antecipada.
+- Compra à vista paga com resgate do investimento, com reposição mensal na reserva (7.17).
 - Formas de pagamento: cartões de crédito (fechamento e vencimento), contas bancárias, dinheiro e Pix.
 - Faturas do cartão com registro de pagamento antecipado (total ou parcial).
 - Seção de assinaturas, com verificação mensal de uso e da data de renovação.
@@ -94,6 +95,7 @@ A v1 é entregue em três fases, para ter algo usável cedo. Cada fase vai para 
 **Fase 2: cartões, parcelas e planejamento**
 - Formas de pagamento, cartões e faturas com pagamento antecipado (7.5, 7.5.1)
 - Parcelamentos com juros, antecipação e quitação (7.4)
+- Compra à vista com resgate do investimento e reposição na reserva (7.17)
 - Sazonais com provisão (RF-72)
 - Assinaturas (7.14)
 - Orçamento por categoria com alertas amarelo e vermelho (7.7)
@@ -127,6 +129,8 @@ A v1 é entregue em três fases, para ter algo usável cedo. Cada fase vai para 
 | **Provisão sazonal** | Parte da renda separada todo mês para cobrir um gasto sazonal futuro. |
 | **Mês (mês financeiro)** | Período entre duas viradas do mês. Começa no dia em que o usuário recebeu o salário e termina na véspera da próxima virada. Em todo o sistema, "mês" significa mês financeiro, e não mês do calendário (ver 7.8.1). |
 | **Virada do mês** | Ação do usuário que fecha o mês anterior e abre o próximo, informando a data em que o salário foi recebido (ver 7.8.1). |
+| **Compra à vista com resgate** | Compra paga à vista (normalmente no Pix, pelo desconto) com dinheiro resgatado do investimento. Em vez de pagar parcelas à loja, o usuário repõe o resgate investindo todo mês o valor que seria a parcela (ver 7.17). |
+| **Reposição do resgate** | Valor extra que entra na reserva do mês, por um número de meses, até repor o que foi resgatado para a compra à vista. |
 | **Saldo remanescente** | Dinheiro que sobrou do mês anterior e não foi marcado como investido em reserva. |
 
 ## 7. Requisitos funcionais
@@ -338,6 +342,27 @@ Seção própria para acompanhar serviços recorrentes como Netflix, Spotify, Di
 - **RF-166** Todo tema precisa atender ao contraste mínimo WCAG AA em textos e componentes. Se uma cor do logo não atender, o tom da interface é ajustado na fase de design, sem mudar o logo.
 - **RF-167** O ícone do app (favicon e ícone do PWA instalado) é **fixo**, no tema Fim de tarde, porque o ícone instalado não muda por usuário.
 
+### 7.17 Compra à vista com resgate do investimento
+
+Às vezes, para ter o desconto de pagar à vista, o usuário paga no Pix com dinheiro que **resgatou do investimento** (ex.: um "bolso" de liquidez diária). Em vez de pagar parcelas à loja, ele passa a investir todo mês o valor que seria a parcela, além do que já guardaria, até repor o resgate. O troco não controla o investimento (isso é v2): ele registra o resgate, soma a reposição na reserva de cada mês e mostra o andamento.
+
+- **RF-170** Ao lançar um gasto avulso ou sazonal pago à vista, o usuário pode marcar **"Paguei com resgate do investimento"** e informar:
+  - o **valor resgatado** (padrão: o valor da compra; pode ser menor, se só parte veio do resgate);
+  - em quantos **meses** quer repor;
+  - o **valor da parcela** que pagaria se parcelasse na loja (opcional; padrão: valor resgatado ÷ meses);
+  - o **mês da primeira reposição** (padrão: o mês seguinte ao da compra).
+- **RF-171** O gasto continua contando na sua categoria (relatórios e insights) no mês da compra, mas a parte paga com o resgate **não sai da margem nem da sobra** do mês, porque não saiu da renda do mês. A parte que não veio do resgate conta como um gasto normal.
+- **RF-172** Em cada mês da reposição, o valor da parcela entra como **reposição do resgate** e soma na reserva do mês (8.2). Os aportes na categoria Investimento abatem essa reserva como qualquer outra (RF-76).
+- **RF-173** O usuário acompanha cada compra com resgate: valor resgatado, parcela, meses repostos e restantes, quanto já voltou para o investimento e a data de término.
+- **RF-174** Se o usuário informou a parcela da loja, o sistema mostra **quanto o desconto economizou**: total que pagaria parcelado (parcela × meses) menos o valor pago à vista. Quando a reposição termina, essa diferença fica investida a mais.
+- **RF-175** O usuário pode **repor mais que a parcela** em qualquer mês: ao lançar o aporte na categoria Investimento, indica quanto dele é reposição de qual compra com resgate. O sistema recalcula a reposição a partir do que falta (`valor a repor − já reposto`, em que o valor a repor é parcela × meses):
+  - **Padrão: mantém a parcela e encurta o prazo.** A última reposição é só o que faltar (ex.: faltam R$ 330 com parcela de R$ 110 e o usuário repõe R$ 200; restam R$ 130, que viram uma parcela de R$ 110 e uma última de R$ 20).
+  - **Opção: mantém o prazo e diminui a parcela**, dividindo o que falta pelos meses restantes.
+  - O valor a mais é um aporte acima da reserva do mês, então sai da margem desse mês como qualquer excedente de aporte (RF-76). A reserva dos meses seguintes já usa a parcela recalculada.
+  - Repor tudo o que falta de uma vez **antecipa** e encerra a reposição.
+- **RF-175a** O usuário também pode **editar** os meses ou a parcela, e **cancelar** a reposição. Mudanças valem para o mês aberto e os seguintes; meses fechados só mudam pelo recálculo de RF-79e.
+- **RF-176** O Dashboard mostra, na reserva do mês, quanto dela é reposição de resgate. A tela de Parcelamentos lista as compras com resgate junto dos parcelamentos, separadas deles.
+
 ## 8. Regras de cálculo
 
 Nesta seção, "mês" é sempre o mês financeiro (7.8.1): do dia da virada até a véspera da próxima. "Meses restantes" (8.3) conta viradas futuras, estimadas pelo calendário.
@@ -354,8 +379,12 @@ base_do_mes = renda_recebida_no_mes + saldo_remanescente_do_mes_anterior
 se tipo_meta = "fixo":       reserva_meta = valor_fixo
 se tipo_meta = "percentual": reserva_meta = renda_recebida_no_mes × percentual
 
-reserva_do_mes = reserva_meta + compensacao_de_estouro_do_mes_anterior
+reserva_do_mes = reserva_meta
+               + compensacao_de_estouro_do_mes_anterior
+               + reposicao_de_resgates_do_mes
 ```
+
+`reposicao_de_resgates_do_mes` é a soma das parcelas das compras com resgate cuja reposição cai neste mês (RF-172). Sem compras com resgate, é 0.
 
 ### 8.3 Provisão sazonal
 
@@ -390,10 +419,13 @@ margem_disponivel = margem_do_mes
 
 Aportes até o valor da reserva do mês não reduzem a margem, porque já estão descontados em `reserva_do_mes` (RF-76).
 
+A parte de uma compra paga com resgate do investimento fica fora de `gastos_avulsos_e_variaveis_ja_lancados` (RF-171); ela volta para a conta aos poucos, pela reposição (8.2).
+
 ### 8.5 Fechamento do mês
 
 ```
 sobra = base_do_mes − total_gasto − provisao_sazonal_do_mes
+# total_gasto não inclui a parte das compras paga com resgate do investimento (RF-171)
 
 se sobra ≥ 0:
     investido = valor que o usuário marcar como investido em reserva na virada (padrão 0)
@@ -406,6 +438,9 @@ se o usuário estourou a margem (margem_disponivel < 0):
 > Exemplo: renda de R$ 5.000, sobra de R$ 200 do mês anterior, fixos de R$ 2.000, parcelas de R$ 600, IPVA de R$ 1.200 em 6 meses (R$ 200/mês) e meta de reserva de 10% (R$ 500).
 > Margem = 5.200 − 2.000 − 600 − 200 − 500 = **R$ 1.900** para gastos avulsos e variáveis.
 
+> Exemplo com resgate: uma TV custa 10 × R$ 110 (R$ 1.100) parcelada ou R$ 1.000 à vista no Pix. O usuário resgata R$ 1.000 do investimento, paga à vista e escolhe repor em 10 meses com a parcela de R$ 110. No mês da compra, os R$ 1.000 não saem da margem. Nos 10 meses seguintes, a reserva do mês sobe R$ 110 (no exemplo acima, de R$ 500 para R$ 610, e a margem cai para R$ 1.790). Ao fim, voltaram R$ 1.100 para o investimento: os R$ 1.000 resgatados e R$ 100 de economia do desconto (RF-174).
+> Se, no 3º mês, o usuário repõe R$ 300 em vez de R$ 110, já voltaram R$ 520 e faltam R$ 580. Mantendo a parcela, restam 5 reposições de R$ 110 e uma de R$ 30, e o prazo termina 1 mês antes; o excedente de R$ 190 sai da margem daquele mês (RF-175).
+
 ## 9. Telas da v1
 
 1. **Login**
@@ -414,7 +449,7 @@ se o usuário estourou a margem (margem_disponivel < 0):
 4. **Dashboard:** margem disponível, reserva do mês, gastos por categoria, próximas parcelas, próximos sazonais, alertas e insights.
 5. **Lançamentos:** lista com filtros, criar, editar e excluir rendas e gastos.
 6. **Cadastro rápido do mês:** tela que reúne tudo em um só lugar para facilitar o lançamento do início do mês (rendas, fixos do mês, parcelas, sazonais e meta de reserva), com revisão e confirmação. Começa pela **revisão das despesas e rendas fixas** (7.3.1), com os valores do mês anterior já preenchidos e editáveis.
-7. **Parcelamentos:** acompanhamento, antecipação e quitação.
+7. **Parcelamentos:** acompanhamento, antecipação e quitação, e as compras à vista com resgate do investimento, com a reposição de cada uma (7.17).
 8. **Cartões e faturas:** faturas por cartão, status e registro de pagamento antecipado (total ou parcial).
 9. **Assinaturas:** lista de assinaturas, status, custo mensal e anual e próximas renovações.
 10. **Sazonais:** cadastro e acompanhamento das provisões.
@@ -480,6 +515,10 @@ Sobre a hospedagem: a v1 é só para testes em produção, então a escolha é a
 | 8 | **App nativo** | v2 |
 | 9 | **Domínio próprio** (ex.: troco.app), trocando o `*.vercel.app`. Com ele, o e-mail passa do Gmail para o Resend com domínio verificado | A definir |
 | 10 | **Mês financeiro da conta conjunta**: os membros recebem salário em dias diferentes. Sugestão: a conta conjunta usa o mês do calendário, e a parte de cada membro entra no mês financeiro individual dele pela data do gasto | Fase 3 |
+| 11 | **Quando a reposição do resgate conta como feita** (RF-173): ao fechar o mês, mesmo sem saber se o usuário investiu, ou só quando os aportes do mês cobrem a reserva. Sugestão: conta pelos aportes; se faltar, o que não foi reposto passa para o mês seguinte | Fase 2 |
+| 12 | **Compra com resgate no orçamento da categoria** (7.7): se o valor pago com resgate conta no limite da categoria. Sugestão: conta, porque é gasto da categoria, mesmo sem tirar da margem | Fase 2 |
+| 13 | **Rendimento perdido com o resgate**: comparar a economia do desconto com o que o dinheiro renderia no investimento durante a reposição. Depende do controle de investimentos (ponto 6) | v2 |
+| 14 | **Compra com resgate em conta conjunta** (7.15): de quem é a reposição quando a compra é dividida | Fase 3 |
 
 ### Decisões já tomadas (antes pendentes)
 
@@ -508,6 +547,7 @@ Sobre a hospedagem: a v1 é só para testes em produção, então a escolha é a
 - Temas: 9 temas nas cores do logo, escolhidos em Configurações já na Fase 1; padrão Fim de tarde, sem seguir o sistema operacional; escolha salva na conta; ícone do app fixo em Fim de tarde (7.16, v1.4). O Abóbora saiu e suas cores passaram a ser as do Fim de tarde (v1.4).
 - Revisão das fixas: a diferença e o destaque de variação vêm de uma prévia da API, pedida quando o campo perde o foco; o front não calcula (RF-29a, v1.4).
 - Corrigir a data de início do mês move para a nova data as fixas e rendas fixas criadas na virada (RF-79d, v1.4).
+- Compra à vista com resgate do investimento: o resgate não sai da margem do mês e é reposto com um aporte mensal extra na reserva, no valor da parcela, pelo número de meses escolhido; o sistema mostra quanto já voltou e quanto o desconto economizou (7.17, Fase 2, v1.6). Repor mais que a parcela recalcula o que falta: por padrão mantém a parcela e encurta o prazo, com opção de manter o prazo e diminuir a parcela (RF-175). Escolhida entre três ideias: parcela virtual na reserva (esta), empréstimo da reserva descontado da margem e só um marcador na compra.
 - Tema Escuro: deixa de ser preto puro e passa a usar as cores do Fim de tarde com o tom abaixado, como os outros temas escuros, que também levam a cor da marca (RF-161, v1.5).
 
 ## 14. Prazo
