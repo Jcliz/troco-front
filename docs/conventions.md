@@ -68,7 +68,7 @@ Valem para quem escreve código aqui, pessoa ou agente. Na dúvida, o mais simpl
 
 - `main` protegida: merge só por PR, com CI verde e revisão do João. **Squash merge.**
 - Uma branch por tarefa, com **nome limpo e compreensível**: `feat/<id-da-tarefa>-<resumo>`, ex.: `feat/api-07-month-turnover`. Também `fix/`, `chore/`, `docs/`, `refactor/`, `test/`. Sem prefixo de ferramenta (`claude/`), hash ou sufixo aleatório. Regra completa em `.claude/rules/git.md` de cada repo.
-- **Autoria:** todo commit é do João (`Jcliz`). Agentes nunca aparecem como autor ou coautor (sem `Co-Authored-By` nem assinatura de agente em commits e PRs).
+- **Autoria:** todo commit é do João (`Jcliz`). Agentes nunca aparecem como autor ou coautor (sem `Co-Authored-By` nem assinatura de agente em commits e PRs). O `settings.json` desliga a assinatura do Claude Code, um hook barra o commit com assinatura e o job `pr-rules` do CI confere branch, título e commits.
 - **Conventional Commits** em inglês: `feat(periods): add month turnover endpoint`. O título do PR segue o mesmo padrão (vira a mensagem do squash).
 - PR pequeno (idealmente até ~400 linhas de código, sem contar gerados). Corpo do PR com o template do repo: tarefa, o que mudou, como testar, checklist.
 
@@ -89,3 +89,4 @@ Ver [ADR-0013](adr/0013-testes-e-ci.md).
 4. `openapi.json` atualizado (API) ou tipos sincronizados (front), se o contrato mudou.
 5. Documentação em `docs/` atualizada no mesmo PR se algo do que está escrito mudou (nos dois repos).
 6. Textos de interface em `messages/`, nunca no componente.
+7. Tela: todo dado que ela mostra tem fonte na tabela "Dados de cada tela" de [api-contracts.md](api-contracts.md); campo que falta entra antes na API.
