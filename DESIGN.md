@@ -429,7 +429,7 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 - **Texto pequeno ou grande demais no botão.** A linha do texto ocupa cerca de metade da altura do botão.
 - **Botão de enviar que só diz "Salvar".** O botão diz o que acontece: "Salvar lançamento", "Criar conta", "Virar o mês", e não só "Salvar", "Enviar", "OK" ou "Confirmar".
 - **Excluir perto de salvar.** O botão de excluir fica longe do botão de salvar (lados opostos do rodapé ou outra área da tela), para ninguém excluir sem querer.
-- **Campo só com placeholder.** Campo que tem placeholder também tem rótulo visível. O placeholder é só exemplo, nunca o nome do campo.
+- **Campo só com placeholder.** Campo que tem placeholder também tem rótulo visível. O placeholder é só exemplo, nunca o nome do campo. Exceção (João, 28/11/2026): o campo de busca de Lançamentos fica só com a lupa e o placeholder "Buscar por descrição ou categoria", sem rótulo visível. Para o leitor de tela, ele tem `aria-label` "Buscar lançamentos".
 
 ### Tags, chips e ícones
 
@@ -460,4 +460,3 @@ Padrões visuais que deixam a interface com cara de template ou de código gerad
 - **Favicon:** em 16 px os detalhes finos do logo somem. Antes de publicar, vale conferir se ele precisa de uma versão simplificada.
 - **Termos de uso e Política de privacidade:** o texto final, antes do primeiro deploy de produção (`docs/security-lgpd.md`).
 - **Landing page:** não está no plano da Fase 1. Quando entrar, estende este design system.
-- **Campo de busca em Lançamentos:** tem lupa e o placeholder "Buscar por descrição ou categoria", mas não tem rótulo visível, o que contraria "Campo só com placeholder". Falta o João decidir entre abrir uma exceção para a busca (a lupa faz o papel do rótulo) ou pôr o rótulo "Buscar" em cima do campo.
