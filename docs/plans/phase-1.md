@@ -196,4 +196,4 @@ Siga [environments.md](../environments.md#primeiro-deploy-passo-a-passo-para-o-j
 
 ## Fora da Fase 1
 
-Formas de pagamento, cartões, parcelas, provisão sazonal, assinaturas, orçamentos, insights, alertas por toast/e-mail/push, conta conjunta, multimoeda, outros idiomas, PWA e admin (PRD, seção 5).
+Formas de pagamento, cartões, parcelas, compra à vista com resgate do investimento, provisão sazonal, assinaturas, orçamentos, insights, alertas por toast/e-mail/push, conta conjunta, multimoeda, outros idiomas, PWA e admin (PRD, seção 5).
