@@ -13,7 +13,8 @@ Para cada período `p` (do mais antigo ao atual), o serviço `summary` carrega o
 | `fixos` | soma das despesas `FIXED` fora de `INVESTMENT`, confirmadas e "a confirmar" |
 | `variaveis` | soma das despesas `ONE_OFF` e `SEASONAL` fora de `INVESTMENT`; a partir da Fase 2, sem a parte paga com resgate do investimento (RF-171) |
 | `parcelas` | Fase 2 (na Fase 1, `0`) |
-| `reposicao_resgates` | Fase 2 (na Fase 1, `0`): soma das parcelas de reposição das compras com resgate que caem no mês (PRD 7.17, RF-172) |
+| `reposicao_resgates` | Fase 2 (na Fase 1, `0`): soma das parcelas de reposição das compras com resgate que caem no mês, mais `falta_repor_anterior` (PRD 7.17, RF-172, RF-172a) |
+| `falta_repor_anterior` | Fase 2 (na Fase 1, `0`): o que a reposição do mês anterior não recebeu dos aportes (RF-172a) |
 | `provisao` | Fase 2 (na Fase 1, `0`) |
 | `parte_conjunta` | Fase 3 (na Fase 1, `0`) |
 | `investido_marcado` | `periods.invested_amount` |
@@ -28,6 +29,8 @@ reserva_do_mes  = reserva_meta + compensacao_anterior + reposicao_resgates
 
 margem_do_mes   = base − fixos − parcelas − provisao − reserva_do_mes − parte_conjunta
 excedente_aporte = max(0, aportes − reserva_do_mes)
+reposto_no_mes   = min(aportes, reposicao_resgates)            # Fase 2: os aportes cobrem primeiro a reposição (RF-172a)
+falta_repor      = reposicao_resgates − reposto_no_mes             # vai para o mês seguinte, na mesma compra
 margem_disponivel = margem_do_mes − variaveis − excedente_aporte
 
 reserva_pendente = max(0, reserva_do_mes − aportes)      // quanto ainda falta guardar
@@ -63,6 +66,7 @@ Regras complementares (decididas na documentação técnica, confirmar se mudar 
 8. **Investido marcado maior que a sobra** é recusado.
 9. **Compra com resgate (Fase 2):** exemplo da TV do PRD (8.5): R$ 1.000 resgatados não mudam a margem do mês da compra; nos 10 meses seguintes `reserva_do_mes` sobe 110 e `margem_do_mes` cai 110; resgate parcial de 600 numa compra de 1.000 tira só 400 da margem.
 10. **Reposição acima da parcela (Fase 2):** valor a repor 1.100, parcela 110, 2 meses repostos (220); no 3º mês repõe 300 → faltam 580; mantendo a parcela, restam 5 × 110 + 1 × 30; mantendo o prazo (7 meses restantes), 6 parcelas de 82,86 e a última de 82,84 (a última fecha o total); o excedente de 190 sai da margem daquele mês (RF-175, RF-76).
+11. **Reposição sem aporte suficiente (Fase 2):** reserva de 610 (meta 500 + reposição 110) e aportes de 50 → `reposto_no_mes` = 50 e `falta_repor` = 60; no mês seguinte `reposicao_resgates` = 170. Com duas compras (110 da mais antiga, 90 da mais nova) e aportes de 150, a mais antiga recebe 110 e a mais nova 40; faltam 50 da mais nova. Na última parcela, a falta cria mais um mês de reposição (RF-172a).
 
 ## Lembretes calculados na leitura (Fase 1)
 
@@ -72,5 +76,4 @@ Regras complementares (decididas na documentação técnica, confirmar se mudar 
 ## Pontos em aberto
 
 - Provisão sazonal (Fase 2): "meses restantes" estimados pelo calendário até a data prevista, com mínimo de 1.
-- Reposição do resgate (Fase 2): se conta como feita ao fechar o mês ou só quando os aportes cobrem a reserva (PRD, seção 13, ponto 11).
 - Parte da conta conjunta (Fase 3): em qual mês financeiro individual entra (PRD, seção 13, ponto 10).

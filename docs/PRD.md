@@ -5,7 +5,7 @@ Sistema web de finanças pessoais e controle de gastos
 | | |
 |---|---|
 | **Autor** | João |
-| **Status** | **Aprovado v1.6** |
+| **Status** | **Aprovado v1.7** |
 | **Última atualização** | 28/11/2026 |
 | **Repositórios** | `troco-front`, `troco-api` |
 
@@ -353,7 +353,8 @@ Seção própria para acompanhar serviços recorrentes como Netflix, Spotify, Di
   - o **mês da primeira reposição** (padrão: o mês seguinte ao da compra).
 - **RF-171** O gasto continua contando na sua categoria (relatórios e insights) no mês da compra, mas a parte paga com o resgate **não sai da margem nem da sobra** do mês, porque não saiu da renda do mês. A parte que não veio do resgate conta como um gasto normal.
 - **RF-172** Em cada mês da reposição, o valor da parcela entra como **reposição do resgate** e soma na reserva do mês (8.2). Os aportes na categoria Investimento abatem essa reserva como qualquer outra (RF-76).
-- **RF-173** O usuário acompanha cada compra com resgate: valor resgatado, parcela, meses repostos e restantes, quanto já voltou para o investimento e a data de término.
+- **RF-172a** A reposição conta como feita **pelos aportes**, não só por o mês ter fechado. Ao fechar o mês, os aportes na categoria Investimento cobrem primeiro a reposição do mês e depois a meta de reserva. O que a reposição não recebeu **passa para o mês seguinte** e soma na parcela daquela compra; se era a última parcela, a reposição ganha mais um mês. Com mais de uma compra, os aportes cobrem as compras da mais antiga para a mais nova. Na virada do mês, o usuário vê quanto da reposição ficou faltando e para qual mês passou.
+- **RF-173** O usuário acompanha cada compra com resgate: valor resgatado, parcela, meses repostos e restantes, quanto já voltou para o investimento (só o que os aportes cobriram, RF-172a) e a data de término. Mês a mês, cada reposição aparece como reposta, reposta em parte (com quanto faltou e para qual mês passou), do mês aberto ou prevista.
 - **RF-174** Se o usuário informou a parcela da loja, o sistema mostra **quanto o desconto economizou**: total que pagaria parcelado (parcela × meses) menos o valor pago à vista. Quando a reposição termina, essa diferença fica investida a mais.
 - **RF-175** O usuário pode **repor mais que a parcela** em qualquer mês: ao lançar o aporte na categoria Investimento, indica quanto dele é reposição de qual compra com resgate. O sistema recalcula a reposição a partir do que falta (`valor a repor − já reposto`, em que o valor a repor é parcela × meses):
   - **Padrão: mantém a parcela e encurta o prazo.** A última reposição é só o que faltar (ex.: faltam R$ 330 com parcela de R$ 110 e o usuário repõe R$ 200; restam R$ 130, que viram uma parcela de R$ 110 e uma última de R$ 20).
@@ -384,7 +385,7 @@ reserva_do_mes = reserva_meta
                + reposicao_de_resgates_do_mes
 ```
 
-`reposicao_de_resgates_do_mes` é a soma das parcelas das compras com resgate cuja reposição cai neste mês (RF-172). Sem compras com resgate, é 0.
+`reposicao_de_resgates_do_mes` é a soma das parcelas das compras com resgate cuja reposição cai neste mês, mais o que faltou repor no mês anterior (RF-172, RF-172a). Sem compras com resgate, é 0.
 
 ### 8.3 Provisão sazonal
 
@@ -433,6 +434,10 @@ se sobra ≥ 0:
 
 se o usuário estourou a margem (margem_disponivel < 0):
     compensacao_de_estouro_do_proximo_mes = |margem_disponivel|
+
+# reposição do resgate (RF-172a): os aportes cobrem primeiro a reposição, da compra mais antiga para a mais nova
+reposto_no_mes          = min(aportes_do_mes, reposicao_de_resgates_do_mes)
+falta_repor_do_proximo_mes = reposicao_de_resgates_do_mes − reposto_no_mes
 ```
 
 > Exemplo: renda de R$ 5.000, sobra de R$ 200 do mês anterior, fixos de R$ 2.000, parcelas de R$ 600, IPVA de R$ 1.200 em 6 meses (R$ 200/mês) e meta de reserva de 10% (R$ 500).
@@ -440,6 +445,7 @@ se o usuário estourou a margem (margem_disponivel < 0):
 
 > Exemplo com resgate: uma TV custa 10 × R$ 110 (R$ 1.100) parcelada ou R$ 1.000 à vista no Pix. O usuário resgata R$ 1.000 do investimento, paga à vista e escolhe repor em 10 meses com a parcela de R$ 110. No mês da compra, os R$ 1.000 não saem da margem. Nos 10 meses seguintes, a reserva do mês sobe R$ 110 (no exemplo acima, de R$ 500 para R$ 610, e a margem cai para R$ 1.790). Ao fim, voltaram R$ 1.100 para o investimento: os R$ 1.000 resgatados e R$ 100 de economia do desconto (RF-174).
 > Se, no 3º mês, o usuário repõe R$ 300 em vez de R$ 110, já voltaram R$ 520 e faltam R$ 580. Mantendo a parcela, restam 5 reposições de R$ 110 e uma de R$ 30, e o prazo termina 1 mês antes; o excedente de R$ 190 sai da margem daquele mês (RF-175).
+> Se, no 4º mês, a reserva é de R$ 610 (R$ 500 da meta e R$ 110 da reposição) e o usuário aporta só R$ 50, a reposição recebe os R$ 50 e faltam R$ 60. No 5º mês, a reposição é de R$ 170 (a parcela de R$ 110 mais os R$ 60) e a reserva, de R$ 670 (RF-172a).
 
 ## 9. Telas da v1
 
@@ -515,7 +521,6 @@ Sobre a hospedagem: a v1 é só para testes em produção, então a escolha é a
 | 8 | **App nativo** | v2 |
 | 9 | **Domínio próprio** (ex.: troco.app), trocando o `*.vercel.app`. Com ele, o e-mail passa do Gmail para o Resend com domínio verificado | A definir |
 | 10 | **Mês financeiro da conta conjunta**: os membros recebem salário em dias diferentes. Sugestão: a conta conjunta usa o mês do calendário, e a parte de cada membro entra no mês financeiro individual dele pela data do gasto | Fase 3 |
-| 11 | **Quando a reposição do resgate conta como feita** (RF-173): ao fechar o mês, mesmo sem saber se o usuário investiu, ou só quando os aportes do mês cobrem a reserva. Sugestão: conta pelos aportes; se faltar, o que não foi reposto passa para o mês seguinte | Fase 2 |
 | 12 | **Compra com resgate no orçamento da categoria** (7.7): se o valor pago com resgate conta no limite da categoria. Sugestão: conta, porque é gasto da categoria, mesmo sem tirar da margem | Fase 2 |
 | 13 | **Rendimento perdido com o resgate**: comparar a economia do desconto com o que o dinheiro renderia no investimento durante a reposição. Depende do controle de investimentos (ponto 6) | v2 |
 | 14 | **Compra com resgate em conta conjunta** (7.15): de quem é a reposição quando a compra é dividida | Fase 3 |
@@ -548,6 +553,7 @@ Sobre a hospedagem: a v1 é só para testes em produção, então a escolha é a
 - Revisão das fixas: a diferença e o destaque de variação vêm de uma prévia da API, pedida quando o campo perde o foco; o front não calcula (RF-29a, v1.4).
 - Corrigir a data de início do mês move para a nova data as fixas e rendas fixas criadas na virada (RF-79d, v1.4).
 - Compra à vista com resgate do investimento: o resgate não sai da margem do mês e é reposto com um aporte mensal extra na reserva, no valor da parcela, pelo número de meses escolhido; o sistema mostra quanto já voltou e quanto o desconto economizou (7.17, Fase 2, v1.6). Repor mais que a parcela recalcula o que falta: por padrão mantém a parcela e encurta o prazo, com opção de manter o prazo e diminuir a parcela (RF-175). Escolhida entre três ideias: parcela virtual na reserva (esta), empréstimo da reserva descontado da margem e só um marcador na compra.
+- Reposição do resgate conta pelos aportes: ao fechar o mês, os aportes cobrem primeiro a reposição e depois a meta; o que faltou passa para a parcela do mês seguinte (RF-172a, v1.7; antes ponto 11).
 - Tema Escuro: deixa de ser preto puro e passa a usar as cores do Fim de tarde com o tom abaixado, como os outros temas escuros, que também levam a cor da marca (RF-161, v1.5).
 
 ## 14. Prazo
